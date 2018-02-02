@@ -1,1 +1,11 @@
-# software_eng-2018
+# Project Armoire
+
+To fetch all dependencies run
+```
+npm install
+```
+
+To run tests:
+```
+npm test
+```
