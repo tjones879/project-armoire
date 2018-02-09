@@ -64,6 +64,12 @@ class Submission extends Component {
 }
 
 class Assignment extends Component {
+  componentDidMount() {
+    fetch('/assignment')
+      .then(res => res.json())
+      .then(users => console.log(users));
+  }
+
   render() {
     return (
       <div>
