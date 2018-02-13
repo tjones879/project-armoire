@@ -1,18 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Link, Route, BrowserRouter as Router } from 'react-router-dom';
+import { Route, BrowserRouter as Router } from 'react-router-dom';
 import './index.css';
 import registerServiceWorker from './registerServiceWorker';
 import Assignment from './components/Assignment.js';
+import Home from './components/Home.js';
 
 const Root = () => {
     return (
       <Router>
         <div>
-        <ul>
-          <li><Link to="/">Home</Link></li>
-          <li><Link to="/assignment">Assignments</Link></li>
-        </ul>
+          <Route exact path="/" component={Home} />
           <Route path="/assignment" component={Assignment} />
         </div>
       </Router>
