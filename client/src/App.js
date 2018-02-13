@@ -12,10 +12,29 @@ class Description extends Component {
   }
 }
 
+class ExampleIORow extends Component {
+    render() {
+        return (
+         <li>{this.props.input}
+           <ul>
+             <li>{this.props.output}</li>
+           </ul>
+         </li>
+        );
+    }
+}
+
 class ExampleIO extends Component {
   render() {
+    const rows = [];
+      this.props.examples.forEach((example) => {
+        rows.push(<ExampleIORow input={example.input} output={example.output} />);
+      });
     return (
       <div>
+        <ul>
+          {rows}
+        </ul>
       </div>
     );
   }
@@ -57,6 +76,9 @@ class Submission extends Component {
   render() {
     return (
       <div>
+        <h3>Text Area</h3>
+        <textarea rows="4" cols="85">
+        </textarea>
         <TestResults tests={this.props.tests}/>
       </div>
     );
@@ -64,39 +86,36 @@ class Submission extends Component {
 }
 
 class Assignment extends Component {
+  constructor() {
+    super();
+    this.state = {
+        page: [],
+    };
+  }
+
   componentDidMount() {
     fetch('/assignment')
       .then(res => res.json())
-      .then(users => console.log(users));
+      .then(data => this.setState({page: [data]}));
   }
 
   render() {
     return (
       <div>
-        <h2>{PROJECT.name}</h2>
-        <hr />
-        <Description type="Description" contents={PROJECT.description} />
-        <Description type="Requirements" contents={PROJECT.requirements} />
-        <ExampleIO examples={PROJECT.io} />
-        <hr />
-        <Submission tests={PROJECT.tests} />
+        {this.state.page.map(data =>
+          <div>
+            <h2>{data.name}</h2>
+            <hr />
+            <Description type="Description" contents={data.description} />
+            <Description type="Requirements" contents={data.requirements} />
+            <ExampleIO examples={data.io} />
+            <hr />
+            <Submission tests={data.tests} />
+          </div>
+        )}
       </div>
     );
   }
-}
-
-const PROJECT = {
-  name: "Project 1",
-  description: "DESCRIPTION RANDOM TEXT",
-  requirements: "REQUIREMENT RANDOM TEXT",
-  io: [
-    {input: "EXAMPLE INPUT 1", output: "EXAMPLE OUTPUT 1" },
-    {input: "EXAMPLE INPUT 2", output: "EXAMPLE OUTPUT 2" },
-  ],
-  tests: [
-    {success: false, label: "EXAMPLE LABEL 1"},
-    {success: true,  label: "EXAMPLE LABEL 2"},
-  ],
 }
 
 export default Assignment;
