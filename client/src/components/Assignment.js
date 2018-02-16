@@ -1,15 +1,5 @@
 import React, { Component } from 'react';
-
-class Description extends Component {
-  render() {
-    return (
-      <div>
-        <h4>{this.props.type}</h4>
-        <p>{this.props.contents}</p>
-      </div>
-    );
-  }
-}
+import DescriptionBox from './DescriptionBox.js';
 
 class ExampleIORow extends Component {
     render() {
@@ -87,6 +77,19 @@ class SubmissionForm extends Component {
   }
 
   handleSubmit(event) {
+    console.log(JSON.stringify(this.state.value));
+    const data = JSON.stringify({
+        form: this.state.value
+    });
+    fetch('/assignment', {
+        method: 'post',
+        body: data,
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        }
+    }).then(response => response.json())
+      .then(data => console.log(data));
     alert('A submission was entered: ' + this.state.value);
     event.preventDefault();
   }
@@ -135,8 +138,8 @@ class Assignment extends Component {
           <div>
             <h2>{data.name}</h2>
             <hr />
-            <Description type="Description" contents={data.description} />
-            <Description type="Requirements" contents={data.requirements} />
+            <DescriptionBox type="Description" contents={data.description} />
+            <DescriptionBox type="Requirements" contents={data.requirements} />
             <ExampleIO examples={data.io} />
             <hr />
             <Submission tests={data.tests} />

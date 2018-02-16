@@ -1,10 +1,12 @@
 var express = require('express');
 var path = require('path');
-
+var bodyParser = require('body-parser');
 var index = require('./routes/index');
 var assignment = require('./routes/assignment');
 
 var app = express();
+
+app.use(bodyParser.json()); // for parsing application/json
 
 app.use('/', index);
 app.use('/assignment', assignment);

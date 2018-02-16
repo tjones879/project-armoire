@@ -18,4 +18,13 @@ router.get('/', function(req, res, next) {
     });
 });
 
+router.post('/', function(req, res, next) {
+    const text = req.body.form;
+
+    res.type('json');
+    res.json({
+        data: text
+    });
+});
+
 module.exports = router;
