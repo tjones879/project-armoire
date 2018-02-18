@@ -2,10 +2,27 @@
 
 To fetch all dependencies run
 ```
-npm install
+scripts/get_deps.sh
 ```
 
-To run tests:
+This will automatically navigate to both the backend and the
+client and call `npm install` in their respective directories.
+
+To run all tests:
 ```
-npm test
+scripts/run_tests.sh
 ```
+
+This will also automatically navigate to directories and run
+their respective tests by calling `npm test`.
+
+Starting the react dev server can be done by navigating to
+`client` and calling `npm start`.
+
+Starting the node backend server can be done by navigating to
+`backend` and calling `npm start`.
+
+Node will automatically run on port 3001 and react will run on
+port 300. Navigate to localhost:3000 to access the server. There
+is a proxy that connects the react server to the backend's RESTful
+API.
