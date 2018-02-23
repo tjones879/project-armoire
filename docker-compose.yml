@@ -1,0 +1,26 @@
+version: '2'
+services:
+  node:
+    build:
+      context: ./backend/
+      dockerfile: Dockerfile
+    container_name: node-server
+    ports:
+      - "3001:3001"
+    links:
+      - mongo
+    command: npm start
+
+  react:
+    build:
+      context: ./client/
+      dockerfile: Dockerfile
+    container_name: react-server
+    ports:
+      - "3000:3000"
+    links:
+      - node
+    command: npm start
+
+  mongo:
+    image: mongo:3.7

@@ -3,6 +3,11 @@ var path = require('path');
 var bodyParser = require('body-parser');
 var index = require('./routes/index');
 var assignment = require('./routes/assignment');
+var mongoose = require('mongoose');
+
+mongoose.connect('mongodb://mongo/test');
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
 
 var app = express();
 
@@ -31,8 +36,10 @@ app.use(function(err, req, res, next) {
 
 
 app.set('port', (process.env.PORT || 3001));
-app.listen(app.get('port'), function() {
-    console.log("Node app is running on localhost:", app.get('port'))
+db.once('open', () => {
+    app.listen(app.get('port'), function() {
+        console.log("Node app is running on localhost:", app.get('port'))
+    });
 });
 
 module.exports = app;
