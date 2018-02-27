@@ -3,6 +3,10 @@ var path = require('path');
 var bodyParser = require('body-parser');
 var index = require('./routes/index');
 var assignment = require('./routes/assignment');
+var professor = require('./routes/professor');
+var course = require('./routes/course');
+var student = require('./routes/student');
+var authentication = require('./routes/authentication');
 
 var app = express();
 
@@ -10,6 +14,10 @@ app.use(bodyParser.json()); // for parsing application/json
 
 app.use('/', index);
 app.use('/assignment', assignment);
+app.use('/professor', professor);
+app.use('/course', course);
+app.use('/student', student);
+app.use('/authentication', authentication);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
