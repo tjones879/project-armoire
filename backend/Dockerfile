@@ -3,6 +3,5 @@ FROM node:carbon
 COPY package*.json ./
 
 RUN npm install
-COPY . .
 EXPOSE 3001
-CMD ["npm", "start"]
+WORKDIR /home/backend
