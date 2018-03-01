@@ -1,9 +1,10 @@
 var mongoose = require('mongoose');
 
 var StudentSchema = new mongoose.Schema({
+    _id: mongoose.Schema.Types.ObjectId,
     login_id: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User', // TODO: Store name in user db file
+        ref: 'User',
         index: true
     },
     fname: String,
@@ -11,12 +12,12 @@ var StudentSchema = new mongoose.Schema({
     courses: [{
         id: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'Course' // TODO: Store name in user db file
+            ref: 'Course'
         },
         assignments: [{
             id: {
                 type: mongoose.Schema.Types.ObjectId,
-                ref: 'Assignment' // TODO: Store name in user db file
+                ref: 'Assignment'
             },
             submissions: [{
                 _id: mongoose.Schema.Types.ObjectId,

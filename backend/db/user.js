@@ -1,10 +1,7 @@
 var mongoose = require('mongoose');
 
 var UserSchema = new mongoose.Schema({
-    id: {
-        type: mongoose.Schema.Types.ObjectId,
-        index: true
-    },
+    _id: mongoose.Schema.Types.ObjectId,
     email: String,
     hash: String
 });

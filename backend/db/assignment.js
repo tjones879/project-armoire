@@ -4,7 +4,7 @@ var AssignmentSchema = new mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
     course: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Course', // TODO: Store course name in coure db file
+        ref: 'Course',
         index: true
     },
     open_date: Date,
