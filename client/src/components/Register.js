@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import {Navbar} from './Navbar'
 
 var registerAPI = "localhost:3000/";
 
