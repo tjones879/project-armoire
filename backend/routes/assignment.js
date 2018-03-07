@@ -5,6 +5,8 @@ var router = express.Router();
 router.get('/', function(req, res, next) {
     res.json({
         name: "Project 1",
+        openDate: new Date(2018,1,1),
+        closeDate: new Date(2018,2,1),
         description: "DESCRIPTION TEXT",
         requirements: "REQUIREMENT RANDOM TEXT",
         io: [
