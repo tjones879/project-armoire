@@ -22,6 +22,9 @@ Starting the react dev server can be done by navigating to
 Starting the node backend server can be done by navigating to
 `backend` and calling `npm start`.
 
+A mongo daemon must also be run from localhost on port 27017.
+Simply running `mongod` with no flags should default to 27017.
+
 Node will automatically run on port 3001 and react will run on
 port 300. Navigate to localhost:3000 to access the server. There
 is a proxy that connects the react server to the backend's RESTful
