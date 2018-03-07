@@ -62,13 +62,13 @@ export default class Register extends Component{
     }
     checkName(name, fol){
         if(name.length < 2){
-            return fol+" name must be at least 2 characters. ";
+            return `${fol} name must be at least 2 characters. `;
         }
         else if(name.length > 35){
-            return fol+" name must be 35 characters or less. ";
+            return `${fol} name must be 35 characters or less. `;
         }
         else if(!reg.test(name)){
-            return fol+" name must be letters, hyphens, single quotes, and spaces. ";
+            return `${fol} name must be letters, hyphens, single quotes, and spaces. `;
         }else{
             return name;
         }
@@ -108,29 +108,29 @@ export default class Register extends Component{
             <form action={registerAPI} method="POST" className="container-fluid">
                 <h1 className="row text-center">Registration</h1>
                 <div className="row">
-                    <label className={row+" text-right"} for="first">First</label>
-                    <input className={row+" text-center"} type="text" id="first" placeholder="Jane" onChange={this.checkFirst} required/>
-                    <span className={row+" text-left"} style={this.state.firstStyle}>{this.state.firstFeed}</span>
+                    <label className={`${row} text-right`} for="first">First</label>
+                    <input className={`${row} text-center`} type="text" id="first" placeholder="Jane" onChange={this.checkFirst} required/>
+                    <span className={`${row} text-left`} style={this.state.firstStyle}>{this.state.firstFeed}</span>
                 </div>
                 <div className="row">
-                    <label className={row+" text-right"} for="last" >Last</label>
-                    <input className={row+" text-center"} type="text" id="last" placeholder="Doe" onChange={this.checkLast} required/>
-                    <span className={row+" text-left"} style={this.state.lastStyle}>{this.state.lastFeed}</span>
+                    <label className={`${row} text-right`} for="last" >Last</label>
+                    <input className={`${row} text-center`} type="text" id="last" placeholder="Doe" onChange={this.checkLast} required/>
+                    <span className={`${row} text-left`} style={this.state.lastStyle}>{this.state.lastFeed}</span>
                 </div>
                 <div className="row">
-                    <label className={row+" text-right"} for="email">Email</label>
-                    <input className={row+" text-center"} type="email" id="email" placeholder="jane.doe@somesite.com" required/>
+                    <label className={`${row} text-right`} for="email">Email</label>
+                    <input className={`${row} text-center`} type="email" id="email" placeholder="jane.doe@somesite.com" required/>
                     {/* add feedback */}
                 </div>
                 <div className="row">
-                    <label className={row+" text-right"} for="password">Password</label>
-                    <input type="password" id="password" value={this.state.passValue} className={row+" text-center"} onChange={this.checkPass} required/>
-                    <span className={row+" text-left"} style={this.state.passStyle}>{this.state.passFeed}</span>
+                    <label className={`${row} text-right`} for="password">Password</label>
+                    <input type="password" id="password" value={this.state.passValue} className={`${row} text-center`} onChange={this.checkPass} required/>
+                    <span className={`${row} text-left`} style={this.state.passStyle}>{this.state.passFeed}</span>
                 </div>
                 <div className="row">
-                    <label className={row+" text-right"} for="confirm">Re-Enter Password</label>
-                    <input className={row+" text-center"} value={this.confirmValue} id="confirm" type="password" onChange={this.checkConfirm} required/>
-                    <span className={row+" text-left"} style={this.state.confirmStyle}>{this.state.confirmFeed}</span>
+                    <label className={`${row} text-right`} for="confirm">Re-Enter Password</label>
+                    <input className={`${row} text-center`} value={this.confirmValue} id="confirm" type="password" onChange={this.checkConfirm} required/>
+                    <span className={`${row} text-left`} style={this.state.confirmStyle}>{this.state.confirmFeed}</span>
                 </div>
                 <div className="row text-center">
                     <input className="btn btn-success" type="submit" value="Register" disabled={this.state.lock}/>
