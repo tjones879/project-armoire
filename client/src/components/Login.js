@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{Component} from 'react'
 
 
 //Dalton Neely
@@ -6,7 +6,7 @@ import React from 'react'
 var rowClass = "col-lg-4 col-md-4 col-sm-12 col-xs-12";
 var loginAPIPath = "http://localhost:3000/";
 
-class Login extends React.Component{
+export default class Login extends Component{
     constructor(props){
         super(props);
         this.state = {
@@ -34,5 +34,3 @@ class Login extends React.Component{
         );
     }
 }
-
-export default Login;
