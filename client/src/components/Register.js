@@ -31,10 +31,16 @@ export default class Register extends Component{
                 color:"green"
             }
         }
+        this.validate = this.validate.bind(this);
         this.checkFirst = this.checkFirst.bind(this);
         this.checkLast = this.checkLast.bind(this);
         this.checkPass = this.checkPass.bind(this);
         this.checkConfirm = this.checkConfirm.bind(this);
+    }
+    validate(){
+        //Validate the form before it is sent by the HTML form using POST
+        //Remember to return a value of true or false from this event handler
+        //true alows the form to send, false prevents the form from submiting
     }
     checkConfirm(e){
         this.setState({confirmValue:e.target.value});
@@ -105,7 +111,7 @@ export default class Register extends Component{
     }
     render(){
         return(
-            <form action={registerAPI} method="POST" className="container-fluid">
+            <form action={registerAPI} method="POST" className="container-fluid" onsubmit={`return ${this.validate}`}>
                 <h1 className="row text-center">Registration</h1>
                 <div className="row">
                     <label className={`${row} text-right`} for="first">First</label>

@@ -12,12 +12,18 @@ export default class Login extends Component{
         this.state = {
             feedback: ""
         }
+        this.validate = this.validate.bind(this);
+    }
+    validate(){
+        //Validate the form before it is sent by the HTML form using POST
+        //Remember to return a value of true or false from this event handler
+        //true alows the form to send, false prevents the form from submiting
     }
     render(){
         return(
             <div className="container-fluid">
                     <h1 className="text-center">Login Page</h1>
-                    <form action={loginAPIPath} method='POST'>
+                    <form action={loginAPIPath} method='POST' onsubmit={`return ${this.validate}`}>
                         <div className="row">
                             <label className={`${rowClass} text-right`} for="emailInput" >E-mail: </label>
                             <input name="email" className={`${rowClass} text-center`} type="email" required ref="email"/>
