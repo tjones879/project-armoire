@@ -1,8 +1,11 @@
 var express = require('express');
 var router = express.Router();
+let mongoose = require('mongoose');
 let Assignment = require('../db/assignment.js');
 
-/* GET assignment listing. */
+/*
+ * GET assignment listing.
+ */
 router.get('/', (req, res) => {
     res.json({
         name: "Project 1",
@@ -18,6 +21,18 @@ router.get('/', (req, res) => {
             {success: false, label: "EXAMPLE LABEL 1"},
             {success: true,  label: "EXAMPLE LABEL 2"}
         ]
+    });
+});
+
+/*
+ * GET assignment by id.
+ */
+router.get('/:id', (req, res) => {
+    let id = mongoose.Types.ObjectId(req.params.id);
+    Assignment.findOne({_id: id}, (err, a) => {
+        if (err)
+            res.send(err);
+        res.json(a);
     });
 });
 

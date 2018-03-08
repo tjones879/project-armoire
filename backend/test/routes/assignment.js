@@ -2,13 +2,13 @@ let chai = require('chai');
 let chaiHttp = require('chai-http');
 let server = require('../../app.js');
 let expect = chai.expect;
-let assignment = require('../../db/assignment.js');
+let Assignment = require('../../db/assignment.js');
 
 chai.use(chaiHttp);
 
 describe('Assignments', () => {
     beforeEach(() => {
-        assignment.remove({});
+        Assignment.remove({});
     });
 
     describe('/GET Assignment', () => {
@@ -20,12 +20,33 @@ describe('Assignments', () => {
                 });
         });
 
-        it('should return one book', () => {
+        it('should return one assignment', () => {
             return chai.request(server)
                 .get('/assignment')
                 .then((res) => {
                     expect(res.body).to.be.a('object');
                 });
+        });
+    });
+
+    describe('/GET/:id Assignment', () => {
+        it('should GET an assignment by the given id', () => {
+            let assignment = new Assignment({
+                name: 'Project Name',
+                openDate: new Date(),
+                closeDate: new Date(),
+                description: 'Description text',
+                requirements: 'Requirements text'
+            });
+
+            return assignment.save((err, assignment) => {
+                chai.request(server)
+                    .get('/assignment/' + assignment._id)
+                    .then((res) => {
+                        expect(res.status).to.equal(200);
+                        expect(res.body._id).to.be.equal(assignment._id.toString());
+                    });
+            });
         });
     });
 
@@ -36,7 +57,7 @@ describe('Assignments', () => {
                 openDate: new Date(),
                 closeDate: new Date(),
                 description: 'Description text',
-                requirements: 'Requirements text',
+                requirements: 'Requirements text'
             };
 
             return chai.request(server)
