@@ -24,36 +24,48 @@ router.post('/registration', function(req, res, next){
     if(typeof req.body.first != "undefined" && req.body.last != "undefined"
     && req.body.email != "undefined" && req.body.password != "undefined"
     && req.body.confirm != "undefined" && req.body.password == req.body.confirm){
-        var salt = crypt.randomBytes(12).toString('hex');
-        var saltedPass = `${salt}${req.body.password}`;
-        var hashedPass = hash.update(saltedPass).digest('hex');
-        var loginID = Mongoose.Types.ObjectId();
-        const login = new Authentication({
-            _id: loginID,
-            email: req.body.email,
-            hash: hashedPass,
-            salt: salt
+        /* Check if email is already in the database first */
+        Authentication.find({email: req.body.email}, (err,docs) => {
+            if(err){
+                console.log(err);
+                return;
+            }
+            if(!docs.length){
+                var salt = crypt.randomBytes(12).toString('hex');
+                var saltedPass = `${salt}${req.body.password}`;
+                var hashedPass = hash.update(saltedPass).digest('hex');
+                var loginID = Mongoose.Types.ObjectId();
+                const login = new Authentication({
+                    _id: loginID,
+                    email: req.body.email,
+                    hash: hashedPass,
+                    salt: salt
+                });
+                const person = new Student({
+                    _id: Mongoose.Types.ObjectId(),
+                    login_id: loginID,
+                    fname: req.body.first,
+                    lname: req.body.last,
+                    courses: []
+                });
+                login.save()
+                    .then(result =>{
+                        person.save()
+                        .then(result =>{
+                            res.status(200).redirect('http://localhost:3000/login');
+                        }).catch(err =>
+                            //change to redirct to 500 error page
+                            res.status(500).json({success:"person save error"})
+                        )
+                    }).catch(err =>
+                        //Update this to be more informative in future
+                        res.status(500).json({success:"login save error"})
+                    );
+            }else{
+                //change to redirct to 500 error page
+                res.status(500).json({duplicate:true});
+            }
         });
-        const person = new Student({
-            _id: Mongoose.Types.ObjectId(),
-            login_id: loginID,
-            fname: req.body.first,
-            lname: req.body.last,
-            courses: []
-        })
-        login.save()
-            .then(result =>{
-                person.save()
-                .then(result =>{
-                    res.status(200).redirect('http://localhost:3000/login');
-                }).catch(err =>
-                    //change to redirct to 500 error page
-                    res.status(500).json({success:false})
-                )
-            }).catch(err =>
-                //Update this to be more informative in future
-                res.status(500).json({success:false})
-            );
     }else{
         res.status(400).json({success:false});
     }
