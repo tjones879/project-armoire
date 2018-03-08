@@ -1,0 +1,25 @@
+.pa-navbar{
+    background-color: maroon;
+    color: gold;
+}
+.pa-navbar a:active{
+    color: gold;
+}
+.pa-navbar a:hover{
+    color: white;
+}
+.pa-navbar a{
+    color: gold;
+}
+.pa-tb-row:hover{
+    background-color: maroon;
+    color: gold;
+}
+.pa-thead-row{
+    background-color: gold;
+    color:maroon;
+    font-size: 130%;
+}
+body{
+    background-color: cornsilk;
+}

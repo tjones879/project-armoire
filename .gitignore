@@ -1,4 +1,4 @@
 # Dependency Directory
 node_modules/
-/client/nbproject/private/
-/backend/nbproject/private/
+client/nbproject/
+backend/nbproject/

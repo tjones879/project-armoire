@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-let mongoose = require('mongoose');
+let Mongoose = require('mongoose');
 let Assignment = require('../db/assignment.js');
 
 /*
@@ -28,7 +28,7 @@ router.get('/', (req, res) => {
  * GET assignment by id.
  */
 router.get('/:id', (req, res) => {
-    let id = mongoose.Types.ObjectId(req.params.id);
+    let id = Mongoose.Types.ObjectId(req.params.id);
     Assignment.findOne({_id: id}, (err, a) => {
         if (err)
             res.send(err);
