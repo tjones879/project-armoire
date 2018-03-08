@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 
-export default class DescriptionBox extends Component {
+export class DescriptionBox extends Component {
   render() {
     return (
-      <div>
-        <h4>{this.props.type}</h4>
-        <p>{this.props.contents}</p>
+      <div className="row">
+        <h4 className="col text-right align-text-top">{this.props.type}</h4>
+        <p className="col text-left align-text-top">{this.props.contents}</p>
       </div>
     );
   }
