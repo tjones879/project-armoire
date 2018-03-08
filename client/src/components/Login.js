@@ -1,9 +1,6 @@
 import React,{Component} from 'react'
 import {Navbar} from './Navbar'
 
-
-//Dalton Neely
-
 var rowClass = "col-lg-4 col-md-4 col-sm-12 col-xs-12";
 var loginAPIPath = "http://localhost:3000/";
 
@@ -38,7 +35,7 @@ class LoginForm extends Component{
                     <form action={loginAPIPath} method='POST' onsubmit={`return ${this.validate}`}>
                         <div className="row">
                             <label className={`${rowClass} text-right`} for="emailInput" >E-mail: </label>
-                            <input name="email" className={`${rowClass} text-center`} type="email" required ref="email"/>
+                            <input name="email" className={`${rowClass} text-center`} type="email" required/>
                         </div>
                         <div className="row">
                             <label name="password" className={`${rowClass} text-right`} for="passwordInput">Password:</label>
