@@ -3,15 +3,19 @@ import ReactDOM from 'react-dom';
 import { Route, BrowserRouter as Router } from 'react-router-dom';
 import './index.css';
 import registerServiceWorker from './registerServiceWorker';
-import Assignment from './components/Assignment.js';
-import Home from './components/Home.js';
+import {AssignmentPage} from './components/Assignment';
+import {HomePage} from './components/Home';
+import {LoginPage} from './components/Login';
+import {RegisterPage} from './components/Register';
 
 const Root = () => {
     return (
       <Router>
         <div>
-          <Route exact path="/" component={Home} />
-          <Route path="/assignment" component={Assignment} />
+          <Route exact path="/" component={HomePage} />
+          <Route path="/assignment" component={AssignmentPage} />
+          <Route path="/login" component={LoginPage} />
+          <Route path="/register" component={RegisterPage} />
         </div>
       </Router>
     );
