@@ -1,0 +1,13 @@
+.pa-navbar{
+    background-color: maroon;
+    color: gold;
+}
+.pa-navbar a:active{
+    color: gold;
+}
+.pa-navbar a:hover{
+    color: white;
+}
+.pa-navbar a{
+    color: gold;
+}

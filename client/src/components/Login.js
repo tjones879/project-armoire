@@ -1,4 +1,5 @@
 import React,{Component} from 'react'
+import {Navbar} from './Navbar'
 
 
 //Dalton Neely
@@ -6,7 +7,18 @@ import React,{Component} from 'react'
 var rowClass = "col-lg-4 col-md-4 col-sm-12 col-xs-12";
 var loginAPIPath = "http://localhost:3000/";
 
-export default class Login extends Component{
+export class LoginPage extends Component{
+    render(){
+        return(
+            <div className="container-fluid">
+                <Navbar />
+                <LoginForm />
+            </div>
+        );
+    }
+}
+
+class LoginForm extends Component{
     constructor(props){
         super(props);
         this.state = {
@@ -33,7 +45,9 @@ export default class Login extends Component{
                             <input className={`${rowClass} text-center`} ref="password" required id="passwordInput" type="password" />
                         </div>
                         <div className="row text-center">
-                            <input type="submit" className="btn btn-success btn-sm" value="Login"/>
+                            <div className="col-3 mx-auto">
+                                <input type="submit" className="btn btn-success btn-sm" value="Login"/>
+                            </div>
                         </div>
                     </form>
             </div>

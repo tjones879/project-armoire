@@ -3,12 +3,23 @@ import {Navbar} from './Navbar'
 
 var registerAPI = "localhost:3000/";
 
-var row = "col-lg-4 col-md-4";
+var row = "col";
 
 // First and Last name should be a max of 35 characters, suggested by the UK government data standards catalogue
 var reg = new RegExp('^[a-zA-Z\'\\- ]{2,35}$');
 
-export default class Register extends Component{
+export class RegisterPage extends Component{
+    render(){
+        return(
+            <div className="container-fluid">
+                <Navbar />
+                <RegisterForm />
+            </div>
+        );
+    }
+}
+
+class RegisterForm extends Component{
     constructor(props){
         super(props);
         this.state = {
@@ -112,8 +123,8 @@ export default class Register extends Component{
     }
     render(){
         return(
-            <form action={registerAPI} method="POST" className="container-fluid" onsubmit={`return ${this.validate}`}>
-                <h1 className="row text-center">Registration</h1>
+            <form action={registerAPI} method="POST" onsubmit={`return ${this.validate}`}>
+                <h1 className="text-center">Registration</h1>
                 <div className="row">
                     <label className={`${row} text-right`} for="first">First</label>
                     <input className={`${row} text-center`} type="text" id="first" placeholder="Jane" onChange={this.checkFirst} required/>
@@ -127,7 +138,7 @@ export default class Register extends Component{
                 <div className="row">
                     <label className={`${row} text-right`} for="email">Email</label>
                     <input className={`${row} text-center`} type="email" id="email" placeholder="jane.doe@somesite.com" required/>
-                    {/* add feedback */}
+                    <span className={`${row} text-left`}></span>
                 </div>
                 <div className="row">
                     <label className={`${row} text-right`} for="password">Password</label>
@@ -140,7 +151,9 @@ export default class Register extends Component{
                     <span className={`${row} text-left`} style={this.state.confirmStyle}>{this.state.confirmFeed}</span>
                 </div>
                 <div className="row text-center">
-                    <input className="btn btn-success" type="submit" value="Register" disabled={this.state.lock}/>
+                    <div className="col-4 mx-auto">
+                        <input className="btn btn-success" type="submit" value="Register" disabled={this.state.lock}/>
+                    </div>
                 </div>
             </form>
         );
