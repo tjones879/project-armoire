@@ -1,5 +1,8 @@
+var Mongoose = require('mongoose');
+
 var express = require('express');
 var router = express.Router();
+var Assignment = require('../db/assignment.js');
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
@@ -21,6 +24,20 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/', function(req, res, next) {
+    var assignment = new Assignment({
+        _id: Mongoose.Types.ObjectId(),
+        course: req.body.form.course,
+        openDate: req.body.form.openDate,
+        closeDate: req.body.form.closeDate,
+        description: req.body.form.description,
+        requirements: req.body.form.requirements,
+        examples: req.body.form.examples
+    })
+    assignment.save().then((result)=>{
+        console.log(JSON.stringify(result));
+    }).catch((err)=>{
+        console.log(err);
+    })
     const text = req.body.form;
 
     res.type('json');

@@ -13,3 +13,5 @@ db.once('open', () => {
 });
 
 db.on('error', console.error.bind(console, 'database failed to connect'));
+
+module.exports = db;
