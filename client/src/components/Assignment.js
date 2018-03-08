@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
-import DescriptionBox from './DescriptionBox.js';
+import {Navbar} from './Navbar'
+import {DescriptionBox} from './DescriptionBox';
 
 class ExampleIORow extends Component {
     render() {
         return (
-         <li>{this.props.input}
-           <ul>
-             <li>{this.props.output}</li>
-           </ul>
+         <li className="row">
+            <div className="col text-center">{this.props.input}</div>
+            <div className="col text-center">=== Yields ==></div>
+            <div className="col text-center">{this.props.output}</div>
          </li>
         );
     }
@@ -15,14 +16,10 @@ class ExampleIORow extends Component {
 
 class ExampleIO extends Component {
   render() {
-    const rows = [];
-      this.props.examples.forEach((example) => {
-        rows.push(<ExampleIORow input={example.input} output={example.output} />);
-      });
     return (
       <div>
         <ul>
-          {rows}
+          {this.props.examples.map((example) => <ExampleIORow input={example.input} output={example.output} />)}
         </ul>
       </div>
     );
@@ -36,7 +33,7 @@ class TestResultRow extends Component {
       "FAIL";
 
     return (
-      <tr>
+      <tr className="pa-tb-row">
         <td>{state}</td>
         <td>{this.props.label}</td>
       </tr>
@@ -46,16 +43,19 @@ class TestResultRow extends Component {
 
 class TestResults extends Component {
   render() {
-    const rows = [];
-    this.props.tests.forEach((test) => {
-      rows.push(
-        <TestResultRow state={test.success} label={test.label} key={test.label} />
-      );
-    });
-
     return (
-      <table>
-        <tbody>{rows}</tbody>
+      <table className="mx-auto table text-center">
+        <thead>
+          <tr className="pa-thead-row">
+            <th scope="col">State</th>
+            <th scope="col">Condition (test)</th>
+          </tr>
+        </thead>
+        <tbody>
+          {this.props.tests.map((test)=>
+            <TestResultRow state={test.success} label={test.label} key={test.label}/>
+          )}
+        </tbody>
       </table>
     );
   }
@@ -96,8 +96,9 @@ class SubmissionForm extends Component {
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit}>
-        <textarea value={this.state.value} onChange={this.handleChange} rows="25" cols="85"/>
+      <form onSubmit={this.handleSubmit} className="text-center">
+        <textarea  value={this.state.value} onChange={this.handleChange} rows="25" cols="85"/>
+        <br/>
         <input type="submit" value="Submit" />
       </form>
     );
@@ -109,9 +110,8 @@ class Submission extends Component {
     return (
       <div>
         <SubmissionForm />
-        <div>
-          <TestResults tests={this.props.tests}/>
-        </div>
+        <hr />
+        <TestResults tests={this.props.tests}/>
       </div>
     );
   }
@@ -136,7 +136,7 @@ class Assignment extends Component {
       <div>
         {this.state.page.map(data =>
           <div>
-            <h2>{data.name}</h2>
+            <h2 className="text-center">{data.name}</h2>
             <hr />
             <DescriptionBox type="Description" contents={data.description} />
             <DescriptionBox type="Requirements" contents={data.requirements} />
@@ -150,4 +150,14 @@ class Assignment extends Component {
   }
 }
 
-export default Assignment;
+export class AssignmentPage extends Component{
+  render(){
+    return(
+      <div className="container-fluid">
+        <Navbar />
+        <Assignment />
+      </div>
+    );
+  }
+}
+
