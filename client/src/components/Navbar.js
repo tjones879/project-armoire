@@ -10,6 +10,10 @@ export class Navbar extends Component{
         {
             title:"Register",
             link:"http://localhost:3000/register"
+        },
+        {
+            title:"Assignments",
+            link:"http://localhost:3000/assignment"
         }]
     }
     render(){

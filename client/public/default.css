@@ -11,3 +11,15 @@
 .pa-navbar a{
     color: gold;
 }
+.pa-tb-row:hover{
+    background-color: maroon;
+    color: gold;
+}
+.pa-thead-row{
+    background-color: gold;
+    color:maroon;
+    font-size: 130%;
+}
+body{
+    background-color: cornsilk;
+}
