@@ -18,6 +18,7 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/registration', function(req, res, next){
+    console.log(req.body);
     const login = new Authentication({
         _id: Mongoose.Types.ObjectId(),
         email: req.body.email,

@@ -12,6 +12,7 @@ var authentication = require('./routes/authentication');
 var app = express();
 
 app.use(bodyParser.json()); // for parsing application/json
+app.use(bodyParser.urlencoded({extended:true}));
 
 app.use('/', index);
 app.use('/assignment', assignment);

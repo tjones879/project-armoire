@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {Navbar} from './Navbar'
 
-var registerAPI = "localhost:3000/";
+var registerAPI = "http://localhost:3000/authentication/registration";
 
 var row = "col";
 
@@ -53,6 +53,7 @@ class RegisterForm extends Component{
         //Validate the form before it is sent by the HTML form using POST
         //Remember to return a value of true or false from this event handler
         //true alows the form to send, false prevents the form from submiting
+        return true;
     }
     checkConfirm(e){
         this.setState({confirmValue:e.target.value});
@@ -123,31 +124,31 @@ class RegisterForm extends Component{
     }
     render(){
         return(
-            <form action={registerAPI} method="POST" onsubmit={`return ${this.validate}`}>
+            <form action={registerAPI} method="POST" onsubmit={`return ${this.validate}`} >
                 <h1 className="text-center">Registration</h1>
                 <div className="row">
-                    <label className={`${row} text-right`} for="first">First</label>
-                    <input className={`${row} text-center`} type="text" id="first" placeholder="Jane" onChange={this.checkFirst} required/>
+                    <label className={`${row} text-right`} for="1">First</label>
+                    <input className={`${row} text-center`} name="first" type="text" id="1" placeholder="Jane" onChange={this.checkFirst} required/>
                     <span className={`${row} text-left`} style={this.state.firstStyle}>{this.state.firstFeed}</span>
                 </div>
                 <div className="row">
-                    <label className={`${row} text-right`} for="last" >Last</label>
-                    <input className={`${row} text-center`} type="text" id="last" placeholder="Doe" onChange={this.checkLast} required/>
+                    <label className={`${row} text-right`} for="2" >Last</label>
+                    <input className={`${row} text-center`} name="last" type="text" id="2" placeholder="Doe" onChange={this.checkLast} required/>
                     <span className={`${row} text-left`} style={this.state.lastStyle}>{this.state.lastFeed}</span>
                 </div>
                 <div className="row">
-                    <label className={`${row} text-right`} for="email">Email</label>
-                    <input className={`${row} text-center`} type="email" id="email" placeholder="jane.doe@somesite.com" required/>
+                    <label className={`${row} text-right`} for="3">Email</label>
+                    <input className={`${row} text-center`} name="email" type="email" id="3" placeholder="jane.doe@somesite.com" required/>
                     <span className={`${row} text-left`}></span>
                 </div>
                 <div className="row">
-                    <label className={`${row} text-right`} for="password">Password</label>
-                    <input type="password" id="password" value={this.state.passValue} className={`${row} text-center`} onChange={this.checkPass} required/>
+                    <label className={`${row} text-right`} for="4">Password</label>
+                    <input type="password" id="4" name="password" value={this.state.passValue} className={`${row} text-center`} onChange={this.checkPass} required/>
                     <span className={`${row} text-left`} style={this.state.passStyle}>{this.state.passFeed}</span>
                 </div>
                 <div className="row">
-                    <label className={`${row} text-right`} for="confirm">Re-Enter Password</label>
-                    <input className={`${row} text-center`} value={this.confirmValue} id="confirm" type="password" onChange={this.checkConfirm} required/>
+                    <label className={`${row} text-right`} for="5">Re-Enter Password</label>
+                    <input className={`${row} text-center`} name="confirm" value={this.confirmValue} id="5" type="password" onChange={this.checkConfirm} required/>
                     <span className={`${row} text-left`} style={this.state.confirmStyle}>{this.state.confirmFeed}</span>
                 </div>
                 <div className="row text-center">
