@@ -1,8 +1,9 @@
 var express = require('express');
 var router = express.Router();
+let Assignment = require('../db/assignment.js');
 
-/* GET users listing. */
-router.get('/', function(req, res, next) {
+/* GET assignment listing. */
+router.get('/', (req, res) => {
     res.json({
         name: "Project 1",
         openDate: new Date(2018,1,1),
@@ -20,12 +21,14 @@ router.get('/', function(req, res, next) {
     });
 });
 
-router.post('/', function(req, res, next) {
-    const text = req.body.form;
-
-    res.type('json');
-    res.json({
-        data: text
+router.post('/', (req, res) => {
+    let newAssignment = new Assignment(req.body);
+    newAssignment.save((err, a) => {
+        if (err) {
+            res.send(err);
+        } else {
+            res.json(a);
+        }
     });
 });
 

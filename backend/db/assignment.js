@@ -1,7 +1,6 @@
 var mongoose = require('mongoose');
 
 var AssignmentSchema = new mongoose.Schema({
-    _id: mongoose.Schema.Types.ObjectId,
     course: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Course',
