@@ -121,26 +121,26 @@ class Assignment extends Component {
   constructor() {
     super();
     this.state = {
-        page: [],
+        assignment: [],
     };
   }
 
   componentDidMount() {
-    fetch('/assignment')
+    fetch('/assignment/')
       .then(res => res.json())
-      .then(data => this.setState({page: [data]}));
+      .then(data => this.setState({page: data}));
   }
 
   render() {
     return (
       <div>
-        {this.state.page.map(data =>
+        {this.state.assignment.map(data =>
           <div>
             <h2 className="text-center">{data.name}</h2>
             <hr />
             <DescriptionBox type="Description" contents={data.description} />
             <DescriptionBox type="Requirements" contents={data.requirements} />
-            <ExampleIO examples={data.io} />
+            <ExampleIO examples={data.examples} />
             <hr />
             <Submission tests={data.tests} />
           </div>
