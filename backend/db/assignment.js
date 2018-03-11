@@ -11,7 +11,12 @@ var AssignmentSchema = new mongoose.Schema({
     close_date: Date,
     description: String,
     requirements: String,
-    examples: [String]
+    examples: [
+        {input: String, output: String}
+    ],
+    tests: [
+        {id: Number, action: String, expected: String}
+    ]
 });
 
 module.exports = mongoose.model('Assignment', AssignmentSchema);

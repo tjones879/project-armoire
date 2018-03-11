@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Navbar} from './Navbar'
+import {Navbar} from './Navbar';
 import {DescriptionBox} from './DescriptionBox';
 
 class ExampleIORow extends Component {
@@ -28,14 +28,15 @@ class ExampleIO extends Component {
 
 class TestResultRow extends Component {
   render() {
-    const state = this.props.state ?
-      "PASS" :
-      "FAIL";
+    const state = this.props.result === this.props.expected ?
+      'PASS' : 'FAIL';
 
     return (
       <tr className="pa-tb-row">
+        <td>{this.props.action}</td>
+        <td>{this.props.expected}</td>
+        <td>{this.props.result}</td>
         <td>{state}</td>
-        <td>{this.props.label}</td>
       </tr>
     );
   }
@@ -43,17 +44,28 @@ class TestResultRow extends Component {
 
 class TestResults extends Component {
   render() {
+    let tests = this.props.tests.map(test => {
+        test.result = null;
+        return test;
+    });
+    tests.sort();
+    if (this.props.results)
+      this.props.results.forEach(result => tests[result.id].result = result.output);
+
+
     return (
       <table className="mx-auto table text-center">
         <thead>
           <tr className="pa-thead-row">
+            <th scope="col">Action (test)</th>
+            <th scope="col">Expected result</th>
+            <th scope="col">Actual result</th>
             <th scope="col">State</th>
-            <th scope="col">Condition (test)</th>
           </tr>
         </thead>
         <tbody>
-          {this.props.tests.map((test)=>
-            <TestResultRow state={test.success} label={test.label} key={test.label}/>
+          {tests.map(test =>
+            <TestResultRow key={test.id} action={test.action} expected={test.expected} result={test.result} />
           )}
         </tbody>
       </table>
@@ -64,8 +76,13 @@ class TestResults extends Component {
 class SubmissionForm extends Component {
   constructor(props) {
     super(props);
+
+    let contents = 'Please enter your text here.';
+    if (this.props.contents)
+      contents = this.prop.contents;
+
     this.state = {
-      value: "Please enter your text here."
+      value: contents
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -77,7 +94,6 @@ class SubmissionForm extends Component {
   }
 
   handleSubmit(event) {
-    console.log(JSON.stringify(this.state.value));
     const data = JSON.stringify({
         form: this.state.value
     });
@@ -88,8 +104,7 @@ class SubmissionForm extends Component {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         }
-    }).then(response => response.json())
-      .then(data => console.log(data));
+    });
     alert('A submission was entered: ' + this.state.value);
     event.preventDefault();
   }
@@ -106,14 +121,20 @@ class SubmissionForm extends Component {
 }
 
 class Submission extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+        prevSub: {}
+    };
+  }
+
   render() {
-    return (
-      <div>
-        <SubmissionForm />
-        <hr />
-        <TestResults tests={this.props.tests}/>
-      </div>
-    );
+      return (
+        <div>
+          <SubmissionForm contents={this.state.prevSub.contents} />
+          <TestResults tests={this.props.tests} results={this.state.prevSub.tests} />
+        </div>
+      );
   }
 }
 
@@ -128,7 +149,7 @@ class Assignment extends Component {
   componentDidMount() {
     fetch('/assignment/')
       .then(res => res.json())
-      .then(data => this.setState({page: data}));
+      .then(data => this.setState({assignment: data}));
   }
 
   render() {
@@ -160,4 +181,3 @@ export class AssignmentPage extends Component{
     );
   }
 }
-
