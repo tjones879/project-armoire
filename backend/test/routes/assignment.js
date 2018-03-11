@@ -12,12 +12,12 @@ describe('Assignments', () => {
     });
 
     describe('/GET Assignment', () => {
-        it('should return one assignment', () => {
+        it('should return all assignments', () => {
             return chai.request(server)
                 .get('/assignment')
                 .then((res) => {
                     expect(res.status).to.equal(200);
-                    expect(res.body).to.be.a('object');
+                    expect(res.body).to.be.a('array');
                 });
         });
     });
