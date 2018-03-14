@@ -1,5 +1,3 @@
-var Mongoose = require('mongoose');
-
 var express = require('express');
 var router = express.Router();
 let Mongoose = require('mongoose');
