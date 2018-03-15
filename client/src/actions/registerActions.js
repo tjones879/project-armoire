@@ -32,3 +32,13 @@ export function checkPasses(){
         type: "CHECK_PASSES"
     })
 }
+export function checkFields(){
+    dispatcher.dispatch({
+        type: "CHECK_FIELDS"
+    })
+}
+export function lockDown(){
+    dispatcher.dispatch({
+        type: "LOCKDOWN"
+    })
+}

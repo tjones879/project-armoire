@@ -8,8 +8,9 @@ var express = require('express');
 var router = express.Router();
 var Authentication = require('../db/authentication.js');
 var Student = require('../db/student.js');
+var Professor = require('../db/professor.js');
 var crypt = require("crypto");
-const hash = crypt.createHash('sha256');
+
 
 /* GET professors listing. */
 router.get('/', function(req, res, next) {
@@ -31,10 +32,12 @@ router.post('/registration', function(req, res, next){
                 return;
             }
             if(!docs.length){
-                var salt = crypt.randomBytes(12).toString('hex');
-                var saltedPass = `${salt}${req.body.password}`;
-                var hashedPass = hash.update(saltedPass).digest('hex');
-                var loginID = Mongoose.Types.ObjectId();
+                /* this has mush be initialized every call to post */
+                const hash = crypt.createHash('sha256');
+                let salt = crypt.randomBytes(12).toString('hex');
+                let saltedPass = `${salt}${req.body.password}`;
+                let hashedPass = hash.update(saltedPass).digest('hex');
+                let loginID = Mongoose.Types.ObjectId();
                 const login = new Authentication({
                     _id: loginID,
                     email: req.body.email,
@@ -48,26 +51,42 @@ router.post('/registration', function(req, res, next){
                     lname: req.body.last,
                     courses: []
                 });
+                const profess = new Professor({
+                    _id: Mongoose.Types.ObjectId(),
+                    login_id: loginID,
+                    fname: req.body.first,
+                    lname: req.body.last,
+                    courses: []
+                });
                 login.save()
                     .then(result =>{
-                        person.save()
-                        .then(result =>{
-                            res.status(200).redirect('http://localhost:3000/login');
-                        }).catch(err =>
-                            //change to redirct to 500 error page
-                            res.status(500).json({success:"person save error"})
-                        )
-                    }).catch(err =>
-                        //Update this to be more informative in future
-                        res.status(500).json({success:"login save error"})
-                    );
+                        if(req.body.classification === "student"){
+                            person.save()
+                            .then(result =>{
+                                res.status(200).json({success:true,email:req.body.email,classification:req.body.classification});
+                            }).catch(err => {
+                                res.status(200).json({success:false, errType: "general"});
+                                console.log(err);
+                            });
+                        }else{
+                            profess.save()
+                            .then(result => {
+                                res.status(200).json({success:true,email:req.body.email, classification:req.body.classification});
+                            }).catch(err =>{
+                                res.status(200).json({success:false, errType: "general"});
+                                console.log(err);
+                            });
+                        }
+                    }).catch(err => {
+                        res.status(200).json({success:false, errType: "general"});
+                        console.log(err);
+                    });
             }else{
-                //change to redirct to 500 error page
-                res.status(500).json({duplicate:true});
+                res.status(200).json({success:false,errType:"duplicate",email:req.body.email})
             }
         });
     }else{
-        res.status(400).json({success:false});
+        res.status(200).json({success:false, errType: "not filled out"});
     }
 });
 
