@@ -1,5 +1,7 @@
 import React, {Component} from 'react'
 import {Navbar} from './Navbar'
+import registerStore from '../stores/registerStore';
+import * as registerActions from '../actions/registerActions';
 
 var registerAPI = "http://localhost:3000/authentication/registration";
 
@@ -23,31 +25,18 @@ class RegisterForm extends Component{
     constructor(props){
         super(props);
         this.state = {
-            lock:"true",
-            firstFeed:"",
-            firstStyle:{
-                color:"green"
-            },
-            lastFeed:"",
-            lastStyle:{
-                color:"green"
-            },
-            passFeed:"",
-            passValue:"",
-            passStyle:{
-                color:"green"
-            },
-            confirmFeed:"",
-            confirmValue:"",
-            confirmStyle:{
-                color:"green"
-            }
-        }
+            store: registerStore.getAll()
+        };
         this.validate = this.validate.bind(this);
         this.checkFirst = this.checkFirst.bind(this);
         this.checkLast = this.checkLast.bind(this);
         this.checkPass = this.checkPass.bind(this);
         this.checkConfirm = this.checkConfirm.bind(this);
+    }
+    componentWillMount(){
+        registerStore.on("change", () => {
+            this.setState(registerStore.getAll());
+        });
     }
     validate(){
         //Validate the form before it is sent by the HTML form using POST
@@ -56,30 +45,29 @@ class RegisterForm extends Component{
         return true;
     }
     checkConfirm(e){
-        this.setState({confirmValue:e.target.value});
-        if(this.state.passValue === e.target.value){
-            this.setState({confirmStyle:{color:"green"}});
-            this.setState({confirmFeed:"They Match!"});
-            this.setState({lock:false});
-        }else{
-            this.setState({confirmFeed:"Passwords do not match", confirmStyle:{color:"red"}});
-            this.setState({lock:true});
-        }
+        registerActions.updateValue("confirm", e.target.value);
+        registerActions.checkPasses();
     }
     checkPass(e){
-        var regex = new RegExp("^[a-zA-Z0-9@\\\\#$%&*()_+\\]\\[';:?.,!^-]{8,30}$");
-        this.setState({passValue:e.target.value});
+        let regex = new RegExp("^[a-zA-Z0-9@\\\\#$%&*()_+\\]\\[';:?.,!^-]{8,30}$");
+        let feedback = "";
+        let style = {};
+        registerActions.updateValue("password", e.target.value);
         if(regex.test(e.target.value)){
-            this.setState({passStyle:{color:"green"}});
-            this.setState({passFeed:e.target.value.length});
-            this.setState({lock:false});
+            style = {color:"green"};
+            feedback = e.target.value.length;
+            registerActions.setLock(false);
         }else{
-            this.setState({passStyle:{color:"red"}});
-            this.setState({passFeed:"Password must be 8 to 30 characters long"});
-            this.setState({lock:true});
+            style = {color:"red"};
+            feedback = "Password must be 8 to 30 characters long";
+            registerActions.setLock(true);
         }
+        registerActions.updateFeedback("password", feedback);
+        registerActions.updateStyle("password", style);
+        registerActions.checkPasses();
     }
     checkName(name, fol){
+        /* fol stands for "first or last" */
         if(name.length < 2){
             return `${fol} name must be at least 2 characters. `;
         }
@@ -97,30 +85,30 @@ class RegisterForm extends Component{
         /*
         JSX automatically escapes sequences to prevent injection attacks
         */
-        var feedback = this.checkName(e.target.value, "First");
-        var feedColor;
+        let feedback = this.checkName(e.target.value, "First");
+        let style = {};
         if(feedback === e.target.value){
-            feedColor = "green";
-            this.setState({lock:false});
+            style = {color:"green"};
+            registerActions.setLock(false);
         }else{
-            feedColor = "red";
-            this.setState({lock:true});
+            style = {color:"red"};
+            registerActions.setLock(true);
         }
-        this.setState({firstFeed:feedback});
-        this.setState({firstStyle:{color:feedColor}});
+        registerActions.updateFeedback("first", feedback);
+        registerActions.updateStyle("first", style);
     }
     checkLast(e){
-        var feedback = this.checkName(e.target.value, "Last");
-        var feedColor;
+        let feedback = this.checkName(e.target.value, "Last");
+        let style = {};
         if(feedback === e.target.value){
-            feedColor = "green";
-            this.setState({lock:false});
+            style = {color: "green"};
+            registerActions.setLock(false);
         }else{
-            feedColor = "red";
-            this.setState({lock:true});
+            style = {color: "red"};
+            registerActions.setLock(true);
         }
-        this.setState({lastFeed:feedback});
-        this.setState({lastStyle:{color:feedColor}});
+        registerActions.updateFeedback("last", feedback);
+        registerActions.updateStyle("last", style);
     }
     render(){
         return(
@@ -129,12 +117,12 @@ class RegisterForm extends Component{
                 <div className="row">
                     <label className={`${row} text-right`} for="1">First</label>
                     <input className={`${row} text-center`} name="first" type="text" id="1" placeholder="Jane" onChange={this.checkFirst} required/>
-                    <span className={`${row} text-left`} style={this.state.firstStyle}>{this.state.firstFeed}</span>
+                    <span className={`${row} text-left`} style={this.state.store.firstStyle}>{this.state.store.firstFeed}</span>
                 </div>
                 <div className="row">
                     <label className={`${row} text-right`} for="2" >Last</label>
                     <input className={`${row} text-center`} name="last" type="text" id="2" placeholder="Doe" onChange={this.checkLast} required/>
-                    <span className={`${row} text-left`} style={this.state.lastStyle}>{this.state.lastFeed}</span>
+                    <span className={`${row} text-left`} style={this.state.store.lastStyle}>{this.state.store.lastFeed}</span>
                 </div>
                 <div className="row">
                     <label className={`${row} text-right`} for="3">Email</label>
@@ -143,8 +131,8 @@ class RegisterForm extends Component{
                 </div>
                 <div className="row">
                     <label className={`${row} text-right`} for="4">Password</label>
-                    <input type="password" id="4" name="password" value={this.state.passValue} className={`${row} text-center`} onChange={this.checkPass} required/>
-                    <span className={`${row} text-left`} style={this.state.passStyle}>{this.state.passFeed}</span>
+                    <input type="password" id="4" name="password" value={this.state.store.passValue} className={`${row} text-center`} onChange={this.checkPass} required/>
+                    <span className={`${row} text-left`} style={this.state.store.passStyle}>{this.state.passFeed}</span>
                 </div>
                 <div className="row">
                     <label className={`${row} text-right`} for="5">Re-Enter Password</label>
