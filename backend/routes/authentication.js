@@ -10,6 +10,9 @@ var Authentication = require('../db/authentication.js');
 var Student = require('../db/student.js');
 var Professor = require('../db/professor.js');
 var crypt = require("crypto");
+const jwt = require('jsonwebtoken');
+
+
 
 
 /* GET professors listing. */
@@ -19,6 +22,44 @@ router.get('/', function(req, res, next) {
         email: "example@cmu.edu",
         hash: "HASH EXAMPLE"
     });
+});
+
+router.post('/login', function(req, res, next){
+    if(req.body.email != "" && req.body.password != ""){
+        let emailV = req.body.email.toLowerCase();
+        let passwordV = req.body.password;
+        let salt = "";
+        Authentication.findOne({email: emailV}, (err, obj) => {
+            if(obj != null){
+                salt = obj.salt;
+                passwordV = `${salt}${passwordV}`;
+                const hash = crypt.createHash('sha256');
+                passwordV = hash.update(passwordV).digest('hex');
+                Authentication.findOne({email: emailV, hash: passwordV}, (err, obj) => {
+                    if(obj != null){
+                        const user = {
+                            id:obj._id,
+                            email:obj.email,
+                        };
+                        jwt.sign({user}, 'grapeJuic3', {expiresIn: '15m'}, (err,token) => {
+                            res.json({
+                                success: true,
+                                token
+                            });
+                            console.log(token);
+                        });
+                        console.log("logged in");
+                    }else{
+                        console.log("not logged in");
+                    }
+                });
+            }else{
+                //not found
+            }
+        });
+    }else{
+        res.json({success:false, text:"Fields are empty"});
+    }
 });
 
 router.post('/registration', function(req, res, next){

@@ -38,7 +38,7 @@ class RegisterForm extends Component{
     }
     componentWillMount(){
         registerStore.on("change", () => {
-            this.setState(registerStore.getAll());
+            this.setState({store: registerStore.getAll()});
         });
     }
     validate(){
