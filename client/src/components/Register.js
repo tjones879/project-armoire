@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import {Navbar} from './Navbar'
 import registerStore from '../stores/registerStore';
 import * as registerActions from '../actions/registerActions';
+import AuthService from './AuthService';
 
 var registerAPI = "http://localhost:3000/authentication/registration";
 
@@ -35,8 +36,13 @@ class RegisterForm extends Component{
         this.emailchange = this.emailchange.bind(this);
         this.studentEvent = this.studentEvent.bind(this);
         this.professorEvent = this.professorEvent.bind(this);
+
+        this.Auth = new AuthService();
     }
     componentWillMount(){
+        if(this.Auth.loggedIn()){
+            window.location = "http://localhost:3000/login";
+        }
         registerStore.on("change", () => {
             this.setState({store: registerStore.getAll()});
         });
