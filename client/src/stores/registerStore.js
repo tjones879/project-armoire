@@ -167,7 +167,7 @@ class RegisterStore extends EventEmitter{
             emailReg.test(this.data.emailValue) &&
             passReg.test(this.data.passValue) &&
             this.data.passValue === this.data.confirmValue &&
-            this.data.classificationValue != ""
+            this.data.classificationValue !== ""
         ){
             this.data.lock = false;
         }else{

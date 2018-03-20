@@ -7,12 +7,30 @@ class LoginStore extends EventEmitter{
         this.data = {
             feedback: "",
             email: "",
-            password: ""
+            password: "",
+            emailLock: false,
+            passwordLock: false,
+            buttonLock: false,
+            logoutStyle: {
+                "display":"none"
+            }
         }
+
+        this.login = this.login.bind(this);
+        this.lockdown = this.lockdown.bind(this);
+        this.logout = this.logout.bind(this);
+        this.loggedIn = this.loggedIn.bind(this);
     }
+
+    lockdown(){
+        this.data.emailLock = true;
+        this.data.passwordLock = true;
+        this.data.buttonLock = true;
+    }
+
     updateFeedback(mem, value){
         switch(mem){
-            case "user":{
+            case "feedback":{
                 this.data.feedback = value;
                 break;
             }
@@ -22,6 +40,7 @@ class LoginStore extends EventEmitter{
         }
         this.emit("change");
     }
+
     updateValue(mem, value){
         switch(mem){
             case "email":{
@@ -38,6 +57,22 @@ class LoginStore extends EventEmitter{
         }
         this.emit("change");
     }
+
+    logout(){
+        this.data.feedback = "";
+        this.data.emailLock = false;
+        this.data.passwordLock = false;
+        this.data.buttonLock = false;
+        this.data.logoutStyle = {"display":"none"};
+        this.emit("change");
+    }
+
+    loggedIn(){
+        this.lockdown();
+        this.data.logoutStyle = {"display":"inline-block"};
+        this.emit("change");
+    }
+
     login(){
         fetch('http://localhost:3000/authentication/login',{
             method: 'POST',
@@ -48,20 +83,28 @@ class LoginStore extends EventEmitter{
             headers:{
                 'content-type':'application/json'
             }
-        }).then(function(a){
-            return a.json();
-        }).then(function(json){
-            if(json.success){
-                localStorage.setItem('token', json.token);
-                document.cookie = `email=${json.email}`;
-                document.cookie = `id=${json.id}`;
+        }).then(payload => {
+            return payload.json();
+        }).then(obj => {
+            if(obj.success){
+                localStorage.setItem('token', obj.token);
+                this.data.feedback = "Successful Login!";
+                this.lockdown();
             }else{
+                if(obj.error === 1){
+                    this.data.feedback = "Fields are empty!"
+                }else{
+                    this.data.feedback = "Username or password is incorrect";
+                }
             }
+
+            this.emit("change");
         }).catch(err => {
-            //error
+            this.data.feedback = "An error has occurred";
+            this.emit("change");
         });
-        this.emit("change");
     }
+
     handleActions(action){
         switch(action.type){
             case "UPDATE_FEEDBACK":{
@@ -76,11 +119,24 @@ class LoginStore extends EventEmitter{
                 this.login();
                 break;
             }
+            case "LOCKDOWN":{
+                this.lockdown();
+                break;
+            }
+            case "LOGOUT":{
+                this.logout();
+                break;
+            }
+            case "LOGGEDIN":{
+                this.loggedIn();
+                break;
+            }
             default:{
                 break;
             }
         }
     }
+
     getAll(){
         return this.data;
     }

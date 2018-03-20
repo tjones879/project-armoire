@@ -26,7 +26,7 @@ export class Navbar extends Component{
                 <div className="collapse navbar-collapse" id="navbarNav">
                     <ul className="navbar-nav">
                         {this.links.map((obj)=>
-                            <NavUnit linkProp={obj.link} titleProp={obj.title}/>
+                            <NavUnit linkProp={obj.link} titleProp={obj.title} key={obj.title}/>
                         )}
                     </ul>
                 </div>

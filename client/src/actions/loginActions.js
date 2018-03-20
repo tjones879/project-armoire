@@ -7,6 +7,7 @@ export function updateFeedback(mem, value){
         text: value
     })
 }
+
 export function updateValue(mem, value){
     dispatcher.dispatch({
         type:"UPDATE_VALUE",
@@ -14,8 +15,27 @@ export function updateValue(mem, value){
         text: value
     })
 }
+
 export function login(){
     dispatcher.dispatch({
         type:"LOGIN"
+    })
+}
+
+export function lockdown(){
+    dispatcher.dispatch({
+        type:"LOCKDOWN"
+    })
+}
+
+export function logout(){
+    dispatcher.dispatch({
+        type:"LOGOUT"
+    })
+}
+
+export function loggedIn(){
+    dispatcher.dispatch({
+        type:"LOGGEDIN"
     })
 }

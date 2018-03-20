@@ -193,27 +193,27 @@ class RegisterForm extends Component{
             <form>
                 <h1 className="text-center">Registration</h1>
                 <div className="row">
-                    <label className={`${row} text-right`} for="1">First</label>
+                    <label className={`${row} text-right`} htmlFor="1">First</label>
                     <input className={`${row} text-center`} name="first" type="text" id="1" placeholder="Jane" onChange={this.checkFirst} disabled={this.state.store.firstLock} required/>
                     <span className={`${row} text-left`} style={this.state.store.firstStyle}>{this.state.store.firstFeed}</span>
                 </div>
                 <div className="row">
-                    <label className={`${row} text-right`} for="2" >Last</label>
+                    <label className={`${row} text-right`} htmlFor="2" >Last</label>
                     <input className={`${row} text-center`} name="last" type="text" id="2" placeholder="Doe" onChange={this.checkLast} disabled={this.state.store.lastLock} required/>
                     <span className={`${row} text-left`} style={this.state.store.lastStyle}>{this.state.store.lastFeed}</span>
                 </div>
                 <div className="row">
-                    <label className={`${row} text-right`} for="3">Email</label>
+                    <label className={`${row} text-right`} htmlFor="3">Email</label>
                     <input onChange={this.emailchange} className={`${row} text-center`} name="email" type="email" id="3" placeholder="jane.doe@somesite.com" disabled={this.state.store.emailLock} required/>
                     <span className={`${row} text-left`}>{this.state.store.emailFeed}</span>
                 </div>
                 <div className="row">
-                    <label className={`${row} text-right`} for="4">Password</label>
+                    <label className={`${row} text-right`} htmlFor="4">Password</label>
                     <input type="password" id="4" name="password" value={this.state.store.passValue} className={`${row} text-center`} onChange={this.checkPass} disabled={this.state.store.passLock} required/>
                     <span className={`${row} text-left`} style={this.state.store.passStyle}>{this.state.store.passFeed}</span>
                 </div>
                 <div className="row">
-                    <label className={`${row} text-right`} for="5">Re-Enter Password</label>
+                    <label className={`${row} text-right`} htmlFor="5">Re-Enter Password</label>
                     <input className={`${row} text-center`} name="confirm" value={this.state.store.confirmValue} id="5" type="password" onChange={this.checkConfirm} disabled={this.state.store.confirmLock} required/>
                     <span className={`${row} text-left`} style={this.state.store.confirmStyle}>{this.state.store.confirmFeed}</span>
                 </div>
