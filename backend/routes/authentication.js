@@ -99,9 +99,10 @@ router.post('/login', function(req, res, next){
 });
 
 router.post('/registration', function(req, res, next){
-    if(typeof req.body.first != "undefined" && req.body.last != "undefined"
-    && req.body.email != "undefined" && req.body.password != "undefined"
-    && req.body.confirm != "undefined" && req.body.password == req.body.confirm){
+    if(typeof req.body.first !== "undefined" && typeof req.body.last !== "undefined"
+    && typeof req.body.email !== "undefined" && typeof req.body.password !== "undefined"
+    && typeof req.body.confirm !== "undefined" && req.body.password === req.body.confirm 
+    && typeof req.body.classification !== "undefined"){
         /* Check if email is already in the database first */
         Authentication.find({email: req.body.email}, (err,docs) => {
             if(err){

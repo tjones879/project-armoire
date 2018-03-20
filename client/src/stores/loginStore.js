@@ -83,9 +83,9 @@ class LoginStore extends EventEmitter{
             headers:{
                 'content-type':'application/json'
             }
-        }).then(payload => {
-            return payload.json();
-        }).then(obj => {
+        }).then(payload => 
+            payload.json()
+        ).then(obj => {
             if(obj.success){
                 localStorage.setItem('token', obj.token);
                 this.data.feedback = "Successful Login!";
