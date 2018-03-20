@@ -8,17 +8,39 @@ var professor = require('./routes/professor');
 var course = require('./routes/course');
 var student = require('./routes/student');
 var authentication = require('./routes/authentication');
+const jwt = require('jsonwebtoken');
 
 var app = express();
 
 app.use(bodyParser.json()); // for parsing application/json
+app.use(bodyParser.urlencoded({extended:true}));
 
 app.use('/', index);
+app.use('/authentication', authentication);
+
 app.use('/assignment', assignment);
 app.use('/professor', professor);
 app.use('/course', course);
 app.use('/student', student);
-app.use('/authentication', authentication);
+
+/* Protected Routes */
+//app.post('/assignment', verifyToken, assignment);
+//app.post('/professor', verifyToken, professor);
+//app.post('/course', verifyToken, course);
+//app.post('/student', verifyToken, student);
+
+function verifyToken(req, res, next){
+    const bearerHeader = req.headers['authorization'];
+    if(typeof bearerHeader !== 'undefined'){
+        const bearer = bearerHeader.split(' ');
+        const bearerToken = bearer[1];
+        req.token = bearerToken;
+        console.log("token found");
+        next();
+    }else{
+        res.sendStatus(403);
+    }
+}
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

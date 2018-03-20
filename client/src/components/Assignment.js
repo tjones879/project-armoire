@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {Navbar} from './Navbar';
 import {DescriptionBox} from './DescriptionBox';
+import AuthService from './AuthService';
 
 class ExampleIORow extends Component {
     render() {
@@ -144,12 +145,17 @@ class Assignment extends Component {
     this.state = {
         assignment: [],
     };
+    this.Auth = new AuthService();
   }
 
   componentDidMount() {
-    fetch('/assignment/')
-      .then(res => res.json())
-      .then(data => this.setState({assignment: data}));
+    if(!this.Auth.loggedIn()){
+      window.location = "http://localhost:3000/login";
+    }else{
+      fetch('/assignment/')
+        .then(res => res.json())
+        .then(data => this.setState({assignment: data}));
+    }
   }
 
   render() {
