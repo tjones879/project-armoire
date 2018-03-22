@@ -48,6 +48,7 @@ class LoginForm extends Component{
     }
 
     logout(){
+        console.log("Logging out");
         this.Auth.logout();
     }
 
@@ -59,7 +60,8 @@ class LoginForm extends Component{
         loginActions.updateValue("password", e.target.value);
     }
 
-    validate(){
+    validate(e){
+        console.log(this.state.store);
         if(this.state.store.password === "" && this.state.store.email === ""){
             loginActions.updateFeedback("feedback", "Fields are empty!");
         }else if(this.state.store.password === ""){
@@ -69,13 +71,14 @@ class LoginForm extends Component{
         }else{
             loginActions.login();
         }
+        e.preventDefault();
     }
 
     render(){
         return(
             <div className="container-fluid">
                     <h1 className="text-center">Login Page</h1>
-                    <form>
+                    <form onSubmit={this.validate}>
                         <div className="row">
                             <label className={`${rowClass} text-right`} htmlFor="emailInput" >E-mail: </label>
                             <input id="emailInput" name="email" className={`${rowClass} text-center`} type="email" onChange={this.emailEvent} disabled={this.state.store.emailLock} required/>
@@ -86,7 +89,7 @@ class LoginForm extends Component{
                         </div>
                         <div className="row text-center">
                             <div className="col-3 mx-auto">
-                                <input type="button" className="btn btn-success btn-sm" onClick={this.validate} disabled={this.state.store.buttonLock} value="Login"/>
+                                <input type="submit" className="btn btn-success btn-sm" disabled={this.state.store.buttonLock} value="Login"/>
                             </div>
                         </div>
                         <div className="row text-center">
@@ -94,12 +97,12 @@ class LoginForm extends Component{
                                 <span>{this.state.store.feedback}</span>
                             </div>
                         </div>
-                        <div className="row text-center">
-                            <div className="col-3 mx-auto">
-                                <button className="btn btn-danger" style={this.state.store.logoutStyle} onClick={this.logout}>Logout</button>
-                            </div>
-                        </div>
                     </form>
+                    <div className="row text-center">
+                        <div className="col-3 mx-auto">
+                            <button className="btn btn-danger" style={this.state.store.logoutStyle} onClick={this.logout}>Logout</button>
+                        </div>
+                    </div>
             </div>
         );
     }
