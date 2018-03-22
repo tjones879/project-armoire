@@ -12,7 +12,7 @@ import {AccountPage} from './pages/Account.page.react';
 const Root = () => {
     return (
       <Router>
-        <div>
+        <div className="container-fluid">
           <Route exact path="/" component={HomePage} />
           <Route path="/assignment" component={AssignmentPage} />
           <Route path="/login" component={LoginPage} />

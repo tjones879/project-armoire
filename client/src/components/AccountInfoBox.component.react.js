@@ -10,30 +10,38 @@ export class AccountInfoBox extends Component{
     }
     render(){
         return(
-            <div>
-                <div id="fnameLabel">
-                    First Name:
+            <div className="text-center">
+                <div id="fnameRow" className="row">
+                    <div id="fnameLabel" className="col">
+                        First Name:
+                    </div>
+                    <div id="fname" className="col">
+                        {this.props.user.fname}
+                    </div>
                 </div>
-                <div id="fname">
-                    {this.props.user.fname}
+                <div id="lnameRow" className="row">
+                    <div id="lnameLabel" className="col">
+                        Last Name:
+                    </div>
+                    <div id="lname" className="col">
+                        {this.props.user.lname}
+                    </div>
                 </div>
-                <div id="lnameLabel">
-                    Last Name:
+                <div id="emailRow" className="row">
+                    <div id="emailLabel" className="col">
+                        Email:
+                    </div>
+                    <div id="email" className="col">
+                        {this.props.user.email}
+                    </div>
                 </div>
-                <div id="lname">
-                    {this.props.user.lname}
-                </div>
-                <div id="emailLabel">
-                    Email:
-                </div>
-                <div id="email">
-                    {this.props.user.email}
-                </div>
-                <div id="classificationLabel">
-                    Classification:
-                </div>
-                <div id="classification">
-                    {this.props.user.classification}
+                <div id="classificationRow" className="row">
+                    <div id="classificationLabel" className="col">
+                        Classification:
+                    </div>
+                    <div id="classification" className="col">
+                        {this.props.user.classification}
+                    </div>
                 </div>
             </div>
         );
