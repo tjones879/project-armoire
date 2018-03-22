@@ -89,3 +89,12 @@ describe('function testing of RegisterForm', () => {
         expect(theForm.checkName('dalton-neely O\'riley', 'first')).toBe('dalton-neely O\'riley');
     });
 });
+
+
+/* this works but throws an error because we are messing with the state */
+// describe('Mount testing of Register Component', () => {
+//     const wrapper = mount(<RegisterForm />);
+//     wrapper.find('#registerBtn').simulate('click');
+//     wrapper.find('[name="first"]').simulate('change', {target: {value:'dalton'}});
+//     expect(wrapper.find('#firstFeedback').text()).toBe('dalton');
+// });

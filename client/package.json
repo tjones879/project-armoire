@@ -5,6 +5,7 @@
   "dependencies": {
     "flux": "^3.1.3",
     "jwt-decode": "^2.2.0",
+    "prop-types": "^15.6.1",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-router-dom": "^4.2.2",
@@ -17,7 +18,7 @@
     "eject": "react-scripts eject"
   },
   "jest": {
-    "transform":{
+    "transform": {
       "^.+\\.jsx?$": "babel-jest"
     },
     "setupTestFrameworkScriptFile": "./config/enzyme.config.js"
