@@ -17,7 +17,7 @@ export class LoginPage extends Component{
     }
 }
 
-class LoginForm extends Component{
+export class LoginForm extends Component{
     constructor(props){
         super(props);
         this.state = {
@@ -86,17 +86,17 @@ class LoginForm extends Component{
                         </div>
                         <div className="row text-center">
                             <div className="col-3 mx-auto">
-                                <input type="button" className="btn btn-success btn-sm" onClick={this.validate} disabled={this.state.store.buttonLock} value="Login"/>
+                                <input type="button" id="loginBtn" className="btn btn-success btn-sm" onClick={this.validate} disabled={this.state.store.buttonLock} value="Login"/>
                             </div>
                         </div>
                         <div className="row text-center">
                             <div className="col-3 mx-auto">
-                                <span>{this.state.store.feedback}</span>
+                                <span id="feedback">{this.state.store.feedback}</span>
                             </div>
                         </div>
                         <div className="row text-center">
                             <div className="col-3 mx-auto">
-                                <button className="btn btn-danger" style={this.state.store.logoutStyle} onClick={this.logout}>Logout</button>
+                                <button id="logoutBtn" className="btn btn-danger" style={this.state.store.logoutStyle} onClick={this.logout}>Logout</button>
                             </div>
                         </div>
                     </form>

@@ -21,7 +21,7 @@ export class RegisterPage extends Component{
     }
 }
 
-class RegisterForm extends Component{
+export class RegisterForm extends Component{
     constructor(props){
         super(props);
         this.state = {
@@ -130,13 +130,13 @@ class RegisterForm extends Component{
     checkName(name, fol){
         /* fol stands for "first or last" */
         if(name.length < 2){
-            return `${fol} name must be at least 2 characters. `;
+            return `${fol} name must be at least 2 characters.`;
         }
         else if(name.length > 35){
-            return `${fol} name must be 35 characters or less. `;
+            return `${fol} name must be 35 characters or less.`;
         }
         else if(!reg.test(name)){
-            return `${fol} name must be letters, hyphens, single quotes, and spaces. `;
+            return `${fol} name must be letters, hyphens, single quotes, and spaces.`;
         }else{
             return name;
         }
@@ -195,27 +195,27 @@ class RegisterForm extends Component{
                 <div className="row">
                     <label className={`${row} text-right`} htmlFor="1">First</label>
                     <input className={`${row} text-center`} name="first" type="text" id="1" placeholder="Jane" onChange={this.checkFirst} disabled={this.state.store.firstLock} required/>
-                    <span className={`${row} text-left`} style={this.state.store.firstStyle}>{this.state.store.firstFeed}</span>
+                    <span className={`${row} text-left`} id="firstFeedback" style={this.state.store.firstStyle}>{this.state.store.firstFeed}</span>
                 </div>
                 <div className="row">
                     <label className={`${row} text-right`} htmlFor="2" >Last</label>
                     <input className={`${row} text-center`} name="last" type="text" id="2" placeholder="Doe" onChange={this.checkLast} disabled={this.state.store.lastLock} required/>
-                    <span className={`${row} text-left`} style={this.state.store.lastStyle}>{this.state.store.lastFeed}</span>
+                    <span className={`${row} text-left`} id="lastFeedback" style={this.state.store.lastStyle}>{this.state.store.lastFeed}</span>
                 </div>
                 <div className="row">
                     <label className={`${row} text-right`} htmlFor="3">Email</label>
                     <input onChange={this.emailchange} className={`${row} text-center`} name="email" type="email" id="3" placeholder="jane.doe@somesite.com" disabled={this.state.store.emailLock} required/>
-                    <span className={`${row} text-left`}>{this.state.store.emailFeed}</span>
+                    <span id="emailFeedback" className={`${row} text-left`}>{this.state.store.emailFeed}</span>
                 </div>
                 <div className="row">
                     <label className={`${row} text-right`} htmlFor="4">Password</label>
                     <input type="password" id="4" name="password" value={this.state.store.passValue} className={`${row} text-center`} onChange={this.checkPass} disabled={this.state.store.passLock} required/>
-                    <span className={`${row} text-left`} style={this.state.store.passStyle}>{this.state.store.passFeed}</span>
+                    <span id="passwordFeedback" className={`${row} text-left`} style={this.state.store.passStyle}>{this.state.store.passFeed}</span>
                 </div>
                 <div className="row">
                     <label className={`${row} text-right`} htmlFor="5">Re-Enter Password</label>
                     <input className={`${row} text-center`} name="confirm" value={this.state.store.confirmValue} id="5" type="password" onChange={this.checkConfirm} disabled={this.state.store.confirmLock} required/>
-                    <span className={`${row} text-left`} style={this.state.store.confirmStyle}>{this.state.store.confirmFeed}</span>
+                    <span id="confirmFeedback" className={`${row} text-left`} style={this.state.store.confirmStyle}>{this.state.store.confirmFeed}</span>
                 </div>
                 <div className="row text-center">
                     <span className={`${row} text-right`}>Classification</span>
@@ -223,15 +223,15 @@ class RegisterForm extends Component{
                         <input type="radio" name="classification" value="student" onClick={this.studentEvent} disabled={this.state.store.classificationLock}/>Student<br />
                         <input type="radio" name="classification" value="professor" onClick={this.professorEvent} disabled={this.state.store.classificationLock} />Professor<br />
                     </div>
-                    <span className={`${row} text-left`}>{this.state.store.classificationValue}</span>
+                    <span id="classificationFeedback" className={`${row} text-left`}>{this.state.store.classificationValue}</span>
                 </div>
                 <div className="row text-center">
                     <div className="col-4 mx-auto">
-                        <input className="btn btn-success" type="button" onClick={this.validate} value="Register" disabled={this.state.store.lock}/>
+                        <input id="registerBtn" className="btn btn-success" type="button" onClick={this.validate} value="Register" disabled={this.state.store.lock}/>
                     </div>
                 </div>
                 <div className="row text-center">
-                    <div className="col-4 mx-auto">
+                    <div id="userFeedback" className="col-4 mx-auto">
                         {this.state.store.userFeedback}
                     </div>
                 </div>
