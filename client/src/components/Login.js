@@ -36,7 +36,7 @@ class LoginForm extends Component{
         loginStore.on("change", () => {
             this.setState({
                 store: loginStore.getAll()
-            })
+            });
         });
     }
 
@@ -48,8 +48,8 @@ class LoginForm extends Component{
     }
 
     logout(){
-        console.log("Logging out");
         this.Auth.logout();
+        loginActions.logout();
     }
 
     emailEvent(e){
@@ -61,7 +61,6 @@ class LoginForm extends Component{
     }
 
     validate(e){
-        console.log(this.state.store);
         if(this.state.store.password === "" && this.state.store.email === ""){
             loginActions.updateFeedback("feedback", "Fields are empty!");
         }else if(this.state.store.password === ""){
