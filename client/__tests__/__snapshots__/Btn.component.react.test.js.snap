@@ -5,7 +5,14 @@ ShallowWrapper {
   "length": 1,
   Symbol(enzyme.__root__): [Circular],
   Symbol(enzyme.__unrendered__): <Btn
-    event={[MockFunction]}
+    disabled={true}
+    event={
+      [MockFunction] {
+        "calls": Array [
+          Array [],
+        ],
+      }
+    }
     id="BtnID"
     text="button"
     type="button"
@@ -23,8 +30,13 @@ ShallowWrapper {
     "nodeType": "host",
     "props": Object {
       "children": "button",
+      "disabled": true,
       "id": "BtnID",
-      "onClick": [MockFunction],
+      "onClick": [MockFunction] {
+        "calls": Array [
+          Array [],
+        ],
+      },
       "type": "button",
     },
     "ref": null,
@@ -38,8 +50,13 @@ ShallowWrapper {
       "nodeType": "host",
       "props": Object {
         "children": "button",
+        "disabled": true,
         "id": "BtnID",
-        "onClick": [MockFunction],
+        "onClick": [MockFunction] {
+          "calls": Array [
+            Array [],
+          ],
+        },
         "type": "button",
       },
       "ref": null,

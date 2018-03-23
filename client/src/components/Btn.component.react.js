@@ -8,7 +8,7 @@ export class Btn extends Component{
     }
     render(){
         return(
-            <button id={this.props.id} type={this.props.type} onClick={this.props.event}>{this.props.text}</button>
+            <button id={this.props.id} type={this.props.type} onClick={this.props.event} disabled={this.props.disabled}>{this.props.text}</button>
         );
     }
 }
@@ -17,12 +17,14 @@ Btn.defaultProps = {
     text:'Button',
     id:'BtnID',
     type:'button',
-    event: () => {}
+    event: () => {},
+    disabled: false
 }
 
 Btn.propTypes = {
     text: PropTypes.string.isRequired,
     id: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,
-    event: PropTypes.func.isRequired
+    event: PropTypes.func.isRequired,
+    disabled: PropTypes.bool.isRequired
 }

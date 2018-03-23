@@ -6,9 +6,6 @@ let props, wrapper, node;
 
 let mockEvent = jest.fn();
 mockEvent.mockImplementation(() => {
-    return new Promise((resolve, reject) => {
-        resolve();
-    });
 });
 
 beforeEach(() => {
@@ -16,9 +13,10 @@ beforeEach(() => {
         text:'button',
         type:'button',
         id:'BtnID',
-        event: mockEvent
+        event: mockEvent,
+        disabled: true
     }
-    wrapper = shallow(<Btn id={props.id} text={props.text} type={props.type} event={props.event}/>);
+    wrapper = shallow(<Btn id={props.id} text={props.text} type={props.type} event={props.event} disabled={props.disabled}/>);
     node = wrapper.find(`button#${props.id}`);
 });
 
@@ -31,6 +29,7 @@ describe('shallow rendering of Btn', () => {
     });
     test('mock button click should happen', () => {
         node.simulate('click');
+        expect(mockEvent).toHaveBeenCalled();
     });
 });
 
