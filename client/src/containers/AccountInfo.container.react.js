@@ -8,7 +8,7 @@ import {accountInfoStore} from '../stores/accountInfo.store';
 export class AccountInfo extends Component{
     constructor(props){
         super(props);
-        this.state = {};
+        this.state = accountInfoStore.getAll();
     }
     componentWillMount(){
         accountInfoStore.on('change', () => {
@@ -18,11 +18,17 @@ export class AccountInfo extends Component{
             window.location = 'login';
         });
         Actions.checkLoginStatus();
+        Actions.getUserData();
     }
     render(){
         return(
             <div>
-                <AccountInfoBox />
+                <AccountInfoBox user={{
+                    fname: this.state.user.fname,
+                    lname: this.state.user.lname,
+                    email: this.state.user.email,
+                    classification: this.state.user.classification 
+                }}/>
                 <Btn />
             </div>
         );

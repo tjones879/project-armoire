@@ -36,4 +36,7 @@ describe('Shallow rendering of AccountInfo container', () => {
     test('Account Info renders and exists', () => {
         expect(wrapper.exists()).toBeTruthy();
     });
+    test('the default clearance should not be allowed by default', () => {
+        expect(wrapper.state('status')).toBeFalsy();
+    });
 });

@@ -10,3 +10,8 @@ export function checkLoginStatus(){
         type:'CHECK_LOGIN_STATUS'
     });
 }
+export function getUserData(){
+    dispatcher.dispatch({
+        type:'GET_USER_DATA'
+    });
+}

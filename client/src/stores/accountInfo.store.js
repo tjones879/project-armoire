@@ -8,6 +8,7 @@ class AccountInfoStore extends EventEmitter{
         this.store = {
             status: false,
             user:{
+                id: '',
                 fname: '',
                 lname: '',
                 email: '',
@@ -36,8 +37,53 @@ class AccountInfoStore extends EventEmitter{
         }
     }
 
+    getUserData(){
+        if(this.Auth.loggedIn()){
+            let returnObj = this.Auth.getInfo();
+            this.store.user.id = returnObj.user.id;
+            this.store.user.email = returnObj.user.email;
+            fetch('http://localhost:3000/student',{
+                method: 'POST',
+                body:JSON.stringify({
+                    id: this.store.user.id,
+                    email: this.store.user.email
+                }),
+                headers:{
+                    'content-type':'application/json',
+                    'Authorization': `Bearer ${this.Auth.getToken()}`
+                }
+            }).then(payload => payload.json()).then(obj => {
+                if(obj.status === 'failure'){
+                    fetch('http://localhost:3000/professor',{
+                        method: 'POST',
+                        body:JSON.stringify({
+                            id: this.store.user.id,
+                            email: this.store.user.email
+                        }),
+                        headers:{
+                            'content-type':'application/json',
+                            'Authorization': `Bearer ${this.Auth.getToken()}`
+                        }
+                    }).then(payload => payload.json()).then(obj => {
+                        if(obj.status === 'failure'){
+                            console.log('user not found');
+                        }else{
+                            console.log(obj);
+                        }
+                    }).catch({
+
+                    });
+                }
+                console.log(obj);
+                this.emit('change');
+            }).catch({
+
+            }); 
+        }
+    }
+
     getAll(){
-        return this.state;
+        return this.store;
     }
 
     handleActions(action){
@@ -48,6 +94,10 @@ class AccountInfoStore extends EventEmitter{
             }
             case 'CHECK_LOGIN_STATUS': {
                 this.checkLoginStatus();
+                break;
+            }
+            case 'GET_USER_DATA': {
+                this.getUserData();
                 break;
             }
             default: {

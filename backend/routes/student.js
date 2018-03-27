@@ -5,6 +5,8 @@
  */
 var express = require('express');
 var router = express.Router();
+var Student = require('../db/student.js');
+var Mongoose = require('mongoose');
 
 /* GET professors listing. */
 router.get('/', function(req, res, next) {
@@ -29,6 +31,20 @@ router.get('/', function(req, res, next) {
                     }]
                 }]
     });
+});
+
+router.post('/', (req, res, next) => {
+        if(req.body.email !== 'undefined' && req.body.id !== 'undefined'){
+                Student.findOne({login_id: new Mongoose.Types.ObjectId(req.body.id)}, (err, obj) => {
+                        if(obj != null){
+                                console.log('found student');
+                                res.json({obj});
+                        }else{
+                                console.log('student not found');
+                                res.json({status:'failure'});
+                        }
+                });
+        }
 });
 
 module.exports = router;
