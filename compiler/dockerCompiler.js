@@ -1,18 +1,16 @@
-var DockerSandbox = function(timeout_value, path, folder, vm_name, compiler_name,
-                             file_name, code, output_command, languageName,
-                             e_arguments, stdin_data)
+var DockerSandbox = function(payload)
 {
-    this.timeout_value = timeout_value;
-    this.path = path;
-    this.folder = folder;
-    this.vm_name = vm_name;
-    this.compiler_name = compiler_name;
-    this.file_name = file_name;
-    this.code = code;
-    this.output_command = output_command;
-    this.langName = languageName;
-    this.extra_arguments = e_arguments;
-    this.stdin_data = stdin_data;
+    this.timeout_value   = payload.timeout_value;
+    this.path            = payload.path;
+    this.folder          = payload.folder;
+    this.vm_name         = payload.vm_name;
+    this.compiler_name   = payload.compiler_name;
+    this.file_name       = payload.file_name;
+    this.code            = payload.code;
+    this.output_command  = payload.output_command;
+    this.langName        = payload.langName;
+    this.extra_arguments = payload.extra_arguments;
+    this.stdin_data      = payload.stdin_data;
 }
 
 DockerSandbox.prototype.run = function(success)
@@ -20,6 +18,7 @@ DockerSandbox.prototype.run = function(success)
     var sandbox = this;
 
     this.prepare(() => {
+        console.log(sandbox);
         sandbox.execute(success);
     });
 }

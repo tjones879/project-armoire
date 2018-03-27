@@ -34,27 +34,33 @@ function random(size) {
 
 app.post('/compile', bruteforce.prevent, (req, res) =>
 {
-    var folder = 'temp/' + random(10);
-    var path = __dirname + "/";
-    var vm_name = 'virtual_machine';
-    var timeout_value = 60; //seconds
-    var language = req.body.language;
-    var code = req.body.code;
-    var stdin = req.body.stdin;
+    let language = req.body.language;
+    let code = req.body.code;
 
-    var dockerCompiler = new Compiler(
-        timeout_value, path, folder, vm_name, arr.compilerArray[language][0],
-        arr.compilerArray[language][1], code, arr.compilerArray[language][2],
-        arr.compilerArray[language][3], arr.compilerArray[language][4], stdin);
+    let payload = {
+        timeout_value:   1, //seconds
+        path:            __dirname + "/",
+        folder:          'temp/' + random(10),
+        vm_name:         'virtual_machine',
+        compiler_name:   arr.compilerArray[language][0],
+        file_name:       arr.compilerArray[language][1],
+        code:            code,
+        output_command:  arr.compilerArray[language][2],
+        langName:        arr.compilerArray[language][3],
+        extra_arguments: arr.compilerArray[language][4],
+        stdin_data:      req.body.stdin,
+    };
 
+    var dockerCompiler = new Compiler(payload);
 
-    dockerCompiler.run((data,exec_time,err) => {
+    dockerCompiler.run((data, exec_time, err) => {
         res.send({
             output: data,
             langid: language,
             code: code,
             errors: err,
-            time: exec_time});
+            time: exec_time
+        });
     });
 });
 
