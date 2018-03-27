@@ -1,7 +1,7 @@
 var express = require('express');
 var http = require('http');
 var arr = require('./compilers');
-var compiler = require('./dockerCompiler');
+var Compiler = require('./dockerCompiler');
 var bodyParser = require('body-parser');
 var app = express();
 var server = http.createServer(app);
@@ -28,35 +28,40 @@ app.all('*', function(req, res, next)
 });
 
 function random(size) {
-        return require("crypto").randomBytes(size).toString('hex');
+    return require("crypto").randomBytes(size).toString('hex');
 }
 
 
-app.post('/compile',bruteforce.prevent,function(req, res) 
+app.post('/compile', bruteforce.prevent, (req, res) =>
 {
-    var folder= 'temp/' + random(10); 
-    var path=__dirname+"/"; 
-    var vm_name='virtual_machine'; 
-    var timeout_value=40;//seconds
+    var folder = 'temp/' + random(10);
+    var path = __dirname + "/";
+    var vm_name = 'virtual_machine';
+    var timeout_value = 60; //seconds
     var language = req.body.language;
     var code = req.body.code;
     var stdin = req.body.stdin;
 
-    var dockerCompiler = new compiler(timeout_value,path,folder,vm_name,arr.compilerArray[language][0],arr.compilerArray[language][1],code,arr.compilerArray[language][2],arr.compilerArray[language][3],arr.compilerArray[language][4],stdin);
+    var dockerCompiler = new Compiler(
+        timeout_value, path, folder, vm_name, arr.compilerArray[language][0],
+        arr.compilerArray[language][1], code, arr.compilerArray[language][2],
+        arr.compilerArray[language][3], arr.compilerArray[language][4], stdin);
 
 
-    dockerCompiler.run(function(data,exec_time,err)
-    {
-    	res.send({output:data, langid: language,code:code, errors:err, time:exec_time});
+    dockerCompiler.run((data,exec_time,err) => {
+        res.send({
+            output: data,
+            langid: language,
+            code: code,
+            errors: err,
+            time: exec_time});
     });
-   
 });
 
 
-app.get('/', function(req, res) 
-{
+app.get('/', (req, res) => {
     res.sendfile("./index.html");
 });
 
-console.log("Listening at "+port)
+console.log("Listening at " + port)
 server.listen(port);
