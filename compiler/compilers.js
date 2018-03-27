@@ -1,2 +1,16 @@
-exports.compilerArray= [ ["python","file.py","","Python",""],
-["\'g++ -o /codeDir/a.out\' ","file.cpp","/codeDir/a.out","C/C++",""] ];//probably change this to a dictionary
+exports.compilers = [
+    {
+        compiler_cmd: "python",
+        source_file: "file.py",
+        compiled_exe: "",
+        langName: "Python",
+        extra_args: ""
+    },
+    {
+        compiler_cmd: "\'g++ -o /codeDir/a.out\' ",
+        source_file: "file.cpp",
+        compiled_exe: "/codeDir/a.out",
+        langName: "C/C++",
+        extra_args: ""
+    }
+];

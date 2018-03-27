@@ -38,16 +38,16 @@ app.post('/compile', bruteforce.prevent, (req, res) =>
     let code = req.body.code;
 
     let payload = {
-        timeout_value:   1, //seconds
+        timeout_value:   5, //seconds
         path:            __dirname + "/",
         folder:          'temp/' + random(10),
         vm_name:         'virtual_machine',
-        compiler_name:   arr.compilerArray[language][0],
-        file_name:       arr.compilerArray[language][1],
+        compiler_name:   arr.compilers[language].compiler_cmd,
+        file_name:       arr.compilers[language].source_file,
         code:            code,
-        output_command:  arr.compilerArray[language][2],
-        langName:        arr.compilerArray[language][3],
-        extra_arguments: arr.compilerArray[language][4],
+        output_command:  arr.compilers[language].compiled_exe,
+        langName:        arr.compilers[language].langName,
+        extra_arguments: arr.compilers[language].extra_args,
         stdin_data:      req.body.stdin,
     };
 
