@@ -12,34 +12,34 @@ export class AccountInfoBox extends Component{
         return(
             <div className="text-center">
                 <div id="fnameRow" className="row">
-                    <div id="fnameLabel" className="col">
+                    <div id="fnameLabel" className="col text-right">
                         First Name:
                     </div>
-                    <div id="fname" className="col">
+                    <div id="fname" className="col text-left">
                         {this.props.user.fname}
                     </div>
                 </div>
                 <div id="lnameRow" className="row">
-                    <div id="lnameLabel" className="col">
+                    <div id="lnameLabel" className="col text-right">
                         Last Name:
                     </div>
-                    <div id="lname" className="col">
+                    <div id="lname" className="col text-left">
                         {this.props.user.lname}
                     </div>
                 </div>
                 <div id="emailRow" className="row">
-                    <div id="emailLabel" className="col">
+                    <div id="emailLabel" className="col text-right">
                         Email:
                     </div>
-                    <div id="email" className="col">
+                    <div id="email" className="col text-left">
                         {this.props.user.email}
                     </div>
                 </div>
                 <div id="classificationRow" className="row">
-                    <div id="classificationLabel" className="col">
+                    <div id="classificationLabel" className="col text-right">
                         Classification:
                     </div>
-                    <div id="classification" className="col">
+                    <div id="classification" className="col text-left">
                         {this.props.user.classification}
                     </div>
                 </div>

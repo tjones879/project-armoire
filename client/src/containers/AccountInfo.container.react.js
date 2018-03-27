@@ -29,7 +29,11 @@ export class AccountInfo extends Component{
                     email: this.state.user.email,
                     classification: this.state.user.classification 
                 }}/>
-                <Btn />
+                <div className='row text-center'>
+                    <div className='col mx-auto'>
+                        <Btn text='Change Info' id='changeInfoBtn' event={()=>{window.location = 'account_change'}}/>
+                    </div>
+                </div>
             </div>
         );
     }
