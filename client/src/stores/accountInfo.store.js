@@ -68,14 +68,21 @@ class AccountInfoStore extends EventEmitter{
                         if(obj.status === 'failure'){
                             console.log('user not found');
                         }else{
-                            console.log(obj);
+                            this.store.user.fname = obj[0].fname;
+                            this.store.user.lname = obj[0].lname;
+                            this.store.user.classification = 'professor';
+                            this.emit('change');
                         }
                     }).catch({
 
                     });
+                }else{
+                    console.log(obj);
+                    this.store.user.fname = obj.fname;
+                    this.store.user.lname = obj.lname;
+                    this.store.user.classification = 'student';
+                    this.emit('change');
                 }
-                console.log(obj);
-                this.emit('change');
             }).catch({
 
             }); 

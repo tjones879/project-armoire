@@ -38,7 +38,7 @@ router.post('/', (req, res, next) => {
                 Student.findOne({login_id: new Mongoose.Types.ObjectId(req.body.id)}, (err, obj) => {
                         if(obj != null){
                                 console.log('found student');
-                                res.json({obj});
+                                res.json(obj);
                         }else{
                                 console.log('student not found');
                                 res.json({status:'failure'});
