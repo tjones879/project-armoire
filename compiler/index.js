@@ -38,7 +38,7 @@ app.post('/compile', bruteforce.prevent, (req, res) =>
     let code = req.body.code;
 
     let payload = {
-        timeout_value:   5, //seconds
+        timeout_value:   1000, // ms
         path:            __dirname + "/",
         folder:          'temp/' + random(10),
         vm_name:         'virtual_machine',
