@@ -84,6 +84,7 @@ DockerSandbox.prototype.execute = function(success)
     let dockerPID = exec(st, defaults, (err, stdout, stdin) => {
         if (err) {
             console.log("Compilation timed out.");
+            console.log(err);
             let data = "\nExecution Timed Out";
             success(data, defaults.timeout, "");
         } else {
