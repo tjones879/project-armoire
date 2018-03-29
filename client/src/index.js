@@ -9,6 +9,7 @@ import {LoginPage} from './components/Login';
 import {RegisterPage} from './components/Register';
 import {AccountPage} from './pages/Account.page.react';
 import {CoursePage} from './pages/Courses.page.react';
+import {CreateCoursePage} from './pages/CreateCourse.page.react';
 
 const Root = () => {
     return (
@@ -20,6 +21,7 @@ const Root = () => {
           <Route path="/register" component={RegisterPage} />
           <Route path="/account" component={AccountPage} />
           <Route path='/course' component={CoursePage} />
+          <Route path='/createcourse' component={CreateCoursePage} />
         </div>
       </Router>
     );
