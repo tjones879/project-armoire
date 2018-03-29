@@ -47,7 +47,7 @@ export class RegisterForm extends Component{
             this.setState({store: registerStore.getAll()});
         });
     }
-    validate(){
+    validate(e){
         //Validate the form before it is sent by the HTML form using POST
         //Remember to return a value of true or false from this event handler
         //true alows the form to send, false prevents the form from submiting
@@ -108,6 +108,7 @@ export class RegisterForm extends Component{
         }else{
             this.state.store.firstValue.length === 0?registerActions.updateFeedback("user", "Must insert a first name"):registerActions.updateFeedback("user", "Must insert a valid first name");
         }
+        e.preventDefault();
     }
     checkConfirm(e){
         registerActions.updateValue("confirm", e.target.value);
@@ -196,7 +197,7 @@ export class RegisterForm extends Component{
     }
     render(){
         return(
-            <form>
+            <form onSubmit={this.validate}>
                 <h1 className="text-center">Registration</h1>
                 <div className="row">
                     <label className={`${row} text-right`} htmlFor="1">First</label>
@@ -233,7 +234,7 @@ export class RegisterForm extends Component{
                 </div>
                 <div className="row text-center">
                     <div className="col-4 mx-auto">
-                        <input id="registerBtn" className="btn btn-success" type="button" onClick={this.validate} value="Register" disabled={this.state.store.lock}/>
+                        <input id="registerBtn" className="btn btn-success" type="submit" value="Register" disabled={this.state.store.lock}/>
                     </div>
                 </div>
                 <div className="row text-center">
