@@ -58,7 +58,8 @@ router.post('/login', function(req, res, next){
 
                         const user = {
                             id:obj._id,
-                            email:obj.email
+                            email:obj.email,
+                            classification:obj.classification
                         };
 
                         jwt.sign({user}, 'grapeJuic3', {expiresIn: '15m'}, (err,token) => {
@@ -122,7 +123,8 @@ router.post('/registration', function(req, res, next){
                     _id: loginID,
                     email: req.body.email,
                     hash: hashedPass,
-                    salt: salt
+                    salt: salt,
+                    classification: req.body.classification
                 });
 
                 const person = new Student({

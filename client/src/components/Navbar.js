@@ -32,13 +32,29 @@ export class Navbar extends Component{
             this.links.pop({title:'Register'});
             this.links.pop({title:'Login'});
             this.links.push({
-                title:"Assignments",
-                link:"assignment"
-            });
-            this.links.push({
                 title:'Account',
                 link:'account'
             });
+            this.links.push({
+                title:'Courses',
+                link:'course'
+            });
+            const userInfo = this.Auth.getInfo();
+            if(userInfo.user.classification === 'student'){
+                this.links.push({
+                    title:'Grades',
+                    link:'grade'
+                });
+            }else if(userInfo.user.classification === 'professor'){
+                this.links.push({
+                    title:'Gradebook',
+                    link:'gradebook'
+                });
+                this.links.push({
+                    title:'Students',
+                    link:'student'
+                });
+            }
         }
     }
     render(){
