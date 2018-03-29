@@ -2,3 +2,5 @@
 node_modules/
 client/nbproject/
 backend/nbproject/
+client/.env
+backend/.env
