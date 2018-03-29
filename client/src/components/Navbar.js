@@ -1,8 +1,11 @@
 import React, {Component} from 'react'
+import AuthService from '../components/AuthService';
+import {Btn} from '../components/Btn.component.react';
 
 export class Navbar extends Component{
     constructor(props){
         super(props);
+        this.Auth = new AuthService();
         this.links = [{
             title:"Login",
             link:"http://localhost:3000/login"
@@ -15,19 +18,36 @@ export class Navbar extends Component{
             title:"Assignments",
             link:"http://localhost:3000/assignment"
         }]
+        this.state = {
+            logoutBtn: {
+                style: {
+                    'display':'none'
+                }
+            }
+        }
+    }
+    componentWillMount(){
+        if(this.Auth.loggedIn()){
+            this.setState({logoutBtn:{
+                style: {
+                    'display': 'inline-block'
+                }
+            }});
+        }
     }
     render(){
         return(
             <nav className="navbar navbar-expand-lg pa-navbar">
                 <a className="navbar-brand" href="http://localhost:3000">Project Armoire</a>
                 <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span className="navbar-toggler-icon"></span>
+                    <span className="navbar-toggler-icon"><img width='35' height='35' src='images/hamburger.png' /></span>
                 </button>
                 <div className="collapse navbar-collapse" id="navbarNav">
                     <ul className="navbar-nav">
                         {this.links.map((obj)=>
                             <NavUnit linkProp={obj.link} titleProp={obj.title} key={obj.title}/>
                         )}
+                        <Btn style={this.state.logoutBtn.style} text='Logout' event={() => {this.Auth.logout();window.location = 'login'}}/>
                     </ul>
                 </div>
             </nav>
