@@ -1,5 +1,4 @@
-var DockerSandbox = function(payload)
-{
+var DockerSandbox = function(payload) {
     this.timeout_value   = payload.timeout_value;
     this.path            = payload.path;
     this.folder          = payload.folder;
@@ -13,13 +12,9 @@ var DockerSandbox = function(payload)
     this.stdin_data      = payload.stdin_data;
 }
 
-DockerSandbox.prototype.run = function(success)
-{
-    var sandbox = this;
-
-    this.prepare(() => {
-        sandbox.execute(success);
-    });
+DockerSandbox.prototype.run = function(callback) {
+    let sandbox = this;
+    this.prepare(() => sandbox.execute(callback));
 }
 
 function buildPrepCmd(path, folder) {
@@ -30,8 +25,7 @@ function buildPrepCmd(path, folder) {
     return command;
 }
 
-DockerSandbox.prototype.prepare = function(success)
-{
+DockerSandbox.prototype.prepare = function(callback) {
     var exec = require('child_process').exec;
     var fs = require('fs');
     var sandbox = this;
@@ -50,7 +44,7 @@ DockerSandbox.prototype.prepare = function(success)
                         console.log("Error in writing input: " + err);
                     } else {
                         console.log("Input file was saved!");
-                        success();
+                        callback();
                     }
                 });
             }
@@ -66,8 +60,7 @@ function buildDockerCmd(path, vmName, compiler, srcFile, outputCommand, extraArg
     return command;
 }
 
-DockerSandbox.prototype.execute = function(success)
-{
+DockerSandbox.prototype.execute = function(callback) {
     var exec = require('child_process').exec;
     var fs = require('fs');
     var timer = 0; //variable to enforce the timeout_value
@@ -92,7 +85,7 @@ DockerSandbox.prototype.execute = function(success)
             console.log("Compilation timed out.");
             console.log(err);
             let data = "\nExecution Timed Out";
-            success(data, defaults.timeout, "");
+            callback(data, defaults.timeout, "");
         } else {
             fs.readFile(sandbox.path + sandbox.folder + '/completed', 'utf8', (err, data) => {
                 if (!err) {
@@ -102,52 +95,23 @@ DockerSandbox.prototype.execute = function(success)
                         if (!data2)
                             data2 = "";
 
-                        console.log("Error file: ")
-                        console.log(data2)
+                        console.log("Error file: ");
+                        console.log(data2);
 
-                        console.log("Main File")
-                        console.log(data)
+                        console.log("Main File");
+                        console.log(data);
 
-                        var lines = data.toString().split('COMPILER END')
-                        data=lines[0]
-                        var time=lines[1]
+                        let lines = data.toString().split('COMPILER END');
+                        data = lines[0];
+                        let time = lines[1];
 
-                        console.log("Time: ")
-                        console.log(time)
+                        console.log("Time: ");
+                        console.log(time);
 
-                        success(data,time,data2)
+                        callback(data,time,data2);
                     });
                 }
             });
-            /*
-               } else {
-                console.log("completed: " + data);
-                fs.readFile(sandbox.path + sandbox.folder + '/logfile.txt', 'utf8', (err, data) => {
-                    if (err) {
-                        console.log("Compiler has thrown a sys error: " + err);
-                    } else if (!data) {
-                        data = "";
-                    } else {
-                        data += "\nExecution Timed Out";
-                        console.log("Timed Out: " + sandbox.folder + " " + sandbox.langName);
-                        fs.readFile(sandbox.path + sandbox.folder + '/errors', 'utf8', (err2, data2) => {
-                            if(!data2)
-                                data2 = "";
-
-                            var lines = data.toString().split('*---*');
-                            data = lines[0];
-                            var time = lines[1];
-
-                            console.log("Time: ");
-                            console.log(time);
-
-                            success(data,data2)
-                        });
-                    }
-                });
-            }
-        }
-        */
         }
         exec("rm -r " + sandbox.folder);
     });
