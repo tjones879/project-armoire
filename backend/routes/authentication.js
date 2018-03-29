@@ -124,7 +124,8 @@ router.post('/registration', function(req, res, next){
                     email: req.body.email,
                     hash: hashedPass,
                     salt: salt,
-                    classification: req.body.classification
+                    classification: req.body.classification,
+                    verified: false
                 });
 
                 const person = new Student({

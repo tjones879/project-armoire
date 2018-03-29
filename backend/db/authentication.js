@@ -5,7 +5,8 @@ var AuthenticationSchema = new mongoose.Schema({
     email: String,
     hash: String,
     salt: String,
-    classification: String
+    classification: String,
+    verified: Boolean
 });
 
 module.exports = mongoose.model('Authentication', AuthenticationSchema);
