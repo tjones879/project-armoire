@@ -8,15 +8,11 @@ export class Navbar extends Component{
         this.Auth = new AuthService();
         this.links = [{
             title:"Login",
-            link:"http://localhost:3000/login"
+            link:"login"
         },
         {
             title:"Register",
-            link:"http://localhost:3000/register"
-        },
-        {
-            title:"Assignments",
-            link:"http://localhost:3000/assignment"
+            link:"register"
         }]
         this.state = {
             logoutBtn: {
@@ -33,6 +29,16 @@ export class Navbar extends Component{
                     'display': 'inline-block'
                 }
             }});
+            this.links.pop({title:'Register'});
+            this.links.pop({title:'Login'});
+            this.links.push({
+                title:"Assignments",
+                link:"assignment"
+            });
+            this.links.push({
+                title:'Account',
+                link:'account'
+            });
         }
     }
     render(){
@@ -47,7 +53,7 @@ export class Navbar extends Component{
                         {this.links.map((obj)=>
                             <NavUnit linkProp={obj.link} titleProp={obj.title} key={obj.title}/>
                         )}
-                        <Btn style={this.state.logoutBtn.style} text='Logout' event={() => {this.Auth.logout();window.location = 'login'}}/>
+                        <Btn class='btn btn-light btn-sm' style={this.state.logoutBtn.style} text='Logout' event={() => {this.Auth.logout();window.location = 'login'}}/>
                     </ul>
                 </div>
             </nav>
