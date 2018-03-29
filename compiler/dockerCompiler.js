@@ -22,14 +22,20 @@ DockerSandbox.prototype.run = function(success)
     });
 }
 
+function buildPrepCmd(path, folder) {
+    let dir = path + folder;
+    let command = "mkdir " + dir;
+    command += " && cp " + path + "/DockerPayload/* " + dir;
+    command += " && chmod 666 " + dir;
+    return command;
+}
+
 DockerSandbox.prototype.prepare = function(success)
 {
     var exec = require('child_process').exec;
     var fs = require('fs');
     var sandbox = this;
-    let command = "mkdir " + this.path + this.folder
-    command += " && cp " + this.path + "/DockerPayload/* " + this.path + this.folder
-    command += " && chmod 777 " + this.path + this.folder;
+    let command = buildPrepCmd(this.path, this.folder);
 
     exec(command, (st) => {
         fs.writeFile(sandbox.path + sandbox.folder + "/" + sandbox.file_name, sandbox.code, (err) => {
@@ -37,7 +43,7 @@ DockerSandbox.prototype.prepare = function(success)
                 console.log("Error in writing code: " + err);
             } else {
                 console.log(sandbox.langName + " file was saved!");
-                exec("chmod 777 \'" + sandbox.path + sandbox.folder + "/" + sandbox.file_name + "\'");
+                exec("chmod +x \'" + sandbox.path + sandbox.folder + "/" + sandbox.file_name + "\'");
 
                 fs.writeFile(sandbox.path + sandbox.folder + "/inputFile", sandbox.stdin_data, (err) => {
                     if (err) {
