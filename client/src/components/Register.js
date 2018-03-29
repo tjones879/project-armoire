@@ -76,8 +76,9 @@ export class RegisterForm extends Component{
                                     return a.json();
                                 }).then(function(json){
                                     if(json.success){
-                                        registerActions.updateFeedback("user", `Successfully registered under the email ${json.email} as a ${json.classification}`);
+                                        registerActions.updateFeedback("user", `Successfully registered under the email ${json.email} as a ${json.classification}. You will be redirected in 5 seconds...`);
                                         registerActions.lockDown();
+                                        setTimeout(()=>{window.location = 'login'}, '5000');
                                     }else{
                                         if(json.errType === "duplicate"){
                                             registerActions.updateFeedback("user", `The email ${json.email} has already been registered`);
