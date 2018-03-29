@@ -26,7 +26,7 @@ function buildPrepCmd(path, folder) {
     let dir = path + folder;
     let command = "mkdir " + dir;
     command += " && cp " + path + "/DockerPayload/* " + dir;
-    command += " && chmod 666 " + dir;
+    command += " && chmod 777 " + dir;
     return command;
 }
 
@@ -43,7 +43,7 @@ DockerSandbox.prototype.prepare = function(success)
                 console.log("Error in writing code: " + err);
             } else {
                 console.log(sandbox.langName + " file was saved!");
-                exec("chmod +x \'" + sandbox.path + sandbox.folder + "/" + sandbox.file_name + "\'");
+                exec("chmod 777 \'" + sandbox.path + sandbox.folder + "/" + sandbox.file_name + "\'");
 
                 fs.writeFile(sandbox.path + sandbox.folder + "/inputFile", sandbox.stdin_data, (err) => {
                     if (err) {
@@ -99,7 +99,7 @@ DockerSandbox.prototype.execute = function(success)
                     // The compiler must have finished if the file exists.
                     console.log("DONE");
                     fs.readFile(sandbox.path + sandbox.folder + '/errors', 'utf8', (err2, data2) => {
-                        if(!data2)
+                        if (!data2)
                             data2 = "";
 
                         console.log("Error file: ")
@@ -149,8 +149,6 @@ DockerSandbox.prototype.execute = function(success)
         }
         */
         }
-        console.log("Removing temp folder: " + sandbox.folder);
-        console.log("*************************");
         exec("rm -r " + sandbox.folder);
     });
 }
