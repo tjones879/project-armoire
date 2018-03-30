@@ -9,3 +9,8 @@ export function changeInput(which, value){
         }
     });
 }
+export function submitCourse(){
+    dispatcher.dispatch({
+        type:'SUBMIT_COURSE'
+    });
+}

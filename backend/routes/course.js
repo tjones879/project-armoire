@@ -16,5 +16,14 @@ router.get('/', function(req, res, next) {
     });
 });
 
+router.post('/', (req, res, next) => {
+    if(req.body.cName === '' && req.body.cNum === ''){
+        res.json({
+            status:'error',
+            payload:'Must insert a course name and a course number.'
+        });
+    }
+});
+
 module.exports = router;
 
