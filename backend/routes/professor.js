@@ -19,14 +19,14 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/', (req, res, next) => {
-    if(req.body.id !== 'undefined' && req.body.email !== 'undefined'){
+    if (req.body.id !== undefined && req.body.email !== undefined){
         Professor.find({login_id: new Mongoose.Types.ObjectId(req.body.id)}, (err, obj) => {
-            if(obj != null){
+            if (obj !== null) {
                 console.log('found professor');
                 res.json(obj);
-            }else{
+            } else {
                 console.log('professor not found');
-                res.json({status:'failure'});
+                res.json({status: 'failure'});
             }
         });
     }
