@@ -14,6 +14,11 @@ ShallowWrapper {
       }
     }
     id="BtnID"
+    style={
+      Object {
+        "display": "inline-block",
+      }
+    }
     text="button"
     type="button"
   />,
@@ -30,12 +35,16 @@ ShallowWrapper {
     "nodeType": "host",
     "props": Object {
       "children": "button",
+      "className": undefined,
       "disabled": true,
       "id": "BtnID",
       "onClick": [MockFunction] {
         "calls": Array [
           Array [],
         ],
+      },
+      "style": Object {
+        "display": "inline-block",
       },
       "type": "button",
     },
@@ -50,12 +59,16 @@ ShallowWrapper {
       "nodeType": "host",
       "props": Object {
         "children": "button",
+        "className": undefined,
         "disabled": true,
         "id": "BtnID",
         "onClick": [MockFunction] {
           "calls": Array [
             Array [],
           ],
+        },
+        "style": Object {
+          "display": "inline-block",
         },
         "type": "button",
       },

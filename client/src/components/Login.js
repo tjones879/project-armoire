@@ -89,7 +89,7 @@ export class LoginForm extends Component{
                         </div>
                         <div className="row text-center">
                             <div className="col-3 mx-auto">
-                                <input type="submit" className="btn btn-success btn-sm" disabled={this.state.store.buttonLock} value="Login"/>
+                                <input type="submit" id="loginBtn" className="btn btn-success btn-sm" disabled={this.state.store.buttonLock} value="Login"/>
                             </div>
                         </div>
                         <div className="row text-center">
@@ -100,7 +100,7 @@ export class LoginForm extends Component{
                     </form>
                     <div className="row text-center">
                         <div className="col-3 mx-auto">
-                            <button className="btn btn-danger" style={this.state.store.logoutStyle} onClick={this.logout}>Logout</button>
+                            <button id="logoutBtn" className="btn btn-danger" style={this.state.store.logoutStyle} onClick={this.logout}>Logout</button>
                         </div>
                     </div>
             </div>
