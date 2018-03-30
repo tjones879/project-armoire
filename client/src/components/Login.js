@@ -44,6 +44,7 @@ export class LoginForm extends Component{
         if(this.Auth.loggedIn()){
             loginActions.updateFeedback("feedback", "Already logged in!");
             loginActions.loggedIn();
+            window.setTimeout(()=>{window.location = 'account'}, 1000);
         }
     }
 
@@ -69,9 +70,6 @@ export class LoginForm extends Component{
             loginActions.updateFeedback("feedback", "Email field is empty");
         }else{
             loginActions.login();
-            console.log("Logging in");
-            if (this.Auth.loggedin())
-                window.setTimeout(()=>{window.location = 'account'}, 1000);
         }
         e.preventDefault();
     }
