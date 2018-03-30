@@ -55,8 +55,8 @@ DockerSandbox.prototype.prepare = function(callback) {
 function buildDockerCmd(path, vmName, compiler, srcFile, outputCommand, extraArgs) {
     let command = 'sudo docker run --rm -v ';
     command += '"' + path + '":/codeDir ';
-    command += vmName + ' /codeDir/script.sh ';
-    command += compiler + ' ' + srcFile + ' ' + outputCommand + ' ' + extraArgs;
+    command += vmName + ' /codeDir/script.py ';
+    command += compiler + ' "' + srcFile + '" "' + outputCommand + '" "' + extraArgs + '"';
     return command;
 }
 
