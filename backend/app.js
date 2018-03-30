@@ -1,3 +1,4 @@
+require('dotenv').config();
 var mongo = require('./db/mongo');
 var express = require('express');
 var path = require('path');
