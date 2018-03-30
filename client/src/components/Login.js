@@ -69,7 +69,9 @@ export class LoginForm extends Component{
             loginActions.updateFeedback("feedback", "Email field is empty");
         }else{
             loginActions.login();
-            window.setTimeout(()=>{window.location = 'account'}, 1000);
+            console.log("Logging in");
+            if (this.Auth.loggedin())
+                window.setTimeout(()=>{window.location = 'account'}, 1000);
         }
         e.preventDefault();
     }
