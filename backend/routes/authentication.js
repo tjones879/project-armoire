@@ -149,6 +149,7 @@ router.post('/registration', function(req, res, next){
                             /* Students */
                             person.save()
                             .then(result =>{
+                                console.log(`student added to database: ${req.body}`);
                                 res.status(200).json({success:true,email:req.body.email,classification:req.body.classification});
                             }).catch(err => {
                                 res.status(200).json({success:false, errType: "general"});

@@ -1,6 +1,9 @@
 import React from 'react';
 import {shallow, mount, render} from 'enzyme';
 import {RegisterForm} from '../src/components/Register';
+import {LocalStorageMock} from '../mocks/LocalStorage.mock';
+
+global.localStorage = new LocalStorageMock;
 
 describe('Static testing of Register Form', () => {
     const registerForm = render(<RegisterForm />);
