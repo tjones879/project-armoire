@@ -11,25 +11,41 @@ class CreateCourseStore extends EventEmitter{
             }
         }
         this.handleActions = this.handleActions.bind(this);
+        this.inputChange = this.inputChange.bind(this);
     }
 
     inputChange(which, value){
-        this.emit("change");
-    }
-
-    handleActions(action){
-        switch(action.type){
-            case "INPUT_CHANGE":{
-                this.inputChange(action.payload.which, action.payload.value);
+        switch(which){
+            case 'cName':{
+                this.data.input.cName = value;
+                console.log(this.data.input.cName);
+                break;
+            }
+            case 'cNum':{
+                this.data.input.cNum = value;
                 break;
             }
             default:{
                 break;
             }
         }
+        this.emit("change");
+    }
+
+    handleActions(action){
+        console.log("here");
+        switch(action.type){
+            case "INPUT_CHANGE":{
+                this.inputChange(action.payload.which, action.payload.value);
+                break;
+            }
+            default:{
+                console.log("Nothing for the createCourseStore to handle");
+                break;
+            }
+        }
     }
 }
 
-const createCourseStore = new CreateCourseStore();
+export const createCourseStore = new CreateCourseStore();
 dispatcher.register(createCourseStore.handleActions.bind(createCourseStore));
-export default createCourseStore;

@@ -14,7 +14,7 @@ export class Input extends Component{
                     <label for={this.props.id}>{this.props.text}:</label>
                 </div>
                 <div className='col text-left'>
-                    <input id={this.props.id} type={this.props.type} disabled={this.props.disabled} name={this.props.name}/>
+                    <input id={this.props.id} type={this.props.type} disabled={this.props.disabled} name={this.props.name} onChange={this.props.event}/>
                 </div>
             </div>
         );
@@ -33,5 +33,6 @@ Input.propTypes = {
     placeholder: PropTypes.string,
     name: PropTypes.string.isRequired,
     id: PropTypes.string.isRequired,
-    text: PropTypes.string.isRequired
+    text: PropTypes.string.isRequired,
+    event: PropTypes.func
 }
