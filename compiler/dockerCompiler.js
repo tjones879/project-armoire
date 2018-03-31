@@ -25,6 +25,26 @@ function buildPrepCmd(path, folder) {
     return command;
 }
 
+function writePayload(sandbox) {
+    var fs = require('fs');
+    let obj = JSON.stringify({
+        student: '5abe78b33265b46e26b6058a',
+        course: '5abfb80ed9d4c95527672eb9',
+        assignment: '5abfb80ed9d4c95527672eba',
+        source: 'file.cpp',
+        compile: {
+            command: "g++ file.cpp -o ./a.out",
+        },
+        run: {
+            command: "./a.out",
+        }
+    });
+    fs.writeFile(sandbox.path + sandbox.folder + "/payload", obj, (err) => {
+        if (err)
+            console.log(err);
+    });
+}
+
 DockerSandbox.prototype.prepare = function(callback) {
     var exec = require('child_process').exec;
     var fs = require('fs');
@@ -38,6 +58,7 @@ DockerSandbox.prototype.prepare = function(callback) {
             } else {
                 console.log(sandbox.langName + " file was saved!");
                 exec("chmod 777 \'" + sandbox.path + sandbox.folder + "/" + sandbox.file_name + "\'");
+                writePayload(sandbox);
 
                 fs.writeFile(sandbox.path + sandbox.folder + "/inputFile", sandbox.stdin_data, (err) => {
                     if (err) {
@@ -53,7 +74,7 @@ DockerSandbox.prototype.prepare = function(callback) {
 }
 
 function buildDockerCmd(path, vmName, compiler, srcFile, outputCommand, extraArgs) {
-    let command = 'sudo docker run --rm -v ';
+    let command = 'sudo docker run --rm --net="host" -v ';
     command += '"' + path + '":/codeDir ';
     command += vmName + ' /codeDir/script.py ';
     command += compiler + ' "' + srcFile + '" "' + outputCommand + '" "' + extraArgs + '"';
@@ -113,7 +134,7 @@ DockerSandbox.prototype.execute = function(callback) {
                 }
             });
         }
-        exec("rm -r " + sandbox.folder);
+        //exec("rm -r " + sandbox.folder);
     });
 }
 

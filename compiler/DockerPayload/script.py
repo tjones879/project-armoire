@@ -1,50 +1,116 @@
 #!/usr/bin/env python3
+from bson import ObjectId
+import json
+from pymongo import MongoClient
+import pymongo
 import subprocess
-import sys
-import time
 
 
-class Arguments():
-    def __init__(self, compiler, src_file, output, extra_args):
-        self.compiler = compiler
-        self.src_file = src_file
+class Submission():
+    """
+    Submissions are embedded in each student with the following schema:
+    {
+        _id: ObjectId,
+        contents: String,
+        output: String,
+        tests: [{
+            id: Integer,
+            output: String,
+        }]
+        time: Float
+    }
+    """
+    def __init__(self, contents, output, test_results=[], run_time=0):
+        self.contents = contents
         self.output = output
-        self.extra_args = extra_args
+        self.test_results = test_results
+        self.run_time = run_time
 
 
-def getArgs() -> Arguments:
-    if len(sys.argv) < 5:
-        print("Not enough arguments have been passed in")
-    else:
-        compiler = sys.argv[1]
-        src_file = sys.argv[2]
-        output = sys.argv[3]
-        extra_args = sys.argv[4]
-        return Arguments(compiler, src_file, output, extra_args)
+class Student():
+    def __init__(self, db: pymongo.collection, student_id: ObjectId):
+        self.students = db['students']
+        self.student_id = student_id
+        self.student = self.students.find_one({'_id': student_id})
+
+    def getIndices(self, cid: ObjectId, aid: ObjectId) -> (int, int):
+        """
+        Mongo does not allow updates to nested array objects.
+
+        We must find the correct array position for both the
+        course and the assignment.
+
+        Returns (course index, assignment index) an index will
+        be -1 if it could not be found.
+        """
+        for c, course in enumerate(self.student['courses']):
+            if course['id'] == cid:
+                for a, assignment in enumerate(course['assignments']):
+                    if assignment['id'] == aid:
+                        return (c, a)
+                return (c, -1)
+        return (-1, -1)
+
+    def saveSubmission(self, cid: int, aid: int, sub: 'Submission'):
+        self.students.update_one(
+            {'_id': self.student_id},
+            {'$push': {
+                'courses.' + str(cid) + '.assignments.' + str(aid) + '.submissions': {
+                    'id': ObjectId(),
+                    'contents': sub.contents,
+                    'output': sub.output,
+                    'test_results': sub.test_results,
+                    'time': sub.run_time
+                }
+            }}
+        )
 
 
-def callCompiler(args: Arguments):
-    with open('/codeDir/completed', 'w') as stdout:
-        sys.stdout = stdout
-        with open('/codeDir/errors', 'w') as stderr:
-            sys.stderr = stderr
-            start = time.time()
-            cmd = [args.compiler, '/codeDir/' + args.src_file]
-            if args.output == '':
-                with open('/codeDir/inputFile', 'r') as f:
-                    subprocess.call(cmd, stdin=f, stdout=stdout, stderr=stderr)
-            else:
-                result = subprocess.call([cmd, args.extra_args], stdout=stdout, stderr=stderr)
-                if result is 0:
-                    with open('/codeDir/inputFile', 'r') as f:
-                        subprocess.call(args.output, stdout=stdout, stderr=stderr)
-                else:
-                    print("Compiler Failed")
-            print("COMPILER END" + " " + str(time.time() - start))
-            sys.stderr = sys.__stderr__
-        sys.stdout = sys.__stdout__
+def getConfig() -> dict:
+    with open('/codeDir/payload', 'r') as payload:
+        settings = json.load(payload)
+        return settings
+
+
+def getMongo(host='localhost', port=27017) -> pymongo.collection:
+    client = MongoClient(host, port)
+    db = client['development']
+    return db
+
+
+def getContents(source):
+    with open(source, 'r') as f:
+        return f.read()
+
+
+def callCompiler(db: pymongo.collection, args: dict):
+    contents = getContents('/codeDir/' + args['source'])
+    if 'compile' in args and args['compile'] is not None:
+        p = subprocess.Popen(args['compile']['command'], shell=True,
+                             cwd='/codeDir/', stderr=subprocess.PIPE)
+        out, err = p.communicate()
+        if err != b'':
+            return Submission(contents,
+                              out.decode('utf-8') + err.decode('utf-8'))
+
+    with open('/codeDir/inputFile', 'r') as f:
+        p = subprocess.Popen(args['run']['command'], shell=True, stdin=f,
+                             cwd='/codeDir/',
+                             stdout=subprocess.PIPE,
+                             stderr=subprocess.PIPE)
+        out, err = p.communicate()
+        if err != b'':
+            return Submission(contents,
+                              out.decode('utf-8') + err.decode('utf-8'))
+        else:
+            return Submission(contents, out.decode('utf-8'))
 
 
 if __name__ == '__main__':
-    args = getArgs()
-    callCompiler(args)
+    db = getMongo()
+    config = getConfig()
+    student = Student(db, ObjectId(config['student']))
+    sub = callCompiler(db, config)
+    course, assignment = student.getIndices(ObjectId(config['course']),
+                                            ObjectId(config['assignment']))
+    student.saveSubmission(course, assignment, sub)
