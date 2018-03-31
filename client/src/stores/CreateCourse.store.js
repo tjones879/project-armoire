@@ -70,6 +70,9 @@ class CreateCourseStore extends EventEmitter{
                 if(obj.status === 'error'){
                     this.data.feedback = obj.payload;
                     this.emit('change');
+                }else if(obj.status === 'success'){
+                    this.data.feedback = obj.payload;
+                    this.emit('change');
                 }
             }).catch();
         }else{

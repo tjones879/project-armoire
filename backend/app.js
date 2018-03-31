@@ -19,6 +19,9 @@ app.use(bodyParser.urlencoded({extended:true}));
 app.use('/', index);
 app.use('/authentication', authentication);
 
+//This needs to go before '.use'
+app.post('/course', verifyToken, course);
+
 app.use('/assignment', assignment);
 app.use('/professor', professor);
 app.use('/course', course);

@@ -88,8 +88,9 @@ class LoginStore extends EventEmitter{
         ).then(obj => {
             if(obj.success){
                 localStorage.setItem('token', obj.token);
-                this.data.feedback = "Successful Login!";
+                this.data.feedback = "Successful Login! You will be redirected in 5 seconds...";
                 this.loggedIn();
+                setTimeout(()=>{window.location = 'account'}, 5000);
             }else{
                 if(obj.error === 1){
                     this.data.feedback = "Fields are empty!";
