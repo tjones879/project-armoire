@@ -10,6 +10,7 @@ import {RegisterPage} from './components/Register';
 import {AccountPage} from './pages/Account.page.react';
 import {CoursePage} from './pages/Courses.page.react';
 import {CreateCoursePage} from './pages/CreateCourse.page.react';
+import {CreateAssignmentPage} from './pages/CreateAssignment.page.react';
 
 const Root = () => {
     return (
@@ -22,6 +23,7 @@ const Root = () => {
           <Route path="/account" component={AccountPage} />
           <Route path='/course' component={CoursePage} />
           <Route path='/createcourse' component={CreateCoursePage} />
+          <Route path='/createassignment' component={CreateAssignmentPage} />
         </div>
       </Router>
     );

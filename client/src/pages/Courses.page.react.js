@@ -27,6 +27,7 @@ export class CoursePage extends Component{
             <div>
                 <Navbar />
                 <Btn text='Create New Course' class='btn btn-light' event={()=>{window.location = "createcourse"}}/>
+                <Btn text='Create New Assignment' class='btn btn-light' event={()=>{window.location = 'createassignment'}} />
             </div>
         );
     }
