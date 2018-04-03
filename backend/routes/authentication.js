@@ -61,7 +61,7 @@ router.post('/login', function(req, res, next){
                             email:obj.email,
                             classification:obj.classification
                         };
-                        jwt.sign({user}, process.env.JWT_SECRET, {expiresIn: '15m'}, (err,token) => {
+                        jwt.sign({user}, process.env.JWT_SECRET, {expiresIn: '1h'}, (err,token) => {
                             if(err){
                                 console.log(`Token Failure: failure on sign by ${emailV}`);
                                 res.json({success: false});

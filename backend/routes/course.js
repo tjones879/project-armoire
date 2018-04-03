@@ -20,6 +20,48 @@ router.get('/', function(req, res, next) {
     });
 });
 
+function getCourses(courses){
+    return new Promise((resolve, reject) => {
+        let betterCourses = [];
+        let prom = [];
+        let count = 0;
+        for(let i = 0; i < courses.length; i++){
+            prom.push(Course.findById(courses[i]).then(res => {
+                betterCourses.push(res);
+            }).catch())
+        }
+        Promise.all(prom).then(response => {
+            resolve(betterCourses);
+        });
+    });
+}
+
+router.get('/:id', (req, res, next) => {
+    Professor.findOne({login_id:req.params.id}).then(obj => {
+        if(obj != null){
+            const courses = obj.courses;
+            getCourses(courses).then(response => {
+                res.send(response);
+            }).catch();
+        }else{
+            res.send([]);
+        }
+    }).catch(err => {
+        res.send([]);
+    });
+});
+
+router.post('/add/assignment/:assignments/:course', (req, res, next) => {
+    Course.findById(req.params.course).then(response => {
+        response.assignments.push(req.params.assignments);
+        Course.findByIdAndUpdate(response._id,{ $set: {assignments: response.assignments}}).then(response => {
+            res.json(response);
+        }).catch(err => {
+            res.json({});
+        });
+    }).catch();
+});
+
 router.post('/', (req, res, next) => {
     if(req.body.cName === '' && req.body.cNum === ''){
         res.json({
