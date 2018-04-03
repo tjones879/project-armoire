@@ -14,6 +14,7 @@ import {CreateAssignmentPage} from './pages/CreateAssignment.page.react';
 import {StudentPage} from './pages/Student.page.react';
 import {GradebookPage} from './pages/Gradebook.page.react';
 import {AccountChangePage} from './pages/AccountChange.page.react';
+import {SearchStudentsPage} from './pages/SearchStudents.page.react';
 
 const Root = () => {
     return (
@@ -30,6 +31,7 @@ const Root = () => {
           <Route path='/student' component={StudentPage} />
           <Route path='/gradebook' component={GradebookPage} />
           <Route path='/account_change' component={AccountChangePage} />
+          <Route path='/search_students' component={SearchStudentsPage} />
         </div>
       </Router>
     );
