@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 
 import {Navbar} from '../components/Navbar';
+import {SearchStudentsContainer} from '../containers/SearchStudents.container.react';
 
 import AuthService from '../components/AuthService';
 
@@ -18,6 +19,7 @@ export class SearchStudentsPage extends Component{
         return(
             <div>
                 <Navbar />
+                <SearchStudentsContainer title="Search Students"/>
             </div>
         );
     }
