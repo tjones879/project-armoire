@@ -15,7 +15,12 @@ export class HomePage extends Component{
 class Home extends Component {
     render() {
         return (
-            <h1 className="text-center">Welcome to Project Armoire</h1>
+            <div className="text-center">
+                <h1>Welcome to Project Armoire</h1>
+                <a href="https://github.com/tjones879/project-armoire" target="_blank">GitHub Link</a><br/>
+                <a href="https://trello.com/b/aYuzLHk3/project-armoire" target="_blank">Trello Board</a><br />
+                <a href="https://github.com/tjones879/project-armoire/wiki/API" target="_blank">API</a>
+            </div>
         );
     }
 }
