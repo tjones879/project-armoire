@@ -8,29 +8,58 @@ var router = express.Router();
 var Student = require('../db/student.js');
 var Mongoose = require('mongoose');
 
-/* GET professors listing. */
+/* GET student listing. */
 router.get('/', function(req, res, next) {
-    res.json({
-        id: "ObjectId",
-        login_id: "ObjectId",
-        fname: "Tyler",
-        lname: "Jones",
-        courses: [{
-            id: "ObjectId",
-            grade: 80,
-            assignments: [{
-                id: "ObjectId",
-                submissions: [{
-                    id: "ObjectId",
-                    contents: "String",
-                    tests: [{
-                        id: 000,
-                        output: "Output"
-                    }]
-                }]
-            }]
-        }]
+    Student.find().then(obj => {
+        res.json(obj);
+    }).catch(err => {
+        console.log(err.message);
+        res.json({});
     });
+});
+
+// Get student by ObjectId
+router.get('/:id', (req, res) => {
+    let id = req.params.id;
+    Student.findById(id).then(obj => {
+        res.json(obj);
+    }).catch(err => {
+        console.log(err.message);
+        res.json({});
+    });
+});
+
+// Get student by login ObjectId
+router.get('/login_id/:id', (req, res) => {
+    try{
+        let id = Mongoose.Types.ObjectId(req.params.id);
+        Student.findOne({login_id:id}).then(obj => {
+            res.json(obj);
+        }).catch(err => {
+            console.log(err.message);
+            res.json({});
+        });
+    }catch(err){
+        console.log(err.message);
+        res.json({});
+    }
+});
+
+//Get student by First and Last name
+router.get('/:first/:last', (req, res) => {
+    try{
+        let fname = req.params.first;
+        let lname = req.params.last;
+        Student.find({fname, lname}).then(obj => {
+            res.json(obj);
+        }).catch(err => {
+            console.log(err.message);
+            res.json([]);
+        });
+    }catch(err){
+        console.log(err.message);
+        res.json([]);
+    }
 });
 
 router.post('/', (req, res, next) => {
