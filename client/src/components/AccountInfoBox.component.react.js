@@ -5,9 +5,6 @@ import PropTypes from 'prop-types';
 /* dumb component, no logic should be implemented here */
 
 export class AccountInfoBox extends Component{
-    constructor(props){
-        super(props);
-    }
     render(){
         return(
             <div className="text-center">

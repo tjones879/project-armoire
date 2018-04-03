@@ -56,7 +56,7 @@ export class RegisterForm extends Component{
             if(this.state.store.lastValue === this.checkName(this.state.store.lastValue, "last")){
                 if(this.state.store.passValue.length >= 8 && this.state.store.passValue.length <= 30){
                     if(this.state.store.passValue === this.state.store.confirmValue){
-                        if(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(this.state.store.emailValue)){
+                        if(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(this.state.store.emailValue)){
                             if(this.state.store.classificationValue === "student" || this.state.store.classificationValue === "professor"){
                                 registerActions.updateFeedback("user", "");
                                 fetch(registerAPI,{

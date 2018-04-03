@@ -18,7 +18,7 @@ export class CreateAssignment extends Component{
         this.change = this.change.bind(this);
     }
     componentWillMount(){
-        store.on("change", ()=>{this.setState(store.getAll()); console.log(this.state.options);});
+        store.on("change", ()=>{this.setState(store.getAll())});
         actions.getInfo(this.props.user);
     }
     validate(event){

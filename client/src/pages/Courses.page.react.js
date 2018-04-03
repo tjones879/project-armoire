@@ -19,7 +19,7 @@ export class CoursePage extends Component{
     componentWillMount(){
         this.user = this.Auth.getInfo().user;
         if(this.user.classification === 'professor'){
-            console.log('professor');
+            //is professor
         }
     }
     render(){

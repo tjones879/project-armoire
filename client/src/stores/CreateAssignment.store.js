@@ -131,7 +131,7 @@ class CreateAssignmentStore extends EventEmitter{
                     if(pos > this.store.data.examples.length){
                         let offset = pos - this.store.data.examples.length;
                         for(let i = 0; i < offset; i++){
-                            if(i == offset - 1){
+                            if(i === offset - 1){
                                 this.store.data.examples.push({
                                     input:value,
                                     output:""
@@ -152,7 +152,7 @@ class CreateAssignmentStore extends EventEmitter{
                     if(pos > this.store.data.examples.length){
                         let offset = pos - this.store.data.examples.length;
                         for(let i = 0; i < offset; i++){
-                            if(i == offset - 1){
+                            if(i === offset - 1){
                                 this.store.data.examples.push({
                                     input:"",
                                     output:value
@@ -173,7 +173,7 @@ class CreateAssignmentStore extends EventEmitter{
                     if(pos > this.store.data.tests.length){
                         let offset = pos - this.store.data.tests.length;
                         for(let i = 0; i < offset; i++){
-                            if(i == offset - 1){
+                            if(i === offset - 1){
                                 this.store.data.tests.push({
                                     id: pos,
                                     action:value,
@@ -196,7 +196,7 @@ class CreateAssignmentStore extends EventEmitter{
                     if(pos > this.store.data.tests.length){
                         let offset = pos - this.store.data.tests.length;
                         for(let i = 0; i < offset; i++){
-                            if(i == offset - 1){
+                            if(i === offset - 1){
                                 this.store.data.tests.push({
                                     id:pos,
                                     action:"",

@@ -66,7 +66,6 @@ class CreateCourseStore extends EventEmitter{
                     'Authorization': `Bearer ${this.Auth.getToken()}`
                 }
             }).then(payload => payload.json()).then(obj => {
-                console.log(obj);
                 if(obj.status === 'error'){
                     this.data.feedback = obj.payload;
                     this.emit('change');
@@ -96,7 +95,6 @@ class CreateCourseStore extends EventEmitter{
                 break;
             }
             default:{
-                console.log("Nothing for the createCourseStore to handle");
                 break;
             }
         }
