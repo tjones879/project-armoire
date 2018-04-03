@@ -11,6 +11,7 @@ import {AccountPage} from './pages/Account.page.react';
 import {CoursePage} from './pages/Courses.page.react';
 import {CreateCoursePage} from './pages/CreateCourse.page.react';
 import {CreateAssignmentPage} from './pages/CreateAssignment.page.react';
+import {StudentPage} from './pages/Student.page.react';
 
 const Root = () => {
     return (
@@ -24,6 +25,7 @@ const Root = () => {
           <Route path='/course' component={CoursePage} />
           <Route path='/createcourse' component={CreateCoursePage} />
           <Route path='/createassignment' component={CreateAssignmentPage} />
+          <Route path='/student' component={StudentPage} />
         </div>
       </Router>
     );
