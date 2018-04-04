@@ -10,6 +10,7 @@ export class SelectBox extends Component{
                 </label>
                 <div className="col text-left">
                     <select id={this.props.id} onChange={this.props.event}>
+                        <option disabled selected value> -- select an option -- </option>
                         {this.props.options.map(obj =>
                             <option key={obj.value} id={obj.value} value={obj.value}>{obj.text}</option>
                         )}

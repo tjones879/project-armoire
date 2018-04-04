@@ -62,6 +62,29 @@ router.get('/:first/:last', (req, res) => {
     }
 });
 
+router.post('/add/course', (req, res) => {
+    let sid = req.body.sid, cid = Mongoose.Types.ObjectId(req.body.cid);
+    try{
+        Student.findById(sid).then(payload => {
+            let courses = payload.courses;
+            courses.push({id:cid, assignments:[]});
+            try{
+                Student.findByIdAndUpdate(sid, {$set:{courses:courses}}).then(payload => {
+                    console.log(payload);
+                }).catch(err => {
+                    console.log(err.message);
+                });
+            }catch(err){
+                console.log(err.message);
+            }        
+        }).catch(err => {
+            console.log(err.message);
+        });
+    }catch(err){
+        console.log(err.message);
+    }
+});
+
 router.post('/', (req, res, next) => {
     if(req.body.email !== undefined && req.body.id !== undefined) {
         Student.findOne({login_id: new Mongoose.Types.ObjectId(req.body.id)}, (err, obj) => {

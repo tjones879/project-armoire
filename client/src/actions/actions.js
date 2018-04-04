@@ -38,3 +38,32 @@ export function submit(dir){
         dispatcher.dispatch(payload);
     }
 }
+export function user(dir, user){
+    let payload = null;
+    switch(dir){
+        case "SEARCH_STUDENT":{
+            payload = {
+                type: "USER_SEARCH_STUDENT",
+                payload: {
+                    user:user
+                }
+            }
+            break;
+        }
+        default:{
+            break;
+        }
+    }
+    if(payload != null){
+        dispatcher.dispatch(payload);
+    }
+}
+
+export function addStudentToCourse(id){
+    dispatcher.dispatch({
+        type:"ADD_STUDENT_TO_COURSE",
+        payload:{
+            id:id
+        }
+    });
+}

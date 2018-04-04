@@ -7,8 +7,12 @@ class SearchStudentsStore extends EventEmitter{
         super();
         this.store = {
             feedback: null,
+            user: {},
             sLen: 0,
             students:[],
+            courses:[],
+            options:[],
+            selectBoxForms:[],
             data:{
                 fname: null,
                 lname: null
@@ -48,6 +52,45 @@ class SearchStudentsStore extends EventEmitter{
 
         });
     }
+    user(user){
+        this.store.user = user.user;
+        fetch(`course/${user.user.id}`).then(response => response.json()).then(payload => {
+            let options = [];
+            for(let i = 0; i < payload.length; i++){
+                options.push({
+                    text: payload[i].title,
+                    value: payload[i]._id
+                });
+            }
+            this.store.courses = payload;
+            this.store.options = options;
+            this.emit("change");
+        }).catch(err => {
+            console.log(err.message);
+        });
+    }
+    addStudentToCourse(id){
+        let index = this.store.selectBoxForms.findIndex( form => form.id === `courseSelect${id}`);
+        if(index === -1){
+            console.log("not found");
+        }else{
+            fetch('student/add/course', {
+                method:'POST',
+                body: JSON.stringify({
+                    cid: this.store.selectBoxForms[index].value,
+                    sid: id
+                }),
+                headers:{
+                    'content-type':'application/json'
+                }
+            }).then(response => response.json()).then(payload => {
+                console.log(payload);
+            }).catch(err => {
+                console.log(err.message);
+            });
+        }
+    }
+
     change(id, value){
         let data = this.store.data;
         switch(id){
@@ -60,6 +103,19 @@ class SearchStudentsStore extends EventEmitter{
                 break;
             }
             default:{
+                let index = this.store.selectBoxForms.findIndex(form => form.id === id)
+                if( index === -1){
+                    this.store.selectBoxForms.push({
+                        id:id,
+                        value: value
+                    });
+                }else{
+                    this.store.selectBoxForms[index] = {
+                        id:id,
+                        value: value
+                    };
+                }
+                console.log(id, value);
                 break;
             }
         }
@@ -72,6 +128,14 @@ class SearchStudentsStore extends EventEmitter{
             }
             case "SUBMIT_SEARCH_STUDENT":{
                 this.submit();
+                break;
+            }
+            case "USER_SEARCH_STUDENT":{
+                this.user(action.payload.user);
+                break;
+            }
+            case "ADD_STUDENT_TO_COURSE":{
+                this.addStudentToCourse(action.payload.id);
                 break;
             }
             default:{
