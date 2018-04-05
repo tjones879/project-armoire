@@ -84,7 +84,8 @@ class SearchStudentsStore extends EventEmitter{
                     'content-type':'application/json'
                 }
             }).then(response => response.json()).then(payload => {
-                console.log(payload);
+                this.store.feedback = `Added course '${this.store.selectBoxForms[index].value}' to student '${id}`;
+                this.emit("change");
             }).catch(err => {
                 console.log(err.message);
             });

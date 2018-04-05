@@ -6,6 +6,7 @@
 var express = require('express');
 var router = express.Router();
 var Student = require('../db/student.js');
+var Course = require('../db/course.js');
 var Mongoose = require('mongoose');
 
 /* GET student listing. */
@@ -45,6 +46,35 @@ router.get('/login_id/:id', (req, res) => {
     }
 });
 
+router.get('/courses/:id', (req, res) => {
+    const id = Mongoose.Types.ObjectId(req.params.id);
+    try{
+        Student.findOne({login_id:id}).then(payload => {
+            const courses = payload.courses;
+            let betterCourses = [];
+            let proms = [];
+            for(let i = 0; i < courses.length; i++){
+                proms.push(
+                    Course.findById(courses[i].id).then(payload => {
+                        betterCourses.push(payload);
+                    }).catch(err => {
+                        console.log(err.message);
+                    })
+                )
+            }
+            Promise.all(proms).then(payload => {
+                res.send(betterCourses);
+            }).catch(err => {
+                console.log(err.message);
+            });
+        }).catch(err => {
+            console.log(err.message);
+        });
+    }catch(err){
+        console.log(err.message);
+    }
+});
+
 //Get student by First and Last name
 router.get('/:first/:last', (req, res) => {
     try{
@@ -70,18 +100,22 @@ router.post('/add/course', (req, res) => {
             courses.push({id:cid, assignments:[]});
             try{
                 Student.findByIdAndUpdate(sid, {$set:{courses:courses}}).then(payload => {
-                    console.log(payload);
+                    res.json(payload);
                 }).catch(err => {
                     console.log(err.message);
+                    res.json({});
                 });
             }catch(err){
                 console.log(err.message);
+                res.json({});
             }        
         }).catch(err => {
             console.log(err.message);
+            res.json({});
         });
     }catch(err){
         console.log(err.message);
+        res.json({});
     }
 });
 

@@ -67,3 +67,22 @@ export function addStudentToCourse(id){
         }
     });
 }
+
+export function start(dir, user){
+    let payload = {};
+    switch(dir){
+        case "COURSES":{
+            payload = {
+                type:"COURSES_START",
+                payload:{
+                    user:user
+                }
+            };
+            break;
+        }
+        default:{
+            break;
+        }
+    }
+    dispatcher.dispatch(payload);
+}
