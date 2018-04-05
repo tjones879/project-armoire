@@ -86,3 +86,13 @@ export function start(dir, user){
     }
     dispatcher.dispatch(payload);
 }
+
+export function courseInit(id, user){
+    dispatcher.dispatch({
+        type:"COURSE_INIT",
+        payload:{
+            id:id,
+            user:user
+        }
+    });
+}

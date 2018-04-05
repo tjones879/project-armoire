@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 
 import AuthService from '../components/AuthService';
+import store from '../stores/ExactCourse.store';
+import * as Actions from '../actions/actions';
 
 export class ExactCoursePage extends Component{
     constructor(props){
@@ -25,8 +27,12 @@ export class ExactCoursePage extends Component{
                         }
                         if(!found){
                             window.location = '../course';
+                        }else{
+                            store.on("change", ()=> {
+                                this.setState(store.getAll());
+                            });
+                            Actions.courseInit(this.props.match.params.id, this.state.user);
                         }
-                        console.log(courses);
                     }).catch(err => {
                         console.log(err.message);
                     });

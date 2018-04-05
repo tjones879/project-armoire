@@ -20,6 +20,20 @@ router.get('/', function(req, res, next) {
     });
 });
 
+router.get('/:id', (req,res) => {
+    try{
+        Course.findById(req.params.id).then(payload => {
+            res.json(payload);
+        }).catch(err => {
+            console.log(err.message);
+            res.send(null);
+        });
+    }catch(err){
+        console.log(err.message);
+        res.send(null);
+    }
+});
+
 function getCourses(courses){
     return new Promise((resolve, reject) => {
         let betterCourses = [];
