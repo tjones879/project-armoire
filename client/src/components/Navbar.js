@@ -8,11 +8,11 @@ export class Navbar extends Component{
         this.Auth = new AuthService();
         this.links = [{
             title:"Login",
-            link:"login"
+            link:`${window.location.href.split("/")[0]}//${window.location.hostname}:${window.location.port}/login`
         },
         {
             title:"Register",
-            link:"register"
+            link:`${window.location.href.split("/")[0]}//${window.location.hostname}:${window.location.port}/register`
         }]
         this.state = {
             logoutBtn: {
@@ -33,26 +33,26 @@ export class Navbar extends Component{
             this.links.pop({title:'Login'});
             this.links.push({
                 title:'Account',
-                link:'account'
+                link:`${window.location.href.split("/")[0]}//${window.location.hostname}:${window.location.port}/account`
             });
             this.links.push({
                 title:'Courses',
-                link:'course'
+                link:`${window.location.href.split("/")[0]}//${window.location.hostname}:${window.location.port}/course`
             });
             const userInfo = this.Auth.getInfo();
             if(userInfo.user.classification === 'student'){
                 this.links.push({
                     title:'Grades',
-                    link:'grade'
+                    link:`${window.location.href.split("/")[0]}//${window.location.hostname}:${window.location.port}/grade`
                 });
             }else if(userInfo.user.classification === 'professor'){
                 this.links.push({
                     title:'Gradebook',
-                    link:'gradebook'
+                    link:`${window.location.href.split("/")[0]}//${window.location.hostname}:${window.location.port}/gradebook`
                 });
                 this.links.push({
                     title:'Students',
-                    link:'student'
+                    link:`${window.location.href.split("/")[0]}//${window.location.hostname}:${window.location.port}/student`
                 });
             }
         }
@@ -60,9 +60,9 @@ export class Navbar extends Component{
     render(){
         return(
             <nav className="navbar navbar-expand-lg pa-navbar">
-                <a className="navbar-brand" href="http://localhost:3000">Project Armoire</a>
+                <a className="navbar-brand" href={`${window.location.href.split("/")[0]}//${window.location.hostname}:${window.location.port}`}>Project Armoire</a>
                 <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span className="navbar-toggler-icon"><img alt="hamburger icon for dropdown menu" width='35' height='35' src='images/hamburger.png' /></span>
+                    <span className="navbar-toggler-icon"><img alt="hamburger icon for dropdown menu" width='35' height='35' src={`${window.location.href.split("/")[0]}//${window.location.hostname}:${window.location.port}/images/hamburger.png`} /></span>
                 </button>
                 <div className="collapse navbar-collapse" id="navbarNav">
                     <ul className="navbar-nav">

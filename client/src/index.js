@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Route, BrowserRouter as Router } from 'react-router-dom';
 import {Switch} from 'react-router';
-import './index.css';
+import "./index.css";
 import registerServiceWorker from './registerServiceWorker';
 import {AssignmentPage} from './components/Assignment';
 import {HomePage} from './components/Home';
@@ -17,6 +17,8 @@ import {GradebookPage} from './pages/Gradebook.page.react';
 import {AccountChangePage} from './pages/AccountChange.page.react';
 import {SearchStudentsPage} from './pages/SearchStudents.page.react';
 import {ExactCoursePage} from './pages/ExactCourse.page.react';
+
+
 
 const Root = () => {
     return (

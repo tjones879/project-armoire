@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 
+import {Navbar} from '../components/Navbar';
+
 import AuthService from '../components/AuthService';
 import store from '../stores/ExactCourse.store';
 import * as Actions from '../actions/actions';
@@ -48,6 +50,8 @@ export class ExactCoursePage extends Component{
     render(){
         return(
             <div>
+                <Navbar />
+                {console.log(`${window.location.hostname}:${window.location.port}`)}
             </div>
         );
     }
