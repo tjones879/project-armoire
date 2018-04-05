@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Route, BrowserRouter as Router } from 'react-router-dom';
 import {Switch} from 'react-router';
-import "./index.css";
 import registerServiceWorker from './registerServiceWorker';
 import {AssignmentPage} from './components/Assignment';
 import {HomePage} from './components/Home';

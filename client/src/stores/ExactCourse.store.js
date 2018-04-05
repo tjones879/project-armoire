@@ -32,6 +32,8 @@ class Store extends EventEmitter{
                 }
                 Promise.all(proms).then(()=>{
                     this.store.assignments = betterAssignments;
+                    console.log(betterAssignments);
+                    this.emit("change");
                 }).catch(err => {console.log(err.message)});
             }).catch(err => {
                 console.log(err.message);

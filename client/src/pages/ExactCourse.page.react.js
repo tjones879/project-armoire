@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 
 import {Navbar} from '../components/Navbar';
+import {AssignmentList} from '../components/AssignmentsList.component.react';
 
 import AuthService from '../components/AuthService';
 import store from '../stores/ExactCourse.store';
@@ -51,7 +52,8 @@ export class ExactCoursePage extends Component{
         return(
             <div>
                 <Navbar />
-                {console.log(`${window.location.hostname}:${window.location.port}`)}
+                {console.log(this.state.assignments)}
+                <AssignmentList assignments={this.state.assignments}/>
             </div>
         );
     }
