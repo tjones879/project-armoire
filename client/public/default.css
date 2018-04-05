@@ -21,5 +21,8 @@
     font-size: 130%;
 }
 body{
-    background-color: cornsilk;
+    background-color: cornsilk !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    font-family: sans-serif !important;
 }
