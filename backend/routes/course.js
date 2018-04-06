@@ -20,20 +20,6 @@ router.get('/', function(req, res, next) {
     });
 });
 
-router.get('/:id', (req,res) => {
-    try{
-        Course.findById(req.params.id).then(payload => {
-            res.json(payload);
-        }).catch(err => {
-            console.log(err.message);
-            res.send(null);
-        });
-    }catch(err){
-        console.log(err.message);
-        res.send(null);
-    }
-});
-
 function getCourses(courses){
     return new Promise((resolve, reject) => {
         let betterCourses = [];
@@ -50,7 +36,7 @@ function getCourses(courses){
     });
 }
 
-router.get('/:id', (req, res, next) => {
+router.get('/login_id/:id', (req, res, next) => {
     Professor.findOne({login_id:req.params.id}).then(obj => {
         if(obj != null){
             const courses = obj.courses;
@@ -64,6 +50,22 @@ router.get('/:id', (req, res, next) => {
         res.send([]);
     });
 });
+
+router.get('/:id', (req,res) => {
+    try{
+        Course.findById(req.params.id).then(payload => {
+            res.json(payload);
+        }).catch(err => {
+            console.log(err.message);
+            res.send(null);
+        });
+    }catch(err){
+        console.log(err.message);
+        res.send(null);
+    }
+});
+
+
 
 router.post('/add/assignment/:assignments/:course', (req, res, next) => {
     Course.findById(req.params.course).then(response => {

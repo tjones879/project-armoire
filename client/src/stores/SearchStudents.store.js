@@ -54,7 +54,7 @@ class SearchStudentsStore extends EventEmitter{
     }
     user(user){
         this.store.user = user.user;
-        fetch(`course/${user.user.id}`).then(response => response.json()).then(payload => {
+        fetch(`course/login_id/${user.user.id}`).then(response => response.json()).then(payload => {
             let options = [];
             for(let i = 0; i < payload.length; i++){
                 options.push({

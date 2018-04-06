@@ -69,7 +69,7 @@ class CreateAssignmentStore extends EventEmitter{
     }
 
     getInfo(user){
-        fetch(`course/${user.id}`).then(payload => payload.json()).then(res => {
+        fetch(`course/login_id/${user.id}`).then(payload => payload.json()).then(res => {
             this.store.courses = res;
             let delta = [];
             for(let i = 0; i < this.store.courses.length; i++){
