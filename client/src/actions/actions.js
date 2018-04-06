@@ -68,14 +68,24 @@ export function addStudentToCourse(id){
     });
 }
 
-export function start(dir, user){
+export function start(dir, obj){
     let payload = {};
     switch(dir){
         case "COURSES":{
             payload = {
                 type:"COURSES_START",
                 payload:{
-                    user:user
+                    user:obj
+                }
+            };
+            break;
+        }
+        case "ASSIGNMENT_SUBMISSION":{
+            payload = {
+                type:"ASSIGNMENT_SUBMISSION_START",
+                payload:{
+                    user:obj.user,
+                    id:obj.id
                 }
             };
             break;

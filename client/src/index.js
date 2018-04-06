@@ -16,6 +16,7 @@ import {GradebookPage} from './pages/Gradebook.page.react';
 import {AccountChangePage} from './pages/AccountChange.page.react';
 import {SearchStudentsPage} from './pages/SearchStudents.page.react';
 import {ExactCoursePage} from './pages/ExactCourse.page.react';
+import {ExactAssignmentPage} from './pages/Assignment.page.react';
 
 
 
@@ -31,6 +32,9 @@ const Root = () => {
           <Switch>
             <Route exact path='/course/:id' component={ExactCoursePage} />
             <Route path='/course' component={CoursePage} />
+          </Switch>
+          <Switch>
+              <Route path='/assignments/:id' component={ExactAssignmentPage}/>
           </Switch>
           <Route path='/createcourse' component={CreateCoursePage} />
           <Route path='/createassignment' component={CreateAssignmentPage} />
