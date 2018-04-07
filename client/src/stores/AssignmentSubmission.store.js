@@ -7,7 +7,8 @@ class Store extends EventEmitter{
         super();
         this.store = {
             id:null,
-            user:{}
+            user:{},
+            assignment:{}
         }
     }
     getAll(){
@@ -16,6 +17,16 @@ class Store extends EventEmitter{
     start(payload){
         this.store.id = payload.id;
         this.store.user = payload.user;
+        try{
+            fetch(`../assignment/${this.store.id}`).then(response => response.json()).then(payload => {
+                this.store.assignment = payload;
+                this.emit("change");
+            }).catch(err => {
+                console.log(err.message);
+            });
+        }catch(err){
+            console.log(err.message);
+        }
         console.log(this.store);
         this.emit("change");
     }
