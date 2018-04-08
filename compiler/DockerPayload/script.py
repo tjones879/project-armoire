@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 from bson import ObjectId
 import json
-from pymongo import MongoClient
-import pymongo
+from pymongo import MongoClient, collection
 import subprocess
 
 
@@ -28,7 +27,7 @@ class Submission():
 
 
 class Student():
-    def __init__(self, db: pymongo.collection, student_id: ObjectId):
+    def __init__(self, db: collection, student_id: ObjectId):
         self.students = db['students']
         self.student_id = student_id
         self.student = self.students.find_one({'_id': student_id})
@@ -69,10 +68,11 @@ class Student():
 def getConfig() -> dict:
     with open('/codeDir/payload', 'r') as payload:
         settings = json.load(payload)
+        print(settings)
         return settings
 
 
-def getMongo(host='localhost', port=27017) -> pymongo.collection:
+def getMongo(host='localhost', port=27017) -> collection:
     client = MongoClient(host, port)
     db = client['development']
     return db
@@ -83,7 +83,7 @@ def getContents(source):
         return f.read()
 
 
-def callCompiler(db: pymongo.collection, args: dict):
+def callCompiler(db: collection, args: dict):
     contents = getContents('/codeDir/' + args['source'])
     if 'compile' in args and args['compile'] is not None:
         p = subprocess.Popen(args['compile']['command'], shell=True,
