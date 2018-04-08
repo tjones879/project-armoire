@@ -96,7 +96,7 @@ DockerSandbox.prototype.execute = function(callback) {
         env: null
     };
 
-    exec(st, defaults, (err, stdout, stdin) => {
+    exec(st, defaults, (err) => {
         if (err) {
             console.log("Compilation timed out.");
             console.log(err);
@@ -129,7 +129,7 @@ DockerSandbox.prototype.execute = function(callback) {
                 }
             });
         }
-        //exec("rm -r " + sandbox.folder);
+        exec("rm -r " + sandbox.folder);
     });
 };
 
