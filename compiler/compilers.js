@@ -1,16 +1,20 @@
-exports.compilers = [
+module.exports.compilers = [
     {
-        compiler_cmd: "python",
-        source_file: "file.py",
-        compiled_exe: "",
-        langName: "Python",
-        extra_args: ""
+        compile_cmd: "",
+        src_file: "file.py",
+        run_cmd: "python3 file.py",
+        name: "Python 3",
     },
     {
-        compiler_cmd: "\'g++ -o /codeDir/a.out\' ",
-        source_file: "file.cpp",
-        compiled_exe: "/codeDir/a.out",
-        langName: "C/C++",
-        extra_args: ""
+        src_file: "file.cpp",
+        compile_cmd: "g++ file.cpp -o /codeDir/a.out ",
+        run_cmd: "./a.out",
+        name: "C++",
+    },
+    {
+        compile_cmd: "",
+        src_file: "file.py",
+        run_cmd: "python file.py",
+        name: "Python 2",
     }
 ];

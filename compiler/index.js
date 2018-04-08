@@ -42,12 +42,15 @@ app.post('/compile', bruteforce.prevent, (req, res) =>
         path:            __dirname + "/",
         folder:          'temp/' + random(10),
         vm_name:         'virtual_machine',
+        code:            code,
+        language:        arr.compilers[language],
+        /*
         compiler_name:   arr.compilers[language].compiler_cmd,
         file_name:       arr.compilers[language].source_file,
-        code:            code,
         output_command:  arr.compilers[language].compiled_exe,
         langName:        arr.compilers[language].langName,
         extra_arguments: arr.compilers[language].extra_args,
+        */
         stdin_data:      req.body.stdin,
     };
 

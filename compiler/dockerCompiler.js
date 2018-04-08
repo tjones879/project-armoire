@@ -3,19 +3,16 @@ var DockerSandbox = function(payload) {
     this.path            = payload.path;
     this.folder          = payload.folder;
     this.vm_name         = payload.vm_name;
-    this.compiler_name   = payload.compiler_name;
-    this.file_name       = payload.file_name;
+    this.language        = payload.language; // This is some kind of compiler struct
+    this.src_file        = this.language.src_file;
     this.code            = payload.code;
-    this.output_command  = payload.output_command;
-    this.langName        = payload.langName;
-    this.extra_arguments = payload.extra_arguments;
     this.stdin_data      = payload.stdin_data;
-}
+};
 
 DockerSandbox.prototype.run = function(callback) {
     let sandbox = this;
     this.prepare(() => sandbox.execute(callback));
-}
+};
 
 function buildPrepCmd(path, folder) {
     let dir = path + folder;
@@ -25,21 +22,23 @@ function buildPrepCmd(path, folder) {
     return command;
 }
 
-function writePayload(sandbox) {
+function writePayload(sandbox, language, input) {
     var fs = require('fs');
-    let obj = JSON.stringify({
-        student: '5abe78b33265b46e26b6058a',
+    let obj = {
+        student: '5abe77993265b46e26b60584',
         course: '5abfb80ed9d4c95527672eb9',
         assignment: '5abfb80ed9d4c95527672eba',
-        source: 'file.cpp',
+        source: language.src_file,
         compile: {
-            command: "g++ file.cpp -o ./a.out",
+            command: language.compile_cmd
         },
         run: {
-            command: "./a.out",
+            command: language.run_cmd,
+            stdin: input,
         }
-    });
-    fs.writeFile(sandbox.path + sandbox.folder + "/payload", obj, (err) => {
+    };
+
+    fs.writeFile(sandbox.path + sandbox.folder + "/payload", JSON.stringify(obj), (err) => {
         if (err)
             console.log(err);
     });
@@ -51,14 +50,14 @@ DockerSandbox.prototype.prepare = function(callback) {
     var sandbox = this;
     let command = buildPrepCmd(this.path, this.folder);
 
-    exec(command, (st) => {
-        fs.writeFile(sandbox.path + sandbox.folder + "/" + sandbox.file_name, sandbox.code, (err) => {
+    exec(command, () => {
+        fs.writeFile(sandbox.path + sandbox.folder + "/" + sandbox.src_file, sandbox.code, (err) => {
             if (err) {
                 console.log("Error in writing code: " + err);
             } else {
-                console.log(sandbox.langName + " file was saved!");
-                exec("chmod 777 \'" + sandbox.path + sandbox.folder + "/" + sandbox.file_name + "\'");
-                writePayload(sandbox);
+                console.log(sandbox.language.name + " file was saved!");
+                exec("chmod 777 '" + sandbox.path + sandbox.folder + "/" + sandbox.src_file + "'");
+                writePayload(sandbox, sandbox.language, sandbox.stdin_data);
 
                 fs.writeFile(sandbox.path + sandbox.folder + "/inputFile", sandbox.stdin_data, (err) => {
                     if (err) {
@@ -71,25 +70,21 @@ DockerSandbox.prototype.prepare = function(callback) {
             }
         });
     });
-}
+};
 
-function buildDockerCmd(path, vmName, compiler, srcFile, outputCommand, extraArgs) {
+function buildDockerCmd(path, vmName) {
     let command = 'sudo docker run --rm --net="host" -v ';
     command += '"' + path + '":/codeDir ';
     command += vmName + ' /codeDir/script.py ';
-    command += compiler + ' "' + srcFile + '" "' + outputCommand + '" "' + extraArgs + '"';
     return command;
 }
 
 DockerSandbox.prototype.execute = function(callback) {
     var exec = require('child_process').exec;
     var fs = require('fs');
-    var timer = 0; //variable to enforce the timeout_value
     var sandbox = this;
 
-    var st = buildDockerCmd(this.path + this.folder, this.vm_name,
-                            this.compiler_name, this.file_name,
-                            this.output_command, this.extra_arguments);
+    var st = buildDockerCmd(this.path + this.folder, this.vm_name);
     console.log("Executing script: `" + st + "`");
 
     let defaults = {
@@ -101,7 +96,7 @@ DockerSandbox.prototype.execute = function(callback) {
         env: null
     };
 
-    let dockerPID = exec(st, defaults, (err, stdout, stdin) => {
+    exec(st, defaults, (err, stdout, stdin) => {
         if (err) {
             console.log("Compilation timed out.");
             console.log(err);
@@ -136,6 +131,6 @@ DockerSandbox.prototype.execute = function(callback) {
         }
         //exec("rm -r " + sandbox.folder);
     });
-}
+};
 
 module.exports = DockerSandbox;
