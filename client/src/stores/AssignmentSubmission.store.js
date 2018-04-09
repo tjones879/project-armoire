@@ -59,11 +59,11 @@ class Store extends EventEmitter{
     submit(){
         fetch('../submission', {
             method:"POST",
-            body:{
+            body:JSON.stringify({
                 course: this.store.assignment.course,
                 assignment: this.store.id,
                 source:this.store.submissionBox
-            }
+            })
         }).then(response => response.json()).then(payload => {
 
         }).catch(err => {
