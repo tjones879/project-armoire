@@ -14,6 +14,7 @@ class CreateAssignmentStore extends EventEmitter{
             tests: [1],
             data: {
                 course: "",
+                language: "",
                 aTitle: "",
                 aOpen: "",
                 aClose: "",
@@ -103,6 +104,10 @@ class CreateAssignmentStore extends EventEmitter{
         switch(id){
             case "CourseSelectBox":{
                 this.store.data.course = value;
+                break;
+            }
+            case "LanguageSelectBox":{
+                this.store.data.language = value;
                 break;
             }
             case "aTitle":{
@@ -225,6 +230,7 @@ class CreateAssignmentStore extends EventEmitter{
             method: 'POST',
             body:JSON.stringify({
                 course:this.store.data.course,
+                language:this.store.data.language,
                 title:this.store.data.aTitle,
                 open_date: this.store.data.aOpen,
                 close_date: this.store.data.aClose,

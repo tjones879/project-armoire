@@ -7,6 +7,7 @@ var AssignmentSchema = new mongoose.Schema({
         ref: 'Course',
         index: true
     },
+    language: String,
     title: String,
     open_date: Date,
     close_date: Date,

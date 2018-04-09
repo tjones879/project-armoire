@@ -41,6 +41,7 @@ export class CreateAssignment extends Component{
                             </div>
                         </div>
                         <SelectBox event={this.change} options={this.state.options} title="Course" id="CourseSelectBox"/>
+                        <SelectBox event={this.change} options={[{text:"C++",value:"c++"},{text:"Java",value:"java"},{text:"Python",value:"python"}]} title="Language" id="LanguageSelectBox"/>
                         {this.state.form.elements.map(element =>
                             <Input event={this.change} key={element.id} type={element.type} id={element.id} name={element.name} text={element.text}/>
                         )}
