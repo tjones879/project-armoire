@@ -1,60 +1,22 @@
 import React, {Component} from 'react'
 import AuthService from '../components/AuthService';
 import {Btn} from '../components/Btn.component.react';
+import * as Actions from '../actions/actions';
+import store from '../stores/Navbar.store';
 
 export class Navbar extends Component{
     constructor(props){
         super(props);
         this.Auth = new AuthService();
-        this.links = [{
-            title:"Login",
-            link:`${window.location.href.split("/")[0]}//${window.location.hostname}:${window.location.port}/login`
-        },
-        {
-            title:"Register",
-            link:`${window.location.href.split("/")[0]}//${window.location.hostname}:${window.location.port}/register`
-        }]
-        this.state = {
-            logoutBtn: {
-                style: {
-                    'display':'none'
-                }
-            }
-        }
+        this.state = store.getAll();
     }
     componentWillMount(){
+        store.on("change", ()=>{
+            this.setState(store.getAll());
+        });
         if(this.Auth.loggedIn()){
-            this.setState({logoutBtn:{
-                style: {
-                    'display': 'inline-block'
-                }
-            }});
-            this.links.pop({title:'Register'});
-            this.links.pop({title:'Login'});
-            this.links.push({
-                title:'Account',
-                link:`${window.location.href.split("/")[0]}//${window.location.hostname}:${window.location.port}/account`
-            });
-            this.links.push({
-                title:'Courses',
-                link:`${window.location.href.split("/")[0]}//${window.location.hostname}:${window.location.port}/courses`
-            });
-            const userInfo = this.Auth.getInfo();
-            if(userInfo.user.classification === 'student'){
-                this.links.push({
-                    title:'Grades',
-                    link:`${window.location.href.split("/")[0]}//${window.location.hostname}:${window.location.port}/grade`
-                });
-            }else if(userInfo.user.classification === 'professor'){
-                this.links.push({
-                    title:'Gradebook',
-                    link:`${window.location.href.split("/")[0]}//${window.location.hostname}:${window.location.port}/gradebook`
-                });
-                this.links.push({
-                    title:'Students',
-                    link:`${window.location.href.split("/")[0]}//${window.location.hostname}:${window.location.port}/student`
-                });
-            }
+            const userInfo = this.Auth.getInfo().user;
+            Actions.start("NAVBAR", userInfo);
         }
     }
     render(){
@@ -66,7 +28,7 @@ export class Navbar extends Component{
                 </button>
                 <div className="collapse navbar-collapse" id="navbarNav">
                     <ul className="navbar-nav">
-                        {this.links.map((obj)=>
+                        {this.state.links.map((obj)=>
                             <NavUnit linkProp={obj.link} titleProp={obj.title} key={obj.title}/>
                         )}
                         <Btn class='btn btn-light btn-sm' style={this.state.logoutBtn.style} text='Logout' event={() => {this.Auth.logout();window.location = 'login'}}/>

@@ -1,5 +1,6 @@
 import {EventEmitter} from "events";
 import dispatcher from "../dispatcher";
+import * as Actions from '../actions/actions';
 
 class LoginStore extends EventEmitter{
     constructor(){
@@ -102,6 +103,7 @@ class LoginStore extends EventEmitter{
             this.emit("change");
         }).catch(err => {
             this.data.feedback = "An error has occurred";
+            console.log(err.message);
             this.emit("change");
         });
     }

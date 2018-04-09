@@ -1,5 +1,12 @@
 import dispatcher from '../dispatcher';
 
+export function changeNavbar(payload){
+    dispatcher.dispatch({
+        type:"NAVBAR_CHANGE",
+        payload:payload
+    });
+}
+
 export function change(dir, id, value){
     let payload = null;
     switch(dir){
@@ -104,6 +111,13 @@ export function start(dir, obj){
                     id:obj.id
                 }
             };
+            break;
+        }
+        case "NAVBAR":{
+            payload = {
+                type:"NAVBAR_START",
+                payload:obj
+            }
             break;
         }
         default:{
