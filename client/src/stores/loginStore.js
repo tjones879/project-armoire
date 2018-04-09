@@ -89,10 +89,10 @@ class LoginStore extends EventEmitter{
             if(obj.success){
                 localStorage.setItem('token', obj.token);
                 this.data.feedback = "Successful Login!";
-                this.lockdown();
+                this.loggedIn();
             }else{
                 if(obj.error === 1){
-                    this.data.feedback = "Fields are empty!"
+                    this.data.feedback = "Fields are empty!";
                 }else{
                     this.data.feedback = "Username or password is incorrect";
                 }
