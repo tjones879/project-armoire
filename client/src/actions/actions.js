@@ -13,6 +13,16 @@ export function change(dir, id, value){
             };
             break;
         }
+        case "ASSIGNMENT_SUBMISSION":{
+            payload = {
+                type:"ASSIGNMENT_SUBMISSION_CHANGE",
+                payload:{
+                    id:id,
+                    value:value
+                }
+            }
+            break;
+        }
         default:{
             break;
         }
@@ -27,6 +37,12 @@ export function submit(dir){
         case "SEARCH_STUDENT":{
             payload = {
                 type:"SUBMIT_SEARCH_STUDENT"
+            }
+            break;
+        }
+        case "ASSIGNMENT_SUBMISSION":{
+            payload = {
+                type:"ASSIGNMENT_SUBMISSION_SUBMIT"
             }
             break;
         }

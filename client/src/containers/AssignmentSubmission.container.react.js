@@ -16,10 +16,11 @@ export class AssignmentSubmission extends Component{
         });
         Actions.start("ASSIGNMENT_SUBMISSION", {id:this.props.id, user:this.props.user});
     }
-    change(){
-
+    change(event){
+        Actions.change("ASSIGNMENT_SUBMISSION", event.target.id, event.target.value);
     }
     submit(event){
+        Actions.submit("ASSIGNMENT_SUBMISSION");
         event.preventDefault();
     }
     render(){
@@ -68,12 +69,26 @@ export class AssignmentSubmission extends Component{
                         </div>
                         <div className="row text-center">
                             <div className="col">
+                                <strong>Examples</strong>
+                            </div>
+                        </div>
+                        <div className="row text-center">
+                            <div className="col text-center">
+                                <strong>Input</strong>
+                            </div>
+                            <div className="col text-center">
+                                <strong>Output</strong>
+                            </div>
+                        </div>
+                        {this.state.examples}
+                        <div className="row text-center">
+                            <div className="col">
                                 <textarea id="contents" name="contents" cols="80" rows="10" onChange={this.change}></textarea>
                             </div>
                         </div>
                         <div className="row text-center">
                             <div className="col">
-                                <Btn type="submit" text="Submit Submission"/>
+                                <Btn type="submit" id="submit" text="Submit Submission"/>
                             </div>
                         </div>
                     </fieldset>
