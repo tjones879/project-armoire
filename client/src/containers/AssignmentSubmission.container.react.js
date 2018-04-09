@@ -88,6 +88,11 @@ export class AssignmentSubmission extends Component{
                         </div>
                         <div className="row text-center">
                             <div className="col">
+                                {this.state.feedback}
+                            </div>
+                        </div>
+                        <div className="row text-center">
+                            <div className="col">
                                 <Btn type="submit" id="submit" text="Submit Submission"/>
                             </div>
                         </div>

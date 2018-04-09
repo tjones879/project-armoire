@@ -12,7 +12,8 @@ class Store extends EventEmitter{
             assignment:{},
             init:false,
             examples:null,
-            submissionBox:null
+            submissionBox:null,
+            feedback:""
         }
     }
     getAll(){
@@ -57,23 +58,31 @@ class Store extends EventEmitter{
         }
     }
     submit(){
-        fetch('../submission', {
-            method:"POST",
-            body:JSON.stringify({
-                course: this.store.assignment.course,
-                assignment: this.store.id,
-                source:this.store.submissionBox
-            })
-        }).then(response => response.json()).then(payload => {
-
-        }).catch(err => {
-
-        });
-        //This is where submissions should be sent to the backend and a response
-        //should be retreived from the backend
-        //submission (post)
-        //returns object with submission id and results of tests
-        console.log(this.store.submissionBox);
+        try{
+            fetch('../submission', {
+                method:"POST",
+                body:JSON.stringify({
+                    course: this.store.assignment.course,
+                    assignment: this.store.id,
+                    source:this.store.submissionBox
+                })
+            }).then(response => response.json()).then(payload => {
+                if(payload != null){
+                    this.store.feedback = "submission completed";
+                    this.emit("change");
+                }
+            }).catch(err => {
+                this.store.feedback = "error";
+                this.emit("change");
+                console.log(err.message);
+            });
+            this.store.feedback = "submission sent";
+            this.emit("change");
+        }catch(err){
+            this.store.feedback = "error";
+            this.emit("change");
+            console.log(err.message);
+        }
     }
     actionHandler(action){
         switch(action.type){

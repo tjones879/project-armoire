@@ -61,7 +61,9 @@ app.use(function(err, req, res, next) {
 
     // render the error page
     res.status(err.status || 500);
-    res.render('error');
+    //res.render('error');
+    console.log(`Error Status: ${err.status}\nError Message: ${err.message} \nRequest Endpoint: ${req.url}\nFrom: ${req.headers.referer}`);
+    res.send(err);
 });
 
 app.set('port', (process.env.PORT || 3001));
