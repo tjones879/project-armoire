@@ -67,8 +67,11 @@ class Store extends EventEmitter{
                     source:this.store.submissionBox
                 })
             }).then(response => response.json()).then(payload => {
-                if(payload != null){
+                if(typeof payload.id !== "undefined" && typeof payload.tests !== "undefined"){
                     this.store.feedback = "submission completed";
+                    this.emit("change");
+                }else{
+                    this.store.feedback = "error"
                     this.emit("change");
                 }
             }).catch(err => {

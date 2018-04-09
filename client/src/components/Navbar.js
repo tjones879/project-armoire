@@ -37,7 +37,7 @@ export class Navbar extends Component{
             });
             this.links.push({
                 title:'Courses',
-                link:`${window.location.href.split("/")[0]}//${window.location.hostname}:${window.location.port}/course`
+                link:`${window.location.href.split("/")[0]}//${window.location.hostname}:${window.location.port}/courses`
             });
             const userInfo = this.Auth.getInfo();
             if(userInfo.user.classification === 'student'){

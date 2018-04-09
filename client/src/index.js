@@ -30,8 +30,8 @@ const Root = () => {
           <Route path="/register" component={RegisterPage} />
           <Route path="/account" component={AccountPage} />
           <Switch>
-            <Route exact path='/course/:id' component={ExactCoursePage} />
-            <Route path='/course' component={CoursePage} />
+            <Route exact path='/courses/:id' component={ExactCoursePage} />
+            <Route path='/courses' component={CoursePage} />
           </Switch>
           <Switch>
               <Route path='/assignments/:id' component={ExactAssignmentPage}/>

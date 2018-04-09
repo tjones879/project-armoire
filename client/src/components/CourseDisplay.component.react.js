@@ -16,7 +16,7 @@ export class CourseDisplay extends Component{
                         </div>
                     </div>
                 {this.props.courses.map(course => 
-                    <a className="row" key={course.crn} href={`course/${course._id}`}>
+                    <a className="row" key={course.crn} href={`courses/${course._id}`}>
                         <div className="col">
                             {course.title}
                         </div>
