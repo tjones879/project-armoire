@@ -1,6 +1,7 @@
 import {EventEmitter} from "events";
 import dispatcher from "../dispatcher";
 import * as Actions from '../actions/actions';
+import store from './Navbar.store';
 
 class LoginStore extends EventEmitter{
     constructor(){
@@ -91,6 +92,8 @@ class LoginStore extends EventEmitter{
                 localStorage.setItem('token', obj.token);
                 this.data.feedback = "Successful Login! You will be redirected in 5 seconds...";
                 this.loggedIn();
+                Actions.changeNavbar({classification:"student"});
+                store.emit("change");
                 setTimeout(()=>{window.location = 'account'}, 5000);
             }else{
                 if(obj.error === 1){
