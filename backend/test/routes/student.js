@@ -15,11 +15,11 @@ describe('Students', () => {
                 });
         });
 
-        it('should return one student', () => {
+        it('should return all students', () => {
             return chai.request(server)
                 .get('/student')
                 .then((res) => {
-                    expect(res.body).to.be.a('object');
+                    expect(res.body).to.be.a('array');
                 });
         });
     });
