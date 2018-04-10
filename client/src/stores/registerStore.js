@@ -158,8 +158,8 @@ class RegisterStore extends EventEmitter{
     };
 
     checkFields(){
-        let namReg = new RegExp("^[a-zA-Z\'\\- ]{2,35}$");
-        let emailReg = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        let namReg = new RegExp("^[a-zA-Z'\\- ]{2,35}$");
+        let emailReg = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         let passReg = new RegExp("^[a-zA-Z0-9@\\\\#$%&*()_+\\]\\[';:?.,!^-]{8,30}$");
         if(
             namReg.test(this.data.firstValue) &&
@@ -222,7 +222,6 @@ class RegisterStore extends EventEmitter{
                 break;
             }
             default: {
-                console.log("Nothing to be handled by RegisterStore");
             }
         }
     }

@@ -4,17 +4,14 @@ import {Component} from 'react';
 import {PropTypes} from 'prop-types';
 
 export class Input extends Component{
-    constructor(props){
-        super(props);
-    }
     render(){
         return(
             <div className='row'>
                 <div className='col text-right'>
-                    <label for={this.props.id}>{this.props.text}:</label>
+                    <label htmlFor={this.props.id}>{this.props.text}:</label>
                 </div>
                 <div className='col text-left'>
-                    <input id={this.props.id} type={this.props.type} disabled={this.props.disabled} name={this.props.name} onChange={this.props.event}/>
+                    <input id={this.props.id} type={this.props.type} disabled={this.props.disabled} name={this.props.name} onChange={this.props.event} value={this.props.value}/>
                 </div>
             </div>
         );

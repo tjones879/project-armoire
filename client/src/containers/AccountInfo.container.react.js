@@ -31,7 +31,7 @@ export class AccountInfo extends Component{
                 }}/>
                 <div className='row text-center'>
                     <div className='col mx-auto'>
-                        <Btn text='Change Info' id='changeInfoBtn' event={()=>{window.location = 'account_change'}}/>
+                        <Btn text='Change Info' id='changeInfoBtn' event={()=>{window.location = 'account/change'}}/>
                     </div>
                 </div>
             </div>
