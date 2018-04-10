@@ -1,3 +1,4 @@
+require('dotenv').config();
 var mongo = require('./db/mongo');
 var express = require('express');
 var path = require('path');
@@ -18,6 +19,9 @@ app.use(bodyParser.urlencoded({extended:true}));
 
 app.use('/', index);
 app.use('/authentication', authentication);
+
+//This needs to go before '.use'
+app.post('/course', verifyToken, course);
 
 app.use('/assignment', assignment);
 //app.post('/submission', verifyToken, submission);
@@ -53,7 +57,9 @@ app.use(function(err, req, res, next) {
 
     // render the error page
     res.status(err.status || 500);
-    res.render('error');
+    //res.render('error');
+    console.log(`Error Status: ${err.status}\nError Message: ${err.message} \nRequest Endpoint: ${req.url}\nFrom: ${req.headers.referer}`);
+    res.send(err);
 });
 
 app.set('port', (process.env.PORT || 3001));

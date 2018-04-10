@@ -12,12 +12,14 @@ var StudentSchema = new mongoose.Schema({
     courses: [{
         id: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'Course'
+            ref: 'Course',
+            index: true
         },
         assignments: [{
             id: {
                 type: mongoose.Schema.Types.ObjectId,
-                ref: 'Assignment'
+                ref: 'Assignment',
+                index: true
             },
             submissions: [{
                 _id: mongoose.Schema.Types.ObjectId,

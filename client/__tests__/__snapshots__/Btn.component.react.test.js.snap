@@ -1,0 +1,88 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`snapshot testing of Btn component snapshot should remain the same 1`] = `
+ShallowWrapper {
+  "length": 1,
+  Symbol(enzyme.__root__): [Circular],
+  Symbol(enzyme.__unrendered__): <Btn
+    disabled={true}
+    event={
+      [MockFunction] {
+        "calls": Array [
+          Array [],
+        ],
+      }
+    }
+    id="BtnID"
+    style={
+      Object {
+        "display": "inline-block",
+      }
+    }
+    text="button"
+    type="button"
+  />,
+  Symbol(enzyme.__renderer__): Object {
+    "batchedUpdates": [Function],
+    "getNode": [Function],
+    "render": [Function],
+    "simulateEvent": [Function],
+    "unmount": [Function],
+  },
+  Symbol(enzyme.__node__): Object {
+    "instance": null,
+    "key": undefined,
+    "nodeType": "host",
+    "props": Object {
+      "children": "button",
+      "className": undefined,
+      "disabled": true,
+      "id": "BtnID",
+      "onClick": [MockFunction] {
+        "calls": Array [
+          Array [],
+        ],
+      },
+      "style": Object {
+        "display": "inline-block",
+      },
+      "type": "button",
+    },
+    "ref": null,
+    "rendered": "button",
+    "type": "button",
+  },
+  Symbol(enzyme.__nodes__): Array [
+    Object {
+      "instance": null,
+      "key": undefined,
+      "nodeType": "host",
+      "props": Object {
+        "children": "button",
+        "className": undefined,
+        "disabled": true,
+        "id": "BtnID",
+        "onClick": [MockFunction] {
+          "calls": Array [
+            Array [],
+          ],
+        },
+        "style": Object {
+          "display": "inline-block",
+        },
+        "type": "button",
+      },
+      "ref": null,
+      "rendered": "button",
+      "type": "button",
+    },
+  ],
+  Symbol(enzyme.__options__): Object {
+    "adapter": ReactSixteenAdapter {
+      "options": Object {
+        "enableComponentDidUpdateOnSetState": true,
+      },
+    },
+  },
+}
+`;

@@ -16,11 +16,12 @@ const jwt = require('jsonwebtoken');
 
 
 /* GET professors listing. */
-router.get('/', function(req, res, next) {
-    res.json({
-        id: "ObjectId",
-        email: "example@cmu.edu",
-        hash: "HASH EXAMPLE"
+router.get('/:id', function(req, res, next) {
+    Authentication.findById(req.params.id).then(result => {
+        res.json(result);
+    }).catch(err => {
+        console.log(err.message);
+        res.json({});
     });
 });
 
@@ -58,10 +59,10 @@ router.post('/login', function(req, res, next){
 
                         const user = {
                             id:obj._id,
-                            email:obj.email
+                            email:obj.email,
+                            classification:obj.classification
                         };
-
-                        jwt.sign({user}, 'grapeJuic3', {expiresIn: '15m'}, (err,token) => {
+                        jwt.sign({user}, process.env.JWT_SECRET, {expiresIn: '1h'}, (err,token) => {
                             if(err){
                                 console.log(`Token Failure: failure on sign by ${emailV}`);
                                 res.json({success: false});
@@ -122,7 +123,9 @@ router.post('/registration', function(req, res, next){
                     _id: loginID,
                     email: req.body.email,
                     hash: hashedPass,
-                    salt: salt
+                    salt: salt,
+                    classification: req.body.classification,
+                    verified: false
                 });
 
                 const person = new Student({
@@ -147,6 +150,7 @@ router.post('/registration', function(req, res, next){
                             /* Students */
                             person.save()
                             .then(result =>{
+                                console.log(`student added to database: ${req.body}`);
                                 res.status(200).json({success:true,email:req.body.email,classification:req.body.classification});
                             }).catch(err => {
                                 res.status(200).json({success:false, errType: "general"});

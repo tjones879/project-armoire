@@ -22,7 +22,7 @@ export class RegisterPage extends Component{
     }
 }
 
-class RegisterForm extends Component{
+export class RegisterForm extends Component{
     constructor(props){
         super(props);
         this.state = {
@@ -47,7 +47,7 @@ class RegisterForm extends Component{
             this.setState({store: registerStore.getAll()});
         });
     }
-    validate(){
+    validate(e){
         //Validate the form before it is sent by the HTML form using POST
         //Remember to return a value of true or false from this event handler
         //true alows the form to send, false prevents the form from submiting
@@ -56,7 +56,7 @@ class RegisterForm extends Component{
             if(this.state.store.lastValue === this.checkName(this.state.store.lastValue, "last")){
                 if(this.state.store.passValue.length >= 8 && this.state.store.passValue.length <= 30){
                     if(this.state.store.passValue === this.state.store.confirmValue){
-                        if(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(this.state.store.emailValue)){
+                        if(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(this.state.store.emailValue)){
                             if(this.state.store.classificationValue === "student" || this.state.store.classificationValue === "professor"){
                                 registerActions.updateFeedback("user", "");
                                 fetch(registerAPI,{
@@ -76,8 +76,9 @@ class RegisterForm extends Component{
                                     return a.json();
                                 }).then(function(json){
                                     if(json.success){
-                                        registerActions.updateFeedback("user", `Successfully registered under the email ${json.email} as a ${json.classification}`);
+                                        registerActions.updateFeedback("user", `Successfully registered under the email ${json.email} as a ${json.classification}. You will be redirected in 5 seconds...`);
                                         registerActions.lockDown();
+                                        setTimeout(()=>{window.location = 'login'}, '5000');
                                     }else{
                                         if(json.errType === "duplicate"){
                                             registerActions.updateFeedback("user", `The email ${json.email} has already been registered`);
@@ -108,6 +109,7 @@ class RegisterForm extends Component{
         }else{
             this.state.store.firstValue.length === 0?registerActions.updateFeedback("user", "Must insert a first name"):registerActions.updateFeedback("user", "Must insert a valid first name");
         }
+        e.preventDefault();
     }
     checkConfirm(e){
         registerActions.updateValue("confirm", e.target.value);
@@ -136,13 +138,13 @@ class RegisterForm extends Component{
     checkName(name, fol){
         /* fol stands for "first or last" */
         if(name.length < 2){
-            return `${fol} name must be at least 2 characters. `;
+            return `${fol} name must be at least 2 characters.`;
         }
         else if(name.length > 35){
-            return `${fol} name must be 35 characters or less. `;
+            return `${fol} name must be 35 characters or less.`;
         }
         else if(!reg.test(name)){
-            return `${fol} name must be letters, hyphens, single quotes, and spaces. `;
+            return `${fol} name must be letters, hyphens, single quotes, and spaces.`;
         }else{
             return name;
         }
@@ -196,32 +198,32 @@ class RegisterForm extends Component{
     }
     render(){
         return(
-            <form>
+            <form onSubmit={this.validate}>
                 <h1 className="text-center">Registration</h1>
                 <div className="row">
                     <label className={`${row} text-right`} htmlFor="1">First</label>
                     <input className={`${row} text-center`} name="first" type="text" id="1" placeholder="Jane" onChange={this.checkFirst} disabled={this.state.store.firstLock} required/>
-                    <span className={`${row} text-left`} style={this.state.store.firstStyle}>{this.state.store.firstFeed}</span>
+                    <span className={`${row} text-left`} id="firstFeedback" style={this.state.store.firstStyle}>{this.state.store.firstFeed}</span>
                 </div>
                 <div className="row">
                     <label className={`${row} text-right`} htmlFor="2" >Last</label>
                     <input className={`${row} text-center`} name="last" type="text" id="2" placeholder="Doe" onChange={this.checkLast} disabled={this.state.store.lastLock} required/>
-                    <span className={`${row} text-left`} style={this.state.store.lastStyle}>{this.state.store.lastFeed}</span>
+                    <span className={`${row} text-left`} id="lastFeedback" style={this.state.store.lastStyle}>{this.state.store.lastFeed}</span>
                 </div>
                 <div className="row">
                     <label className={`${row} text-right`} htmlFor="3">Email</label>
                     <input onChange={this.emailchange} className={`${row} text-center`} name="email" type="email" id="3" placeholder="jane.doe@somesite.com" disabled={this.state.store.emailLock} required/>
-                    <span className={`${row} text-left`}>{this.state.store.emailFeed}</span>
+                    <span id="emailFeedback" className={`${row} text-left`}>{this.state.store.emailFeed}</span>
                 </div>
                 <div className="row">
                     <label className={`${row} text-right`} htmlFor="4">Password</label>
                     <input type="password" id="4" name="password" value={this.state.store.passValue} className={`${row} text-center`} onChange={this.checkPass} disabled={this.state.store.passLock} required/>
-                    <span className={`${row} text-left`} style={this.state.store.passStyle}>{this.state.store.passFeed}</span>
+                    <span id="passwordFeedback" className={`${row} text-left`} style={this.state.store.passStyle}>{this.state.store.passFeed}</span>
                 </div>
                 <div className="row">
                     <label className={`${row} text-right`} htmlFor="5">Re-Enter Password</label>
                     <input className={`${row} text-center`} name="confirm" value={this.state.store.confirmValue} id="5" type="password" onChange={this.checkConfirm} disabled={this.state.store.confirmLock} required/>
-                    <span className={`${row} text-left`} style={this.state.store.confirmStyle}>{this.state.store.confirmFeed}</span>
+                    <span id="confirmFeedback" className={`${row} text-left`} style={this.state.store.confirmStyle}>{this.state.store.confirmFeed}</span>
                 </div>
                 <div className="row text-center">
                     <span className={`${row} text-right`}>Classification</span>
@@ -229,15 +231,15 @@ class RegisterForm extends Component{
                         <input type="radio" name="classification" value="student" onClick={this.studentEvent} disabled={this.state.store.classificationLock}/>Student<br />
                         <input type="radio" name="classification" value="professor" onClick={this.professorEvent} disabled={this.state.store.classificationLock} />Professor<br />
                     </div>
-                    <span className={`${row} text-left`}>{this.state.store.classificationValue}</span>
+                    <span id="classificationFeedback" className={`${row} text-left`}>{this.state.store.classificationValue}</span>
                 </div>
                 <div className="row text-center">
                     <div className="col-4 mx-auto">
-                        <input className="btn btn-success" type="button" onClick={this.validate} value="Register" disabled={this.state.store.lock}/>
+                        <input id="registerBtn" className="btn btn-success" type="submit" value="Register" disabled={this.state.store.lock}/>
                     </div>
                 </div>
                 <div className="row text-center">
-                    <div className="col-4 mx-auto">
+                    <div id="userFeedback" className="col-4 mx-auto">
                         {this.state.store.userFeedback}
                     </div>
                 </div>

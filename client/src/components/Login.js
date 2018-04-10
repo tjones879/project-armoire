@@ -17,7 +17,7 @@ export class LoginPage extends Component{
     }
 }
 
-class LoginForm extends Component{
+export class LoginForm extends Component{
     constructor(props){
         super(props);
         this.state = {
@@ -44,6 +44,7 @@ class LoginForm extends Component{
         if(this.Auth.loggedIn()){
             loginActions.updateFeedback("feedback", "Already logged in!");
             loginActions.loggedIn();
+            window.setTimeout(()=>{window.location = 'account'}, 1000);
         }
     }
 
@@ -88,18 +89,18 @@ class LoginForm extends Component{
                         </div>
                         <div className="row text-center">
                             <div className="col-3 mx-auto">
-                                <input type="submit" className="btn btn-success btn-sm" disabled={this.state.store.buttonLock} value="Login"/>
+                                <input type="submit" id="loginBtn" className="btn btn-success btn-sm" disabled={this.state.store.buttonLock} value="Login"/>
                             </div>
                         </div>
                         <div className="row text-center">
                             <div className="col-3 mx-auto">
-                                <span>{this.state.store.feedback}</span>
+                                <span id="feedback">{this.state.store.feedback}</span>
                             </div>
                         </div>
                     </form>
                     <div className="row text-center">
                         <div className="col-3 mx-auto">
-                            <button className="btn btn-danger" style={this.state.store.logoutStyle} onClick={this.logout}>Logout</button>
+                            <button id="logoutBtn" className="btn btn-danger" style={this.state.store.logoutStyle} onClick={this.logout}>Logout</button>
                         </div>
                     </div>
             </div>

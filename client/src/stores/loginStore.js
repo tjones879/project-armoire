@@ -1,5 +1,7 @@
 import {EventEmitter} from "events";
 import dispatcher from "../dispatcher";
+import * as Actions from '../actions/actions';
+import store from './Navbar.store';
 
 class LoginStore extends EventEmitter{
     constructor(){
@@ -88,8 +90,11 @@ class LoginStore extends EventEmitter{
         ).then(obj => {
             if(obj.success){
                 localStorage.setItem('token', obj.token);
-                this.data.feedback = "Successful Login!";
+                this.data.feedback = "Successful Login! You will be redirected in 5 seconds...";
                 this.loggedIn();
+                Actions.changeNavbar({classification:"student"});
+                store.emit("change");
+                setTimeout(()=>{window.location = 'account'}, 5000);
             }else{
                 if(obj.error === 1){
                     this.data.feedback = "Fields are empty!";
@@ -101,6 +106,7 @@ class LoginStore extends EventEmitter{
             this.emit("change");
         }).catch(err => {
             this.data.feedback = "An error has occurred";
+            console.log(err.message);
             this.emit("change");
         });
     }
