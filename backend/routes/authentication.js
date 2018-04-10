@@ -16,11 +16,12 @@ const jwt = require('jsonwebtoken');
 
 
 /* GET professors listing. */
-router.get('/', function(req, res, next) {
-    res.json({
-        id: "ObjectId",
-        email: "example@cmu.edu",
-        hash: "HASH EXAMPLE"
+router.get('/:id', function(req, res, next) {
+    Authentication.findById(req.params.id).then(result => {
+        res.json(result);
+    }).catch(err => {
+        console.log(err.message);
+        res.json({});
     });
 });
 

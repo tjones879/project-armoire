@@ -65,7 +65,10 @@ class Store extends EventEmitter{
                     course: this.store.assignment.course,
                     assignment: this.store.id,
                     source:this.store.submissionBox
-                })
+                }),
+                headers:{
+                    "content-type":"application/json"
+                }
             }).then(response => response.json()).then(payload => {
                 if(typeof payload.id !== "undefined" && typeof payload.tests !== "undefined"){
                     this.store.feedback = "submission completed";

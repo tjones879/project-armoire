@@ -30,6 +30,16 @@ export function change(dir, id, value){
             }
             break;
         }
+        case "ACCOUNT_CHANGE":{
+            payload = {
+                type:"ACCOUNT_CHANGE_CHANGE",
+                payload:{
+                    id:id,
+                    value:value
+                }
+            }
+            break;
+        }
         default:{
             break;
         }
@@ -50,6 +60,12 @@ export function submit(dir){
         case "ASSIGNMENT_SUBMISSION":{
             payload = {
                 type:"ASSIGNMENT_SUBMISSION_SUBMIT"
+            }
+            break;
+        }
+        case "ACCOUNT_CHANGE":{
+            payload = {
+                type:"ACCOUNT_CHANGE_SUBMIT"
             }
             break;
         }
@@ -116,6 +132,13 @@ export function start(dir, obj){
         case "NAVBAR":{
             payload = {
                 type:"NAVBAR_START",
+                payload:obj
+            }
+            break;
+        }
+        case "ACCOUNT_CHANGE":{
+            payload = {
+                type:"ACCOUNT_CHANGE_START",
                 payload:obj
             }
             break;

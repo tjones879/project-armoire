@@ -23,7 +23,6 @@ class Store extends EventEmitter{
     }
     start(payload){
         if(typeof payload !== "undefined"){
-            console.log(payload);
             this.store.logoutBtn.style = {"display":"inline-block"};
             this.store.links.pop({title:'Register'});
             this.store.links.pop({title:'Login'});

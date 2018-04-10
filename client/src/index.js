@@ -28,7 +28,10 @@ const Root = () => {
           <Route path="/assignment" component={AssignmentPage} />
           <Route path="/login" component={LoginPage} />
           <Route path="/register" component={RegisterPage} />
-          <Route path="/account" component={AccountPage} />
+          <Switch>
+            <Route exact path="/account" component={AccountPage} />
+            <Route exact path='/account/change' component={AccountChangePage} />
+          </Switch>
           <Switch>
             <Route exact path='/courses/:id' component={ExactCoursePage} />
             <Route path='/courses' component={CoursePage} />
@@ -40,7 +43,6 @@ const Root = () => {
           <Route path='/createassignment' component={CreateAssignmentPage} />
           <Route path='/student' component={StudentPage} />
           <Route path='/gradebook' component={GradebookPage} />
-          <Route path='/account_change' component={AccountChangePage} />
           <Route path='/search_students' component={SearchStudentsPage} />
         </div>
       </Router>
