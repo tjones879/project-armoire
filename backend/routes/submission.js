@@ -66,14 +66,13 @@ router.get('/:id', (req, res) => {
  * to be valid.
  */
 router.post('/', (req, res) => {
-    let language = req.body.language;
+    let assignment = '5abfb80ed9d4c95527672eba';
     let code = req.body.code;
-
-    // Get the current student id by jsonwebtoken
-    let student = 
-
-    let course = req.body.course;
-    let assignment = req.body.assignment;
+    let course = '5abfb80ed9d4c95527672eb9';
+    let language = req.body.language;
+    // TODO: Get the current student id by jsonwebtoken
+    let student = '5abe77993265b46e26b60584';
+    let stdin = req.body.stdin;
 
     let payload = {
         timeout_value:   10000, // ms
@@ -82,7 +81,10 @@ router.post('/', (req, res) => {
         vm_name:         'virtual_machine',
         code:            code,
         language:        arr.compilers[language],
-        stdin_data:      req.body.stdin,
+        stdin_data:      stdin,
+        student:         student,
+        course:          course,
+        assignment:      assignment
     };
 
     var dockerCompiler = new Compiler(payload);

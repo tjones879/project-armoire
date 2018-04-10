@@ -20,7 +20,7 @@ app.use('/', index);
 app.use('/authentication', authentication);
 
 app.use('/assignment', assignment);
-app.post('/submission', verifyToken, submission);
+//app.post('/submission', verifyToken, submission);
 app.use('/submission', submission);
 app.use('/professor', professor);
 app.use('/course', course);
@@ -32,7 +32,6 @@ function verifyToken(req, res, next){
         const bearer = bearerHeader.split(' ');
         const bearerToken = bearer[1];
         req.token = bearerToken;
-        console.log("token found");
         next();
     }else{
         res.sendStatus(403);

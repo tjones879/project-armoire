@@ -7,6 +7,9 @@ var DockerSandbox = function(payload) {
     this.src_file        = this.language.src_file;
     this.code            = payload.code;
     this.stdin_data      = payload.stdin_data;
+    this.student         = payload.student;
+    this.course          = payload.course;
+    this.assignment      = payload.assignment;
 };
 
 DockerSandbox.prototype.run = function(callback) {
@@ -25,9 +28,9 @@ function buildPrepCmd(path, folder) {
 function writePayload(sandbox, language, input) {
     var fs = require('fs');
     let obj = {
-        student: '5abe77993265b46e26b60584',
-        course: '5abfb80ed9d4c95527672eb9',
-        assignment: '5abfb80ed9d4c95527672eba',
+        student: sandbox.student,
+        course: sandbox.course,
+        assignment: sandbox.assignment,
         source: language.src_file,
         compile: {
             command: language.compile_cmd
