@@ -22,6 +22,7 @@ function buildPrepCmd(path, folder) {
     let command = "mkdir " + dir;
     command += " && cp " + path + "/DockerPayload/* " + dir;
     command += " && chmod 777 " + dir;
+    console.log("Command: ", command);
     return command;
 }
 

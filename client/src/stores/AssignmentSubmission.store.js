@@ -1,5 +1,6 @@
 import {EventEmitter} from 'events';
 import React from 'react';
+import AuthService from '../components/AuthService';
 
 import dispatcher from '../dispatcher';
 
@@ -14,7 +15,9 @@ class Store extends EventEmitter{
             examples:null,
             submissionBox:null,
             feedback:""
-        }
+        };
+
+        this.Auth = new AuthService();
     }
     getAll(){
         return this.store;
@@ -67,7 +70,8 @@ class Store extends EventEmitter{
                     source:this.store.submissionBox
                 }),
                 headers:{
-                    "content-type":"application/json"
+                    "content-type":"application/json",
+                    'Authorization': `Bearer ${this.Auth.getToken()}`
                 }
             }).then(response => response.json()).then(payload => {
                 if(typeof payload.id !== "undefined" && typeof payload.tests !== "undefined"){
