@@ -38,8 +38,10 @@ function random(size) {
 function langToIndex(language) {
     if (language === 'c++')
         return 1;
-    else
+    else if (language === 'python3')
         return 0;
+    else if (language === 'python2')
+        return 2;
 }
 
 /*
@@ -79,6 +81,32 @@ router.post('/', (req, res) => {
     let code = req.body.source;
     let assignID = req.body.assignment;
     // TODO: Get the current student id by jsonwebtoken
+    let findSubmission = (studentID, courseID, assignID) => {
+        Student.findOne(
+            {'_id': studentID},
+            'courses',
+            (err, student) => {
+                if (err)
+                    return undefined;
+
+                for (let course in student.courses) {
+                    if (course.id === courseID) {
+                        for (let assign in course.assignments) {
+                            if (assign.id === assignID) {
+                                let max = 0;
+                                for (let sub in assign.submissions) {
+                                    if (max === 0 || sub.id.Time() > max.id.Time())
+                                        max = sub;
+                                }
+                                return max;
+                            }
+                        }
+                    }
+                }
+                return undefined;
+            })
+        // Find the correct course
+    }
 
     let buildPayload = (student, assign) => {
         let payload = {
@@ -98,7 +126,9 @@ router.post('/', (req, res) => {
         var dockerCompiler = new Compiler(payload);
 
         dockerCompiler.run((data, exec_time, err) => {
-            res.send({
+            let sub = findSubmission(student, assign.course, assign._id);
+            console.log("ADSFASDF:", sub);
+            res.json({
                 output: data,
                 code: code,
                 errors: err,

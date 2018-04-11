@@ -74,7 +74,7 @@ class Student():
             {'_id': self.student_id},
             {'$push': {
                 'courses.' + str(cid) + '.assignments.' + str(aid) + '.submissions': {
-                    'id': ObjectId(),
+                    '_id': ObjectId(),
                     'contents': sub.contents,
                     'output': sub.output,
                     'test_results': sub.test_results,
