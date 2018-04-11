@@ -50,7 +50,26 @@ class Student():
                 return (c, -1)
         return (-1, -1)
 
-    def saveSubmission(self, cid: int, aid: int, sub: 'Submission'):
+    def addAssignment(self, cid: ObjectId, aid: ObjectId) -> bool:
+        c, a = self.getIndices(cid, aid)
+        if c == -1:
+            return False
+        if a == -1:
+            self.students.update_one(
+                {'_id': self.student_id},
+                {'$push': {
+                    'courses.' + str(c) + '.assignments': {
+                        'id': aid,
+                        'submissions': []
+                    }
+                }}
+            )
+            self.student = self.students.find_one({'_id': self.student_id})
+            print(self.student)
+
+    def saveSubmission(self, cid: ObjectId, aid: ObjectId, sub: 'Submission'):
+        self.addAssignment(cid, aid)
+        cid, aid = self.getIndices(cid, aid)
         self.students.update_one(
             {'_id': self.student_id},
             {'$push': {
@@ -111,6 +130,6 @@ if __name__ == '__main__':
     config = getConfig()
     student = Student(db, ObjectId(config['student']))
     sub = callCompiler(db, config)
-    course, assignment = student.getIndices(ObjectId(config['course']),
-                                            ObjectId(config['assignment']))
-    student.saveSubmission(course, assignment, sub)
+    student.saveSubmission(ObjectId(config['course']),
+                           ObjectId(config['assignment']),
+                           sub)
