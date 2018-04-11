@@ -119,12 +119,12 @@ DockerSandbox.prototype.execute = function(callback) {
                         data = lines[0];
                         let time = lines[1];
 
+                        exec("rm -r " + sandbox.folder);
                         callback(data,time,data2);
                     });
                 }
             });
         }
-        exec("rm -r " + sandbox.folder);
     });
 };
 
