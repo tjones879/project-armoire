@@ -77,7 +77,6 @@ router.get('/:id', (req, res) => {
  * to be valid.
  */
 router.post('/', (req, res) => {
-    console.log(req.body);
     let code = req.body.source;
     let assignID = req.body.assignment;
     let findSubmission = (studentID, courseID, assignID, callback) => {

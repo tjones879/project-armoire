@@ -22,7 +22,6 @@ function buildPrepCmd(path, folder) {
     let command = "mkdir " + dir;
     command += " && cp " + path + "/DockerPayload/* " + dir;
     command += " && chmod 777 " + dir;
-    console.log("Command: ", command);
     return command;
 }
 
@@ -59,7 +58,6 @@ DockerSandbox.prototype.prepare = function(callback) {
             if (err) {
                 console.log("Error in writing code: " + err);
             } else {
-                console.log(sandbox.language.name + " file was saved!");
                 exec("chmod 777 '" + sandbox.path + sandbox.folder + "/" + sandbox.src_file + "'");
                 writePayload(sandbox, sandbox.language, sandbox.stdin_data);
 
@@ -67,7 +65,6 @@ DockerSandbox.prototype.prepare = function(callback) {
                     if (err) {
                         console.log("Error in writing input: " + err);
                     } else {
-                        console.log("Input file was saved!");
                         callback();
                     }
                 });
