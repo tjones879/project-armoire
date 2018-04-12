@@ -1,8 +1,7 @@
 import React, {Component} from 'react'
-import {Navbar} from './Navbar'
-import registerStore from '../stores/registerStore';
+import registerStore from '../stores/Register.store';
 import * as registerActions from '../actions/registerActions';
-import AuthService from './AuthService';
+import AuthService from '../components/AuthService';
 
 var registerAPI = "http://localhost:3000/authentication/registration";
 
@@ -10,17 +9,6 @@ var row = "col";
 
 // First and Last name should be a max of 35 characters, suggested by the UK government data standards catalogue
 var reg = new RegExp('^[a-zA-Z\'\\- ]{2,35}$');
-
-export class RegisterPage extends Component{
-    render(){
-        return(
-            <div className="container-fluid">
-                <Navbar />
-                <RegisterForm />
-            </div>
-        );
-    }
-}
 
 export class RegisterForm extends Component{
     constructor(props){

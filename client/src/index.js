@@ -6,7 +6,7 @@ import registerServiceWorker from './registerServiceWorker';
 import {AssignmentPage} from './components/Assignment';
 import {HomePage} from './components/Home';
 import {LoginPage} from './components/Login';
-import {RegisterPage} from './components/Register';
+import {RegisterPage} from './pages/Register.page.react';
 import {AccountPage} from './pages/Account.page.react';
 import {CoursePage} from './pages/Courses.page.react';
 import {CreateCoursePage} from './pages/CreateCourse.page.react';

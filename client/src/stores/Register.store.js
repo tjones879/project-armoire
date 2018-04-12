@@ -1,7 +1,7 @@
 import {EventEmitter} from "events";
 import dispatcher from "../dispatcher";
 
-class RegisterStore extends EventEmitter{
+class Store extends EventEmitter{
     constructor(){
         super();
         this.data = {
@@ -227,6 +227,6 @@ class RegisterStore extends EventEmitter{
     }
 };
 
-const registerStore = new RegisterStore();
-dispatcher.register(registerStore.handleActions.bind(registerStore));
-export default registerStore;
+const store = new Store();
+dispatcher.register(store.handleActions.bind(store));
+export default store;
