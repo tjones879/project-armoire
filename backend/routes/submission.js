@@ -80,33 +80,37 @@ router.post('/', (req, res) => {
     console.log(req.body);
     let code = req.body.source;
     let assignID = req.body.assignment;
-    // TODO: Get the current student id by jsonwebtoken
-    let findSubmission = (studentID, courseID, assignID) => {
+    let findSubmission = (studentID, courseID, assignID, callback) => {
         Student.findOne(
             {'_id': studentID},
-            'courses',
+            {'courses': {
+                '$elemMatch': {
+                    'id': Mongoose.Types.ObjectId(courseID),
+                    'assignments': {
+                        '$elemMatch': {
+                            'id': Mongoose.Types.ObjectId(assignID)
+                        }
+                    },
+                }
+            }},
             (err, student) => {
                 if (err)
                     return undefined;
 
-                for (let course in student.courses) {
-                    if (course.id === courseID) {
-                        for (let assign in course.assignments) {
-                            if (assign.id === assignID) {
-                                let max = 0;
-                                for (let sub in assign.submissions) {
-                                    if (max === 0 || sub.id.Time() > max.id.Time())
-                                        max = sub;
-                                }
-                                return max;
-                            }
-                        }
+                let course = student.courses[0];
+                let assignments = course.assignments[0];
+                let subs = assignments.submissions.toObject();
+
+                let max = 0;
+                for (let i = 0; i < subs.length; i++) {
+                    if (max === 0 || subs[i]._id.getTimestamp() > max._id.getTimestamp()) {
+                        max = subs[i];
                     }
                 }
-                return undefined;
-            })
-        // Find the correct course
-    }
+                callback(max);
+            }
+        );
+    };
 
     let buildPayload = (student, assign) => {
         let payload = {
@@ -125,17 +129,19 @@ router.post('/', (req, res) => {
 
         var dockerCompiler = new Compiler(payload);
 
-        dockerCompiler.run((data, exec_time, err) => {
-            let sub = findSubmission(student, assign.course, assign._id);
-            console.log("ADSFASDF:", sub);
-            res.json({
-                output: data,
-                code: code,
-                errors: err,
-                time: exec_time
+        dockerCompiler.run((err, data) => {
+            if (err)
+                res.send(data);
+            findSubmission(student, assign.course, assign._id, (sub) => {
+                res.json({
+                    _id: sub._id,
+                    output: sub.output,
+                    test_results: sub.test_results,
+                    time: sub.time
+                });
             });
         });
-    }
+    };
 
     // Verify student info
     const bearerHeader = req.headers['authorization'];
