@@ -74,7 +74,7 @@ class Store extends EventEmitter{
                     'Authorization': `Bearer ${this.Auth.getToken()}`
                 }
             }).then(response => response.json()).then(payload => {
-                if(typeof payload.id !== "undefined" && typeof payload.tests !== "undefined"){
+                if(typeof payload._id !== "undefined" && typeof payload.test_results !== "undefined"){
                     this.store.feedback = "submission completed";
                     this.emit("change");
                 }else{
