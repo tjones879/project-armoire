@@ -88,6 +88,11 @@ export class AssignmentSubmission extends Component{
                         </div>
                         <div className="row text-center">
                             <div className="col">
+                                <textarea id="stdin" name="stdin" cols="80" rows="10" onChange={this.change}></textarea>
+                            </div>
+                        </div>
+                        <div className="row text-center">
+                            <div className="col">
                                 {this.state.feedback}
                             </div>
                         </div>
