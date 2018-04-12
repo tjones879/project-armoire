@@ -43,4 +43,12 @@ export default class AuthService{
             return decode(token);
         }
     }
+    getClassByToken(token){
+        try{
+            const decoded = decode(token);
+            return decoded.user.classification;
+        }catch(err){
+            return null;
+        }
+    }
 }
