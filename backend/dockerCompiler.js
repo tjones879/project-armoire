@@ -85,11 +85,9 @@ function buildDockerCmd(path, vmName) {
 
 DockerSandbox.prototype.execute = function(callback) {
     var exec = require('child_process').exec;
-    var fs = require('fs');
     var sandbox = this;
 
     var st = buildDockerCmd(this.path + this.folder, this.vm_name);
-    console.log("Executing script: `" + st + "`");
 
     let defaults = {
         encoding: 'utf8',
@@ -101,29 +99,14 @@ DockerSandbox.prototype.execute = function(callback) {
     };
 
     exec(st, defaults, (err) => {
+        exec("rm -r " + sandbox.path + sandbox.folder);
         if (err) {
             console.log("Compilation timed out.");
             console.log(err);
             let data = "\nExecution Timed Out";
-            callback(data, defaults.timeout, "");
+            callback(err, data);
         } else {
-            fs.readFile(sandbox.path + sandbox.folder + '/completed', 'utf8', (err, data) => {
-                if (!err) {
-                    // The compiler must have finished if the file exists.
-                    console.log("DONE");
-                    fs.readFile(sandbox.path + sandbox.folder + '/errors', 'utf8', (err2, data2) => {
-                        if (!data2)
-                            data2 = "";
-
-                        let lines = data.toString().split('COMPILER END');
-                        data = lines[0];
-                        let time = lines[1];
-
-                        exec("rm -r " + sandbox.folder);
-                        callback(data,time,data2);
-                    });
-                }
-            });
+            callback(err, "");
         }
     });
 };
