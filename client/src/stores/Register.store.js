@@ -4,229 +4,226 @@ import dispatcher from "../dispatcher";
 class Store extends EventEmitter{
     constructor(){
         super();
-        this.data = {
-            userFeedback: "",
+        this.store = {
+            feedback: "",
             lock:true,
-            firstFeed:"",
-            firstValue:"",
-            firstStyle:{
-                color:"green"
+            first: {
+                feed:null,
+                value:"",
+                style:null,
+                lock:false
             },
-            firstLock: false,
-            lastFeed:"",
-            lastValue:"",
-            lastStyle:{
-                color:"green"
+            last:{
+                feed:null,
+                value:"",
+                style:null,
+                lock:false
             },
-            lastLock: false,
-            emailValue:"",
-            emailFeed:"",
-            emailLock: false,
-            passFeed:"",
-            passValue:"",
-            passStyle:{
-                color:"green"
+            email:{
+                value:"",
+                feed:null,
+                lock:null,
             },
-            passLock: false,
-            confirmFeed:"",
-            confirmValue:"",
-            confirmStyle:{
-                color:"green"
+            pass:{
+                feed:null,
+                value:"",
+                style:null,
+                lock:false
             },
-            confirmLock: false,
-            classificationValue: "",
-            classificationLock: false
+            confirm:{
+                feed:null,
+                value:"",
+                style:null,
+                lock:false
+            },
+            classification:{
+                value:"",
+                lock:false
+            }
         }
+        this.namReg = /^[a-zA-Z'\- ]{2,35}$/;
+        this.emailReg = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        this.passReg = /^.{8,30}$/;
     }
     
-    setLock(lockState){
-        this.data.lock = lockState;
-        this.emit("change");
-    }
 
     getAll(){
-        return this.data;
+        return this.store;
+    }   
+
+    checkName(name, fol){
+        /* fol stands for "first or last" */
+        if(name.length < 2)
+            return `${fol} name must be at least 2 characters.`;
+        else if(name.length > 35)
+            return `${fol} name must be 35 characters or less.`;
+        else if(!this.namReg.test(name))
+            return `${fol} name must be letters, hyphens, single quotes, and spaces.`;
+        else
+            return name;
     }
-    updateFeedback(mem, value){
-        switch(mem){
-            case "first":{
-                this.data.firstFeed = value;
-                break;
-            }
-            case "last":{
-                this.data.lastFeed = value;
-                break;
-            }
-            case "email":{
-                this.data.emailFeed = value.toLowerCase();
-                break;
-            }
-            case "password":{
-                this.data.passFeed = value;
-                break;
-            }
-            case "confirm":{
-                this.data.confirmFeed = value;
-                break;
-            }
-            case "user":{
-                this.data.userFeedback = value;
-                break;
-            }
-            default:{
 
-            }
+    
+
+    change(payload){
+        const value = payload.value;
+        let path = this.store;
+
+        switch(payload.id){
+            case "cPassword":
+                path.confirm.value = path.confirm.feed = value;
+                this.checkPasses();
+
+                break;
+            case "email":
+                path.email.value = value;
+                path.email.feed = value.toLowerCase();
+                break;
+            case "fname":
+                path.first.value = value;
+                path.first.feed = this.checkName(value, "First");
+
+                if(path.first.feed === value)
+                    path.first.style = {color:"green"};
+                else
+                    path.first.style = {color:"red"};
+
+                break;
+            case "lname":
+                path.last.value = value;
+                path.last.feed = this.checkName(value, "Last");
+
+                if(path.last.feed === value)
+                    path.last.style = {color:"green"};
+                else
+                    path.last.style = {color:"red"};
+
+                break;
+            case "password":
+                path.pass.value = path.pass.feed = value;
+
+                if(this.passReg.test(value)){
+                    path.pass.style = {color:"green"};
+                    path.pass.feed = value.length.toString();
+                }else{
+                    path.pass.style = {color:"red"};
+                    path.pass.feed = "Password must be 8 to 30 characters long";
+                }
+
+                this.checkPasses();
+
+                break;
+            case "professor":
+                path.classification.value = value;
+                break;
+            case "student":
+                path.classification.value = value;
+                break;
+            default:
+                break;
         }
+
+        this.checkFields();
         this.emit("change");
     }
-    updateStyle(member, value){
-        /* A JSON object must be sent as value */
-        switch(member){
-            case "first": {
-                this.data.firstStyle = value;
-                break;
-            }
-            case "last": {
-                this.data.lastStyle = value;
-                break;
-            }
-            case "password": {
-                this.data.passStyle = value;
-                break;
-            }
-            case "confirm": {
-                this.data.confirmStyle = value;
-                break;
-            }
-            default: {
-
-            }
-        }
-        this.emit("change");
-    };
-
-    updateValue(member, value){
-        switch(member){
-            case "first":{
-                this.data.firstValue = value;
-                break;
-            }
-            case "last":{
-                this.data.lastValue = value;
-                break;
-            }
-            case "email": {
-                this.data.emailValue = value.toLowerCase();
-                break;
-            }
-            case "password": {
-                this.data.passValue = value;
-                break;
-            }
-            case "confirm": {
-                this.data.confirmValue = value;
-                break;
-            }
-            case "classification": {
-                this.data.classificationValue = value;
-                break;
-            }
-            default: {
-
-            }
-        }
-        this.emit("change");
-    };
     
     checkPasses(){
-        let txt = "";
-        let col = {};
-        let lockV = null;
-        if(this.data.passValue === this.data.confirmValue){
-            txt = "Passwords Match!";
-            col = {color:"green"};
-            lockV = false;
+        let path = this.store;
+
+        if(path.pass.value === path.confirm.value){
+            path.confirm.feed = "Passwords Match!";
+            path.confirm.style = {color:"green"};
         }else{
-            txt = "Passwords do not match";
-            col = {color:"red"};
-            lockV = true;
+            path.confirm.feed = "Passwords do not match";
+            path.confirm.style = {color:"red"};
         }
-        this.data.confirmFeed = txt;
-        this.data.confirmStyle = col;
-        this.data.lock = lockV;
-        this.emit("change");
     };
 
     checkFields(){
-        let namReg = new RegExp("^[a-zA-Z'\\- ]{2,35}$");
-        let emailReg = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        let passReg = new RegExp("^[a-zA-Z0-9@\\\\#$%&*()_+\\]\\[';:?.,!^-]{8,30}$");
+        let path = this.store;
         if(
-            namReg.test(this.data.firstValue) &&
-            namReg.test(this.data.lastValue) &&
-            emailReg.test(this.data.emailValue) &&
-            passReg.test(this.data.passValue) &&
-            this.data.passValue === this.data.confirmValue &&
-            this.data.classificationValue !== ""
+            this.namReg.test(path.first.value) &&
+            this.namReg.test(path.last.value) &&
+            this.emailReg.test(path.email.value) &&
+            this.passReg.test(path.pass.value) &&
+            path.pass.value === path.confirm.value &&
+            path.classification.value
         ){
-            this.data.lock = false;
+            path.lock = false;
+            return true;
         }else{
-            this.data.lock = true;
+            path.lock = true;
+            return false;
         }
-        this.emit("change");
     }
 
     lockdown(){
-        this.data.lock = true;
-        this.data.firstLock = true;
-        this.data.lastLock = true;
-        this.data.emailLock = true;
-        this.data.passLock = true;
-        this.data.confirmLock = true;
-        this.data.classificationLock = true;
+        let path = this.store;
+        path.lock = true;
+        path.first.lock = true;
+        path.last.lock = true;
+        path.email.lock = true;
+        path.pass.lock = true;
+        path.confirm.lock = true;
+        path.classification.lock = true;
         this.emit("change");
     }
 
-    handleActions(action){
+    submit(){
+        let path = this.store;
+        if(this.checkFields()){
+            path.feedback = null;
+            fetch("authentication/registration",{
+                method: "POST",
+                body:JSON.stringify({
+                    first: path.first.value,
+                    last: path.last.value,
+                    email: path.email.value,
+                    password: path.pass.value,
+                    confirm: path.confirm.value,
+                    classification: path.classification.value
+                }),
+                headers: {
+                    'content-type':'application/json'
+                }
+            }).then(x => x.json()).then(payload => {
+                if(payload.success){
+                    path.feedback = `Successfully registered under the email ${payload.email} as a ${payload.classification}. You will be redirected in 5 seconds...`;
+                    this.lockdown()
+                    setTimeout(()=>{
+                        window.location = 'login';
+                    }, '5000');
+                }else{
+                    if(payload.errType === "duplicate")
+                        path.feedback = `The email ${payload.email} has already been registered`;
+                    else if(payload.errType === "not filled out")
+                        path.feedback = "Form must be filled out";
+                    else if(payload.errType === "general")
+                        path.feedback = "An error has occured";
+                }
+            }).catch(err=>{
+                console.log(err.message);
+                path.feedback = "An error has occured";
+            });
+        }else
+            path.feedback = "Must fill out all fields correctly";
+        this.emit("change");
+    }
+
+    actionHandler(action){
         switch(action.type){
-            case "SET_LOCK": {
-                this.setLock(action.text);
+            case "REGISTER_CHANGE":
+                this.change(action.payload);
                 break;
-            }
-            case "UPDATE_FEEDBACK": {
-                this.updateFeedback(action.member, action.text);
+            case "REGISTER_SUBMIT":
+                this.submit();
                 break;
-            }
-            case "UPDATE_STYLE":{
-                this.updateStyle(action.member, action.text);
+            default:
                 break;
-            }
-            case "UPDATE_PASSWORD":{
-                this.updatePassword(action.text);
-                break;
-            }
-            case "UPDATE_VALUE":{
-                this.updateValue(action.member, action.text);
-                break;
-            }
-            case "CHECK_PASSES":{
-                this.checkPasses();
-                break;
-            }
-            case "CHECK_FIELDS":{
-                this.checkFields();
-                break;
-            }
-            case "LOCKDOWN":{
-                this.lockdown();
-                break;
-            }
-            default: {
-            }
         }
     }
 };
 
 const store = new Store();
-dispatcher.register(store.handleActions.bind(store));
+dispatcher.register(store.actionHandler.bind(store));
 export default store;

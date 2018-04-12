@@ -1,234 +1,73 @@
 import React, {Component} from 'react'
-import registerStore from '../stores/Register.store';
-import * as registerActions from '../actions/registerActions';
+import store from '../stores/Register.store';
 import AuthService from '../components/AuthService';
-
-var registerAPI = "http://localhost:3000/authentication/registration";
-
-var row = "col";
-
-// First and Last name should be a max of 35 characters, suggested by the UK government data standards catalogue
-var reg = new RegExp('^[a-zA-Z\'\\- ]{2,35}$');
+import * as actions from '../actions/actions';
 
 export class RegisterForm extends Component{
-    constructor(props){
-        super(props);
-        this.state = {
-            store: registerStore.getAll()
-        };
-        this.validate = this.validate.bind(this);
-        this.checkFirst = this.checkFirst.bind(this);
-        this.checkLast = this.checkLast.bind(this);
-        this.checkPass = this.checkPass.bind(this);
-        this.checkConfirm = this.checkConfirm.bind(this);
-        this.emailchange = this.emailchange.bind(this);
-        this.studentEvent = this.studentEvent.bind(this);
-        this.professorEvent = this.professorEvent.bind(this);
-
+    constructor(){
+        super();
+        this.state =  store.getAll();
         this.Auth = new AuthService();
     }
     componentWillMount(){
-        if(this.Auth.loggedIn()){
-            window.location = "http://localhost:3000/login";
-        }
-        registerStore.on("change", () => {
-            this.setState({store: registerStore.getAll()});
-        });
+        if(this.Auth.loggedIn())
+            window.location = "login";
+        store.on("change", () =>
+            this.setState(store.getAll())
+        );
     }
-    validate(e){
-        //Validate the form before it is sent by the HTML form using POST
-        //Remember to return a value of true or false from this event handler
-        //true alows the form to send, false prevents the form from submiting
-        //return true;
-        if(this.state.store.firstValue === this.checkName(this.state.store.firstValue,"first")){
-            if(this.state.store.lastValue === this.checkName(this.state.store.lastValue, "last")){
-                if(this.state.store.passValue.length >= 8 && this.state.store.passValue.length <= 30){
-                    if(this.state.store.passValue === this.state.store.confirmValue){
-                        if(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(this.state.store.emailValue)){
-                            if(this.state.store.classificationValue === "student" || this.state.store.classificationValue === "professor"){
-                                registerActions.updateFeedback("user", "");
-                                fetch(registerAPI,{
-                                    method: 'POST',
-                                    body:JSON.stringify({
-                                        first: this.state.store.firstValue,
-                                        last: this.state.store.lastValue,
-                                        email: this.state.store.emailValue,
-                                        password: this.state.store.passValue,
-                                        confirm: this.state.store.confirmValue,
-                                        classification: this.state.store.classificationValue
-                                    }),
-                                    headers: {
-                                        'content-type':'application/json'
-                                    }
-                                }).then(function(a){
-                                    return a.json();
-                                }).then(function(json){
-                                    if(json.success){
-                                        registerActions.updateFeedback("user", `Successfully registered under the email ${json.email} as a ${json.classification}. You will be redirected in 5 seconds...`);
-                                        registerActions.lockDown();
-                                        setTimeout(()=>{window.location = 'login'}, '5000');
-                                    }else{
-                                        if(json.errType === "duplicate"){
-                                            registerActions.updateFeedback("user", `The email ${json.email} has already been registered`);
-                                        }else if(json.errType === "not filled out"){
-                                            registerActions.updateFeedback("user", "Form must be filled out");
-                                        }else if(json.errType === "general"){
-                                            registerActions.updateFeedback("user", "An error has occured");
-                                        }
-                                    }
-                                }).catch(err=>{
-                                    console.log(err);
-                                });
-                            }else{
-                                registerActions.updateFeedback("user", "Must choose a classification");
-                            }
-                        }else{
-                            registerActions.updateFeedback("user", "Must a valid email syntax");
-                        }
-                    }else{
-                        registerActions.updateFeedback("user", "Passwords must match eachother");
-                    }
-                }else{
-                    registerActions.updateFeedback("user", "Password must be at least 8 characters, and no more than 30 characters");
-                }
-            }else{
-                this.state.store.firstValue.length === 0?registerActions.updateFeedback("user", "Must insert a last name"):registerActions.updateFeedback("user", "Must insert a valid last name");
-            }
-        }else{
-            this.state.store.firstValue.length === 0?registerActions.updateFeedback("user", "Must insert a first name"):registerActions.updateFeedback("user", "Must insert a valid first name");
-        }
-        e.preventDefault();
+    submit(event){
+        actions.submit("REGISTER");
+        event.preventDefault();
     }
-    checkConfirm(e){
-        registerActions.updateValue("confirm", e.target.value);
-        registerActions.checkPasses();
-        registerActions.checkFields();
-    }
-    checkPass(e){
-        let regex = new RegExp("^[a-zA-Z0-9@\\\\#$%&*()_+\\]\\[';:?.,!^-]{8,30}$");
-        let feedback = "";
-        let style = {};
-        registerActions.updateValue("password", e.target.value);
-        if(regex.test(e.target.value)){
-            style = {color:"green"};
-            feedback = e.target.value.length;
-            registerActions.setLock(false);
-        }else{
-            style = {color:"red"};
-            feedback = "Password must be 8 to 30 characters long";
-            registerActions.setLock(true);
-        }
-        registerActions.updateFeedback("password", feedback);
-        registerActions.updateStyle("password", style);
-        registerActions.checkPasses();
-        registerActions.checkFields();
-    }
-    checkName(name, fol){
-        /* fol stands for "first or last" */
-        if(name.length < 2){
-            return `${fol} name must be at least 2 characters.`;
-        }
-        else if(name.length > 35){
-            return `${fol} name must be 35 characters or less.`;
-        }
-        else if(!reg.test(name)){
-            return `${fol} name must be letters, hyphens, single quotes, and spaces.`;
-        }else{
-            return name;
-        }
-    }
-
-    checkFirst(e){
-        /*
-        JSX automatically escapes sequences to prevent injection attacks
-        */
-        registerActions.updateValue("first", e.target.value);
-        let feedback = this.checkName(e.target.value, "First");
-        let style = {};
-        if(feedback === e.target.value){
-            style = {color:"green"};
-            registerActions.setLock(false);
-        }else{
-            style = {color:"red"};
-            registerActions.setLock(true);
-        }
-        registerActions.updateFeedback("first", feedback);
-        registerActions.updateStyle("first", style);
-        registerActions.checkFields();
-    }
-    checkLast(e){
-        registerActions.updateValue("last", e.target.value);
-        let feedback = this.checkName(e.target.value, "Last");
-        let style = {};
-        if(feedback === e.target.value){
-            style = {color: "green"};
-            registerActions.setLock(false);
-        }else{
-            style = {color: "red"};
-            registerActions.setLock(true);
-        }
-        registerActions.updateFeedback("last", feedback);
-        registerActions.updateStyle("last", style);
-        registerActions.checkFields();
-    }
-    emailchange(e){
-        registerActions.updateFeedback("email", e.target.value);
-        registerActions.updateValue("email", e.target.value);
-        registerActions.checkFields();
-    }
-    studentEvent(e){
-        registerActions.updateValue("classification", e.target.value);
-        registerActions.checkFields();
-    }
-    professorEvent(e){
-        registerActions.updateValue("classification", e.target.value);
-        registerActions.checkFields();
+    change(event){
+        actions.change("REGISTER", event.target.id, event.target.value);
     }
     render(){
         return(
-            <form onSubmit={this.validate}>
+            <form onSubmit={this.submit}>
                 <h1 className="text-center">Registration</h1>
                 <div className="row">
-                    <label className={`${row} text-right`} htmlFor="1">First</label>
-                    <input className={`${row} text-center`} name="first" type="text" id="1" placeholder="Jane" onChange={this.checkFirst} disabled={this.state.store.firstLock} required/>
-                    <span className={`${row} text-left`} id="firstFeedback" style={this.state.store.firstStyle}>{this.state.store.firstFeed}</span>
+                    <label className="col text-right" htmlFor="fname">First</label>
+                    <input className="col text-center" name="first" type="text" id="fname" placeholder="Jane" onChange={this.change} disabled={this.state.first.lock} required/>
+                    <span className="col text-left" id="firstFeedback" style={this.state.first.style}>{this.state.first.feed}</span>
                 </div>
                 <div className="row">
-                    <label className={`${row} text-right`} htmlFor="2" >Last</label>
-                    <input className={`${row} text-center`} name="last" type="text" id="2" placeholder="Doe" onChange={this.checkLast} disabled={this.state.store.lastLock} required/>
-                    <span className={`${row} text-left`} id="lastFeedback" style={this.state.store.lastStyle}>{this.state.store.lastFeed}</span>
+                    <label className="col text-right" htmlFor="lname" >Last</label>
+                    <input className="col text-center" name="last" type="text" id="lname" placeholder="Doe" onChange={this.change} disabled={this.state.last.lock} required/>
+                    <span className="col text-left" id="lastFeedback" style={this.state.last.style}>{this.state.last.feed}</span>
                 </div>
                 <div className="row">
-                    <label className={`${row} text-right`} htmlFor="3">Email</label>
-                    <input onChange={this.emailchange} className={`${row} text-center`} name="email" type="email" id="3" placeholder="jane.doe@somesite.com" disabled={this.state.store.emailLock} required/>
-                    <span id="emailFeedback" className={`${row} text-left`}>{this.state.store.emailFeed}</span>
+                    <label className="col text-right" htmlFor="email">Email</label>
+                    <input onChange={this.change} className="col text-center" name="email" type="email" id="email" placeholder="jane.doe@somesite.com" disabled={this.state.email.lock} required/>
+                    <span id="emailFeedback" className="col text-left">{this.state.email.feed}</span>
                 </div>
                 <div className="row">
-                    <label className={`${row} text-right`} htmlFor="4">Password</label>
-                    <input type="password" id="4" name="password" value={this.state.store.passValue} className={`${row} text-center`} onChange={this.checkPass} disabled={this.state.store.passLock} required/>
-                    <span id="passwordFeedback" className={`${row} text-left`} style={this.state.store.passStyle}>{this.state.store.passFeed}</span>
+                    <label className="col text-right" htmlFor="password">Password</label>
+                    <input type="password" id="password" name="password" value={this.state.pass.value} className="col text-center" onChange={this.change} disabled={this.state.pass.lock} required/>
+                    <span id="passwordFeedback" className="col text-left" style={this.state.pass.style}>{this.state.pass.feed}</span>
                 </div>
                 <div className="row">
-                    <label className={`${row} text-right`} htmlFor="5">Re-Enter Password</label>
-                    <input className={`${row} text-center`} name="confirm" value={this.state.store.confirmValue} id="5" type="password" onChange={this.checkConfirm} disabled={this.state.store.confirmLock} required/>
-                    <span id="confirmFeedback" className={`${row} text-left`} style={this.state.store.confirmStyle}>{this.state.store.confirmFeed}</span>
+                    <label className="col text-right" htmlFor="cPassword">Re-Enter Password</label>
+                    <input className="col text-center" name="confirm" value={this.state.confirm.value} id="cPassword" type="password" onChange={this.change} disabled={this.state.confirm.lock} required/>
+                    <span id="confirmFeedback" className="col text-left" style={this.state.confirm.style}>{this.state.confirm.feed}</span>
                 </div>
                 <div className="row text-center">
-                    <span className={`${row} text-right`}>Classification</span>
-                    <div className={`${row} text-center`}>
-                        <input type="radio" name="classification" value="student" onClick={this.studentEvent} disabled={this.state.store.classificationLock}/>Student<br />
-                        <input type="radio" name="classification" value="professor" onClick={this.professorEvent} disabled={this.state.store.classificationLock} />Professor<br />
+                    <span className="col text-right">Classification</span>
+                    <div className="col text-center">
+                        <input type="radio" name="classification" value="student" id="student" onClick={this.change} disabled={this.state.classification.lock}/>Student<br />
+                        <input type="radio" name="classification" value="professor" id="professor" onClick={this.change} disabled={this.state.classification.lock} />Professor<br />
                     </div>
-                    <span id="classificationFeedback" className={`${row} text-left`}>{this.state.store.classificationValue}</span>
+                    <span id="classificationFeedback" className="col text-left">{this.state.classification.value}</span>
                 </div>
                 <div className="row text-center">
                     <div className="col-4 mx-auto">
-                        <input id="registerBtn" className="btn btn-success" type="submit" value="Register" disabled={this.state.store.lock}/>
+                        <input id="registerBtn" className="btn btn-success" type="submit" value="Register" disabled={this.state.lock}/>
                     </div>
                 </div>
                 <div className="row text-center">
                     <div id="userFeedback" className="col-4 mx-auto">
-                        {this.state.store.userFeedback}
+                        {this.state.feedback}
                     </div>
                 </div>
             </form>
