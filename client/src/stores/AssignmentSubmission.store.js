@@ -14,6 +14,7 @@ class Store extends EventEmitter{
             init:false,
             examples:null,
             submissionBox:null,
+            stdinBox:null,
             feedback:""
         };
 
@@ -28,7 +29,7 @@ class Store extends EventEmitter{
         try{
             fetch(`../assignment/${this.store.id}`).then(response => response.json()).then(payload => {
                 this.store.assignment = payload;
-                this.store.examples = payload.examples.map((example, index) => 
+                this.store.examples = payload.examples.map((example, index) =>
                     <div className="row" key={index}>
                         <div className="col text-center">
                             {example.input}
@@ -55,6 +56,10 @@ class Store extends EventEmitter{
                 this.store.submissionBox = payload.value;
                 break;
             }
+            case "stdin": {
+                this.store.stdinBox = payload.value;
+                break;
+            }
             default:{
                 break;
             }
@@ -67,7 +72,8 @@ class Store extends EventEmitter{
                 body:JSON.stringify({
                     course: this.store.assignment.course,
                     assignment: this.store.id,
-                    source:this.store.submissionBox
+                    source:this.store.submissionBox,
+                    input: this.store.stdinBox
                 }),
                 headers:{
                     "content-type":"application/json",

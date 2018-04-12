@@ -79,6 +79,7 @@ router.get('/:id', (req, res) => {
 router.post('/', (req, res) => {
     let code = req.body.source;
     let assignID = req.body.assignment;
+    let input = req.body.input;
     let findSubmission = (studentID, courseID, assignID, callback) => {
         Student.findOne(
             {'_id': studentID},
@@ -119,7 +120,7 @@ router.post('/', (req, res) => {
             vm_name:         'virtual_machine',
             code:            code,
             language:        compilers[langToIndex(assign.language)],
-            stdin_data:      "Hello",
+            stdin_data:      input,
             student:         student,
             course:          assign.course,
             assignment:      assign._id
