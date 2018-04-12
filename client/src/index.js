@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { Route, BrowserRouter as Router } from 'react-router-dom';
 import {Switch} from 'react-router';
 import registerServiceWorker from './registerServiceWorker';
+import {Navbar} from './containers/Navbar.container.react';
 import {AssignmentPage} from './components/Assignment';
 import {HomePage} from './components/Home';
 import {LoginPage} from './components/Login';
@@ -24,6 +25,7 @@ const Root = () => {
     return (
       <Router>
         <div className="container-fluid">
+        <Navbar />
           <Route exact path="/" component={HomePage} />
           <Route path="/assignment" component={AssignmentPage} />
           <Route path="/login" component={LoginPage} />

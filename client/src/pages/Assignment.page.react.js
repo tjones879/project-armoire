@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 
-import {Navbar} from '../components/Navbar';
 import {AssignmentSubmission} from '../containers/AssignmentSubmission.container.react';
 
 import AuthService from '../components/AuthService';
@@ -23,7 +22,6 @@ export class ExactAssignmentPage extends Component{
     render(){
         return(
             <div>
-                <Navbar />
                 <AssignmentSubmission user={this.Auth.getInfo().user} id={this.state.id}/>
             </div>
         );
