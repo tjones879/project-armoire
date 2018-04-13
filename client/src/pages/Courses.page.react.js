@@ -1,7 +1,6 @@
 import React from 'react';
 import {Component} from 'react';
 
-import {Navbar} from '../components/Navbar';
 import {Btn} from '../components/Btn.component.react';
 import {Courses} from '../containers/Courses.container.react';
 
@@ -34,7 +33,6 @@ export class CoursePage extends Component{
     render(){
         return(
             <div>
-                <Navbar />
                 {this.state.components.map((component, index) =>
                     <div key={index}>
                         {component}

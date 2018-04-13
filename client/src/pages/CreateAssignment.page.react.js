@@ -1,7 +1,6 @@
 import React from 'react';
 import {Component} from 'react';
 
-import {Navbar} from '../components/Navbar';
 import {CreateAssignment} from '../containers/CreateAssignment.container.react';
 
 import AuthService from '../components/AuthService';
@@ -29,7 +28,6 @@ export class CreateAssignmentPage extends Component{
     render(){
         return(
             <div>
-                <Navbar />
                 <CreateAssignment user={this.state.user} title="Create Assignment"/>
             </div>
         );

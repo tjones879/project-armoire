@@ -1,5 +1,4 @@
 import React, {Component} from 'react'
-import {Navbar} from './Navbar'
 import registerStore from '../stores/registerStore';
 import * as registerActions from '../actions/registerActions';
 import AuthService from './AuthService';
@@ -15,7 +14,6 @@ export class RegisterPage extends Component{
     render(){
         return(
             <div className="container-fluid">
-                <Navbar />
                 <RegisterForm />
             </div>
         );

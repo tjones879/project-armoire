@@ -2,6 +2,7 @@ import {EventEmitter} from "events";
 import dispatcher from "../dispatcher";
 import * as Actions from '../actions/actions';
 import store from './Navbar.store';
+import AuthService from '../components/AuthService';
 
 class LoginStore extends EventEmitter{
     constructor(){
@@ -17,7 +18,7 @@ class LoginStore extends EventEmitter{
                 "display":"none"
             }
         }
-
+        this.Auth = new AuthService();
         this.login = this.login.bind(this);
         this.lockdown = this.lockdown.bind(this);
         this.logout = this.logout.bind(this);
@@ -92,7 +93,9 @@ class LoginStore extends EventEmitter{
                 localStorage.setItem('token', obj.token);
                 this.data.feedback = "Successful Login! You will be redirected in 5 seconds...";
                 this.loggedIn();
-                Actions.changeNavbar({classification:"student"});
+                Actions.changeNavbar({
+                    classification:this.Auth.getClassByToken(obj.token)
+                });
                 store.emit("change");
                 setTimeout(()=>{window.location = 'account'}, 5000);
             }else{
