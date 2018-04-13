@@ -65,11 +65,14 @@ class Store extends EventEmitter{
             return name;
     }
 
-    
+    capFirst(input){
+        return input.charAt(0).toUpperCase() + input.slice(1);
+    }
 
     change(payload){
         const value = payload.value;
         let path = this.store;
+        let fixed = null;
 
         switch(payload.id){
             case "cPassword":
@@ -82,20 +85,22 @@ class Store extends EventEmitter{
                 path.email.feed = value.toLowerCase();
                 break;
             case "fname":
-                path.first.value = value;
-                path.first.feed = this.checkName(value, "First");
+                fixed = this.capFirst(value);
+                path.first.value = fixed;
+                path.first.feed = this.checkName(fixed, "First");
 
-                if(path.first.feed === value)
+                if(path.first.feed === fixed)
                     path.first.style = {color:"green"};
                 else
                     path.first.style = {color:"red"};
 
                 break;
             case "lname":
-                path.last.value = value;
-                path.last.feed = this.checkName(value, "Last");
+                fixed = this.capFirst(value);
+                path.last.value = fixed;
+                path.last.feed = this.checkName(fixed, "Last");
 
-                if(path.last.feed === value)
+                if(path.last.feed === fixed)
                     path.last.style = {color:"green"};
                 else
                     path.last.style = {color:"red"};

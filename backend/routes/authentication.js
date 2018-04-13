@@ -112,6 +112,10 @@ router.post('/login', function(req, res, next){
     }
 });
 
+function capFirst(input){
+    return input.charAt(0).toUpperCase() + input.slice(1);
+}
+
 router.post('/registration', (req, res) => {
     if(
         typeof req.body.first !== "undefined" && 
@@ -122,6 +126,8 @@ router.post('/registration', (req, res) => {
         req.body.password === req.body.confirm && 
         typeof req.body.classification !== "undefined"
     ){
+        const fname = capFirst(req.body.first);
+        const lname = capFirst(req.body.last);
         /* Check if email is already in the database first */
         Authentication.find({email: req.body.email}, (err,docs) => {
             if(err){
@@ -149,16 +155,16 @@ router.post('/registration', (req, res) => {
                 const person = new Student({
                     _id: Mongoose.Types.ObjectId(),
                     login_id: loginID,
-                    fname: req.body.first,
-                    lname: req.body.last,
+                    fname: fname,
+                    lname: lname,
                     courses: []
                 });
 
                 const profess = new Professor({
                     _id: Mongoose.Types.ObjectId(),
                     login_id: loginID,
-                    fname: req.body.first,
-                    lname: req.body.last,
+                    fname: fname,
+                    lname: lname,
                     courses: []
                 });
 
