@@ -1,5 +1,6 @@
 import {EventEmitter} from "events";
 import dispatcher from "../dispatcher";
+import _ from "lodash";
 
 class Store extends EventEmitter{
     constructor(){
@@ -44,6 +45,7 @@ class Store extends EventEmitter{
         this.namReg = /^[a-zA-Z'\- ]{2,35}$/;
         this.emailReg = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         this.passReg = /^.{8,30}$/;
+        this.genError = "An error has occured";
     }
     
 
@@ -76,7 +78,7 @@ class Store extends EventEmitter{
 
                 break;
             case "email":
-                path.email.value = value;
+                path.email.value = value.toLowerCase();
                 path.email.feed = value.toLowerCase();
                 break;
             case "fname":
@@ -187,23 +189,29 @@ class Store extends EventEmitter{
                     'content-type':'application/json'
                 }
             }).then(x => x.json()).then(payload => {
-                if(payload.success){
-                    path.feedback = `Successfully registered under the email ${payload.email} as a ${payload.classification}. You will be redirected in 5 seconds...`;
+                if(!_.isEmpty(payload)){
+                    path.feedback = `Successfully registered ${payload.fname} ${payload.lname} under the email ${path.email.value} as a ${path.classification.value}. You will be redirected in 5 seconds...`;
                     this.lockdown()
                     setTimeout(()=>{
                         window.location = 'login';
                     }, '5000');
                 }else{
-                    if(payload.errType === "duplicate")
-                        path.feedback = `The email ${payload.email} has already been registered`;
-                    else if(payload.errType === "not filled out")
-                        path.feedback = "Form must be filled out";
-                    else if(payload.errType === "general")
-                        path.feedback = "An error has occured";
+                    fetch(`authentication/email/${path.email.value}`).then(x => x.json()).then(payload => {
+                        if(_.isEmpty(payload))
+                            path.feedback = this.genError;
+                        else
+                            path.feedback = `${path.email.value} is already registered`;
+                        this.emit("change");
+                    }).catch(err => {
+                        console.log(err.message);
+                        path.feedback = this.genError;
+                        this.emit("change");
+                    });
                 }
-            }).catch(err=>{
+            }).catch(err => {
                 console.log(err.message);
-                path.feedback = "An error has occured";
+                path.feedback = this.genError;
+                this.emit("change");
             });
         }else
             path.feedback = "Must fill out all fields correctly";

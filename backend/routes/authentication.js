@@ -25,6 +25,18 @@ router.get('/:id', function(req, res, next) {
     });
 });
 
+router.get('/email/:email', (req, res) => {
+    Authentication.find({email:req.params.email}).then(result => {
+        if(result)
+            res.json(result);
+        else
+            res.json({});
+    }).catch(err => {
+        console.log(err.message);
+        res.json({});
+    });
+});
+
 /* used to login to the system and recieve a JWT */
 router.post('/login', function(req, res, next){
     if(req.body.email != "" && req.body.password != ""){
@@ -65,6 +77,7 @@ router.post('/login', function(req, res, next){
                         jwt.sign({user}, process.env.JWT_SECRET, {expiresIn: '1h'}, (err,token) => {
                             if(err){
                                 console.log(`Token Failure: failure on sign by ${emailV}`);
+                                console.log(err.message);
                                 res.json({success: false});
                                 return;
                             }
@@ -99,16 +112,21 @@ router.post('/login', function(req, res, next){
     }
 });
 
-router.post('/registration', function(req, res, next){
-    if(typeof req.body.first !== "undefined" && typeof req.body.last !== "undefined"
-    && typeof req.body.email !== "undefined" && typeof req.body.password !== "undefined"
-    && typeof req.body.confirm !== "undefined" && req.body.password === req.body.confirm 
-    && typeof req.body.classification !== "undefined"){
+router.post('/registration', (req, res) => {
+    if(
+        typeof req.body.first !== "undefined" && 
+        typeof req.body.last !== "undefined" &&
+        typeof req.body.email !== "undefined" && 
+        typeof req.body.password !== "undefined" &&
+        typeof req.body.confirm !== "undefined" && 
+        req.body.password === req.body.confirm && 
+        typeof req.body.classification !== "undefined"
+    ){
         /* Check if email is already in the database first */
         Authentication.find({email: req.body.email}, (err,docs) => {
             if(err){
-                console.log(err);
-                return;
+                console.log(err.message);
+                res.json({});
             }
             if(!docs.length){
                 /* this has mush be initialized every call to post */
@@ -121,7 +139,7 @@ router.post('/registration', function(req, res, next){
 
                 const login = new Authentication({
                     _id: loginID,
-                    email: req.body.email,
+                    email: req.body.email.toLowerCase(),
                     hash: hashedPass,
                     salt: salt,
                     classification: req.body.classification,
@@ -144,41 +162,35 @@ router.post('/registration', function(req, res, next){
                     courses: []
                 });
 
-                login.save()
-                    .then(result =>{
+                login.save().then(result => {
                         if(req.body.classification === "student"){
                             /* Students */
-                            person.save()
-                            .then(result =>{
-                                console.log(`student added to database: ${req.body}`);
-                                res.status(200).json({success:true,email:req.body.email,classification:req.body.classification});
-                            }).catch(err => {
-                                res.status(200).json({success:false, errType: "general"});
-                                console.log(err);
+                            person.save().then(result =>
+                                res.status(200).json(result)
+                            ).catch(err => {
+                                res.json({});
+                                console.log(err.message);
                             });
                         }else{
                             /* Professors */
-                            profess.save()
-                            .then(result => {
-                                res.status(200).json({success:true,email:req.body.email, classification:req.body.classification});
-                            }).catch(err =>{
-                                res.status(200).json({success:false, errType: "general"});
-                                console.log(err);
+                            profess.save().then(result =>
+                                res.status(200).json(result)
+                            ).catch(err => {
+                                res.json({});
+                                console.log(err.message);
                             });
                         }
                     }).catch(err => {
-                        res.status(200).json({success:false, errType: "general"});
-                        console.log(err);
+                        res.json({});
+                        console.log(err.message);
                     });
-            }else{
+            }else
                 /* Someone with the same email has already registered */
-                res.status(200).json({success:false,errType:"duplicate",email:req.body.email})
-            }
+                res.json({});
         });
-    }else{
+    }else
         /* form is not fully filled out */
-        res.status(200).json({success:false, errType: "not filled out"});
-    }
+        res.json({});
 });
 
 module.exports = router;
