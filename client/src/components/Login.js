@@ -1,5 +1,4 @@
 import React,{Component} from 'react'
-import {Navbar} from './Navbar'
 import loginStore from '../stores/loginStore';
 import * as loginActions from '../actions/loginActions';
 import AuthService from './AuthService';
@@ -10,7 +9,6 @@ export class LoginPage extends Component{
     render(){
         return(
             <div className="container-fluid">
-                <Navbar />
                 <LoginForm />
             </div>
         );

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import {Navbar} from './Navbar';
 import {DescriptionBox} from './DescriptionBox';
 import AuthService from './AuthService';
 
@@ -181,7 +180,6 @@ export class AssignmentPage extends Component{
   render(){
     return(
       <div className="container-fluid">
-        <Navbar />
         <Assignment />
       </div>
     );
