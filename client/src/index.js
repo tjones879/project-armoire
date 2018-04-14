@@ -6,7 +6,7 @@ import registerServiceWorker from './registerServiceWorker';
 import {Navbar} from './containers/Navbar.container.react';
 import {AssignmentPage} from './components/Assignment';
 import {HomePage} from './components/Home';
-import {LoginPage} from './components/Login';
+import {LoginPage} from './pages/Login.page.react';
 import {RegisterPage} from './components/Register';
 import {AccountPage} from './pages/Account.page.react';
 import {CoursePage} from './pages/Courses.page.react';
