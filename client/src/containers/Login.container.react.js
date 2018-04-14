@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import * as actions from '../actions/actions';
 import {Btn} from '../components/Btn.component.react';
 import {Input} from '../components/input.component.react';
+import PropTypes from "prop-types";
 
 export class LoginForm extends Component{
     change(event){
@@ -30,4 +31,25 @@ export class LoginForm extends Component{
             </form>
         );
     }
+}
+
+LoginForm.defaultProps = {
+    elements: [
+        {
+            text:"Email",
+            id:"email",
+            name:"email",
+            type:"text"
+        },
+        {
+            text:"Password",
+            id:"password",
+            name:"password",
+            type:"password"
+        }
+    ]
+}
+
+LoginForm.propTypes = {
+    elements: PropTypes.array.isRequired
 }
