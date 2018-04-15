@@ -3,6 +3,7 @@ from bson import ObjectId
 import json
 from pymongo import MongoClient, collection
 import subprocess
+import time
 
 
 class Submission():
@@ -105,24 +106,31 @@ def getContents(source):
 def callCompiler(db: collection, args: dict):
     contents = getContents('/codeDir/' + args['source'])
     if 'compile' in args and args['compile'] is not None:
+        start = time.time()
         p = subprocess.Popen(args['compile']['command'], shell=True,
                              cwd='/codeDir/', stderr=subprocess.PIPE)
         out, err = p.communicate()
+        elapsed = time.time() - start
         if err != b'':
             return Submission(contents,
-                              out.decode('utf-8') + err.decode('utf-8'))
+                              out.decode('utf-8') + err.decode('utf-8'),
+                              run_time=elapsed)
 
     with open('/codeDir/inputFile', 'r') as f:
+        start = time.time()
         p = subprocess.Popen(args['run']['command'], shell=True, stdin=f,
                              cwd='/codeDir/',
                              stdout=subprocess.PIPE,
                              stderr=subprocess.PIPE)
         out, err = p.communicate()
+        elapsed = time.time() - start
         if err != b'':
             return Submission(contents,
-                              out.decode('utf-8') + err.decode('utf-8'))
+                              out.decode('utf-8') + err.decode('utf-8'),
+                              run_time=elapsed)
         else:
-            return Submission(contents, out.decode('utf-8'))
+            return Submission(contents, out.decode('utf-8'),
+                              run_time=elapsed)
 
 
 if __name__ == '__main__':
