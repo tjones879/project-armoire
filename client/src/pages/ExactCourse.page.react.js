@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 
-import {Navbar} from '../components/Navbar';
 import {AssignmentList} from '../components/AssignmentsList.component.react';
 
 import AuthService from '../components/AuthService';
@@ -51,7 +50,6 @@ export class ExactCoursePage extends Component{
     render(){
         return(
             <div>
-                <Navbar />
                 {console.log(this.state.assignments)}
                 <AssignmentList assignments={this.state.assignments}/>
             </div>
