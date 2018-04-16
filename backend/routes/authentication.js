@@ -11,6 +11,7 @@ var Student = require('../db/student.js');
 var Professor = require('../db/professor.js');
 var crypt = require("crypto");
 const jwt = require('jsonwebtoken');
+var bcrypt = require('bcrypt');
 
 
 
@@ -112,18 +113,19 @@ router.post('/registration', function(req, res, next){
             }
             if(!docs.length){
                 /* this has mush be initialized every call to post */
-                const hash = crypt.createHash('sha256');
-
-                let salt = crypt.randomBytes(12).toString('hex');
-                let saltedPass = `${salt}${req.body.password}`;
-                let hashedPass = hash.update(saltedPass).digest('hex');
+                const saltRounds = 10;
+                var hash = bcrypt.hashSync(req.body.password, saltRounds);
+//                const hash = crypt.createHash('sha256');
+//
+//                let salt = crypt.randomBytes(12).toString('hex');
+//                let saltedPass = `${salt}${req.body.password}`;
+//                let hashedPass = hash.update(saltedPass).digest('hex');
                 let loginID = Mongoose.Types.ObjectId();
 
                 const login = new Authentication({
                     _id: loginID,
                     email: req.body.email,
-                    hash: hashedPass,
-                    salt: salt,
+                    hash: hash,
                     classification: req.body.classification,
                     verified: false
                 });

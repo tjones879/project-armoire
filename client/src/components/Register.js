@@ -117,17 +117,17 @@ export class RegisterForm extends Component{
         registerActions.checkFields();
     }
     checkPass(e){
-        let regex = new RegExp("^[a-zA-Z0-9@\\\\#$%&*()_+\\]\\[';:?.,!^-]{8,30}$");
+        let regex = new RegExp("^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,30}$");
         let feedback = "";
         let style = {};
         registerActions.updateValue("password", e.target.value);
         if(regex.test(e.target.value)){
             style = {color:"green"};
-            feedback = e.target.value.length;
+            feedback = "Approved! " + e.target.value.length + " chars";
             registerActions.setLock(false);
         }else{
             style = {color:"red"};
-            feedback = "Password must be 8 to 30 characters long";
+            feedback = "Password must be 8 to 30 characters long and include uppercase, lowercase, special char and number";
             registerActions.setLock(true);
         }
         registerActions.updateFeedback("password", feedback);
