@@ -54,7 +54,7 @@ class SearchStudentsStore extends EventEmitter{
             }
             this.emit("change");
         }).catch(err => {
-            path.feedback = "An error has occured";
+            this.store.feedback = "An error has occured";
             console.log(err.message);
             this.emit("change");
         });
