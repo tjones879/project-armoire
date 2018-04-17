@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 
 import AuthService from '../components/AuthService';
-import * as Actions from '../actions/actions';
+import * as Actions from '../actions';
 import store from '../stores/AccountChange.store';
 
 import {Input} from '../components/input.component.react';

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import * as actions from '../actions/actions';
+import * as actions from '../actions';
 import {Btn} from '../components/Btn.component.react';
 import {Input} from '../components/input.component.react';
 import PropTypes from "prop-types";

@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 
-import * as Actions from '../actions/actions';
+import * as Actions from '../actions';
 import store from '../stores/AssignmentSubmission.store.js';
 
 import {Btn} from '../components/Btn.component.react';

@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 
-import * as Actions from '../actions/actions';
+import * as Actions from '../actions';
 import store from '../stores/SearchStudents.store';
 
 import {Input} from '../components/input.component.react';
@@ -25,7 +25,7 @@ export class SearchStudentsContainer extends Component{
         Actions.change("SEARCH_STUDENT",event.target.id,event.target.value);
     }
     addStudent(event){
-        Actions.addStudentToCourse(event.target.id);
+        Actions.add("SEARCH_STUDENT", "STUDENT", {id:event.target.id});
         event.preventDefault();
     }
     render(){

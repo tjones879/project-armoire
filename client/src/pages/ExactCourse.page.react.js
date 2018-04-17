@@ -4,7 +4,7 @@ import {AssignmentList} from '../components/AssignmentsList.component.react';
 
 import AuthService from '../components/AuthService';
 import store from '../stores/ExactCourse.store';
-import * as Actions from '../actions/actions';
+import * as Actions from '../actions';
 
 export class ExactCoursePage extends Component{
     constructor(props){
@@ -33,7 +33,7 @@ export class ExactCoursePage extends Component{
                             store.on("change", ()=> {
                                 this.setState(store.getAll());
                             });
-                            Actions.courseInit(this.props.match.params.id, this.state.user);
+                            Actions.start("EXACT_COURSE", {id:this.props.match.params.id, user:this.state.user});
                         }
                     }).catch(err => {
                         console.log(err.message);

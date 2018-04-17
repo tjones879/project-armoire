@@ -60,10 +60,6 @@ class Store extends EventEmitter{
                 this.start(action.payload);
                 break;
             }
-            case "NAVBAR_CHANGE":{
-                this.start(action.payload);
-                break;
-            }
             default:{
                 break;
             }

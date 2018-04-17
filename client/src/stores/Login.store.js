@@ -1,6 +1,6 @@
 import {EventEmitter} from "events";
 import dispatcher from "../dispatcher";
-import * as actions from '../actions/actions';
+import * as actions from '../actions';
 import navStore from './Navbar.store';
 import AuthService from '../components/AuthService';
 import _ from "lodash";
@@ -68,7 +68,7 @@ class Store extends EventEmitter{
                 localStorage.setItem('token', token);
                 path.feedback = "Successful Login!";
                 path.lock = true;
-                actions.changeNavbar({
+                actions.start("NAVBAR",{
                     classification:this.Auth.getClassByToken(token)
                 });
                 navStore.emit("change");
