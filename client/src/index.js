@@ -7,7 +7,7 @@ import {Navbar} from './containers/Navbar.container.react';
 import {AssignmentPage} from './components/Assignment';
 import {HomePage} from './components/Home';
 import {LoginPage} from './pages/Login.page.react';
-import {RegisterPage} from './components/Register';
+import {RegisterPage} from './pages/Register.page.react';
 import {AccountPage} from './pages/Account.page.react';
 import {CoursePage} from './pages/Courses.page.react';
 import {CreateCoursePage} from './pages/CreateCourse.page.react';
