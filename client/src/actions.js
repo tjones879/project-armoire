@@ -22,7 +22,7 @@ export function add(dir, what, payload){
    Lastly, an action to the path 'LOGIN' will be sent to the dispatcher
    as the constant, 'LOGIN_CHANGE' */
 export function change(dir, id, value){
-    if(dir && id && value)
+    if(dir && id)
         dispatcher.dispatch({
             type:`${dir}_CHANGE`,
             payload:{id,value}

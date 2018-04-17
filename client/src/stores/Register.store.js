@@ -44,7 +44,7 @@ class Store extends EventEmitter{
         }
         this.namReg = /^[a-zA-Z'\- ]{2,35}$/;
         this.emailReg = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        this.passReg = /^.{8,30}$/;
+        this.passReg = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,30}$/;
         this.genError = "An error has occured";
     }
     
@@ -114,7 +114,7 @@ class Store extends EventEmitter{
                     path.pass.feed = value.length.toString();
                 }else{
                     path.pass.style = {color:"red"};
-                    path.pass.feed = "Password must be 8 to 30 characters long";
+                    path.pass.feed = "Password must be 8 to 30 characters long and include uppercase, lowercase, special char and number";
                 }
 
                 this.checkPasses();

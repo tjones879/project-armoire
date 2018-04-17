@@ -11,6 +11,7 @@ var Student = require('../db/student.js');
 var Professor = require('../db/professor.js');
 var crypt = require("crypto");
 const jwt = require('jsonwebtoken');
+var bcrypt = require('bcrypt');
 let _ = require('lodash');
 
 
@@ -41,22 +42,19 @@ router.get('/email/:email', (req, res) => {
 /* used to login to the system and recieve a JWT */
 router.post('/login', (req, res) => {
     if(typeof req.body.email !== "undefined" && typeof req.body.password !== "undefined"){
-
         const email = req.body.email.toLowerCase();
         let password = req.body.password;
-        let salt = "";
         
         /* check if email exists */
         Authentication.findOne({email}).then(obj => {
             if(!_.isEmpty(obj)){
-                salt = obj.salt; //get salt from database
-                password = `${salt}${password}`; //combine salt with password
-                const hash = crypt.createHash('sha256'); //hash the combined passwords
-                password = hash.update(password).digest('hex');
-
-                /* check if email and given hash match our records in the db */
-                Authentication.findOne({email, hash: password}).then(obj => {
-                    if(!_.isEmpty(obj)){
+                bcrypt.compare(password, obj.hash, function(err, response) {
+                    if(err){
+                        console.log(err);
+                        res.json({});
+                        return;
+                    }
+                    if(response){
                         const user = {
                             id:obj._id,
                             email:obj.email,
@@ -68,16 +66,13 @@ router.post('/login', (req, res) => {
                                 res.json({});
                                 return;
                             }
-                            res.json(token);
+                                res.json(token);
                         });
                     }else
-                        res.json({}); //password hash did not match password
-                }).catch(err => {
-                    console.log(err.message);
-                    res.json({});
+                        res.json({});
                 });
             }else
-                res.json({}); //email not found in database
+                res.json({}); //email not found
         }).catch(err => {
             console.log(err.message);
             res.json({});
@@ -109,40 +104,41 @@ router.post('/registration', (req, res) => {
                 res.json({});
             }
             if(!docs.length){
-                /* this has mush be initialized every call to post */
-                const hash = crypt.createHash('sha256');
+                const saltRounds = 13;
+                bcrypt.hash(req.body.password, saltRounds, function(err, hash) {
+                    if(err){
+                        console.log(err.message);
+                        res.json({});
+                        return;
+                    }
+                        
+                    let loginID = Mongoose.Types.ObjectId();
 
-                let salt = crypt.randomBytes(12).toString('hex');
-                let saltedPass = `${salt}${req.body.password}`;
-                let hashedPass = hash.update(saltedPass).digest('hex');
-                let loginID = Mongoose.Types.ObjectId();
+                    const login = new Authentication({
+                        _id: loginID,
+                        hash: hash,
+                        email: req.body.email.toLowerCase(),
+                        classification: req.body.classification,
+                        verified: false
+                    });
 
-                const login = new Authentication({
-                    _id: loginID,
-                    email: req.body.email.toLowerCase(),
-                    hash: hashedPass,
-                    salt: salt,
-                    classification: req.body.classification,
-                    verified: false
-                });
+                    const person = new Student({
+                        _id: Mongoose.Types.ObjectId(),
+                        login_id: loginID,
+                        fname: fname,
+                        lname: lname,
+                        courses: []
+                    });
 
-                const person = new Student({
-                    _id: Mongoose.Types.ObjectId(),
-                    login_id: loginID,
-                    fname: fname,
-                    lname: lname,
-                    courses: []
-                });
+                    const profess = new Professor({
+                        _id: Mongoose.Types.ObjectId(),
+                        login_id: loginID,
+                        fname: fname,
+                        lname: lname,
+                        courses: []
+                    });
 
-                const profess = new Professor({
-                    _id: Mongoose.Types.ObjectId(),
-                    login_id: loginID,
-                    fname: fname,
-                    lname: lname,
-                    courses: []
-                });
-
-                login.save().then(result => {
+                    login.save().then(result => {
                         if(req.body.classification === "student"){
                             /* Students */
                             person.save().then(result =>
@@ -164,6 +160,7 @@ router.post('/registration', (req, res) => {
                         res.json({});
                         console.log(err.message);
                     });
+                });
             }else
                 /* Someone with the same email has already registered */
                 res.json({});
