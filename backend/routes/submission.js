@@ -24,6 +24,12 @@ let compilers = [
         src_file: 'file.py',
         run_cmd: 'python file.py',
         name: 'Python 2',
+    },
+    {
+        src_file: 'Main.java',
+        compile_cmd: 'javac Main.java',
+        run_cmd: 'java Main',
+        name: 'Java',
     }
 ];
 
@@ -35,13 +41,20 @@ function random(size) {
     return require('crypto').randomBytes(size).toString('hex');
 }
 
+/*
+ * Obtain the correct compiler struct depending on the string sent
+ * by the client.
+ */
 function langToIndex(language) {
-    if (language === 'c++')
-        return 1;
-    else if (language === 'python3')
+    language = language.toLowerCase();
+    if (language === 'python3')
         return 0;
+    else if (language === 'c++')
+        return 1;
     else if (language === 'python2')
         return 2;
+    else if (language === 'java')
+        return 3;
 }
 
 /*
@@ -81,6 +94,8 @@ router.post('/', (req, res) => {
     let assignID = req.body.assignment;
     let input = req.body.input;
     let findSubmission = (studentID, courseID, assignID, callback) => {
+        // Return a student from the database so that only the correct
+        // course and assignment are returned.
         Student.findOne(
             {'_id': studentID},
             {'courses': {
