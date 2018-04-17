@@ -26,9 +26,9 @@ router.get('/:id', function(req, res, next) {
 });
 
 router.get('/email/:email', (req, res) => {
-    Authentication.find({email:req.params.email}).then(result => {
+    Authentication.findOne({email:req.params.email}).then(result => {
         if(result)
-            res.json(result);
+            res.json({email:result.email});
         else
             res.json({});
     }).catch(err => {
