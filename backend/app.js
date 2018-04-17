@@ -5,6 +5,7 @@ var path = require('path');
 var bodyParser = require('body-parser');
 var index = require('./routes/index');
 var assignment = require('./routes/assignment');
+var submission = require('./routes/submission');
 var professor = require('./routes/professor');
 var course = require('./routes/course');
 var student = require('./routes/student');
@@ -23,15 +24,11 @@ app.use('/authentication', authentication);
 app.post('/course', verifyToken, course);
 
 app.use('/assignment', assignment);
+//app.post('/submission', verifyToken, submission);
+app.use('/submission', submission);
 app.use('/professor', professor);
 app.use('/course', course);
 app.use('/student', student);
-
-/* Protected Routes */
-//app.post('/assignment', verifyToken, assignment);
-//app.post('/professor', verifyToken, professor);
-//app.post('/course', verifyToken, course);
-//app.post('/student', verifyToken, student);
 
 function verifyToken(req, res, next){
     const bearerHeader = req.headers['authorization'];
@@ -39,7 +36,6 @@ function verifyToken(req, res, next){
         const bearer = bearerHeader.split(' ');
         const bearerToken = bearer[1];
         req.token = bearerToken;
-        console.log("token found");
         next();
     }else{
         res.sendStatus(403);

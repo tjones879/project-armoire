@@ -8,6 +8,7 @@ scripts/get_deps.sh
 This will automatically navigate to both the backend and the
 client and call `npm install` in their respective directories.
 
+
 To run all tests:
 ```
 scripts/run_tests.sh
@@ -15,6 +16,13 @@ scripts/run_tests.sh
 
 This will also automatically navigate to directories and run
 their respective tests by calling `npm test`.
+
+To create the docker image run 
+```
+scripts/createImage.sh
+```
+
+This will use the Dockerfile to create the vm image. To add more languages for compilation, you have to add the proper compiler/interpreter to the image as well as the front end code. 
 
 Starting the react dev server can be done by navigating to
 `client` and calling `npm start`.

@@ -7,7 +7,7 @@ import {Btn} from '../components/Btn.component.react';
 import {Examples} from '../components/Examples.component.react';
 import {Tests} from '../components/Tests.component.react';
 
-import * as actions from '../actions/CreateAssignment.actions';
+import * as actions from '../actions';
 import store from '../stores/CreateAssignment.store';
 
 export class CreateAssignment extends Component{
@@ -19,15 +19,20 @@ export class CreateAssignment extends Component{
     }
     componentWillMount(){
         store.on("change", ()=>{this.setState(store.getAll())});
-        actions.getInfo(this.props.user);
+        actions.start("CREATE_ASSIGNMENT",this.props.user);
     }
     validate(event){
-        actions.submit();
+        actions.submit("CREATE_ASSIGNMENT");
         event.preventDefault();
     }
-
+    addTest(){
+        actions.add("CREATE_ASSIGNMENT", "TEST");
+    }
+    addExample(){
+        actions.add("CREATE_ASSIGNMENT", "EXAMPLE");
+    }
     change(event){
-        actions.change(event.target.id, event.target.value);
+        actions.change("CREATE_ASSIGNMENT",event.target.id, event.target.value);
     }
 
     render(){
@@ -41,20 +46,20 @@ export class CreateAssignment extends Component{
                             </div>
                         </div>
                         <SelectBox event={this.change} options={this.state.options} title="Course" id="CourseSelectBox"/>
-                        <SelectBox event={this.change} options={[{text:"C++",value:"c++"},{text:"Java",value:"java"},{text:"Python",value:"python"}]} title="Language" id="LanguageSelectBox"/>
+                        <SelectBox event={this.change} options={[{text:"C++",value:"c++"},{text:"Java",value:"java"},{text:"Python 3",value:"python3"},{text:"Python 2",value:"python2"}]} title="Language" id="LanguageSelectBox"/>
                         {this.state.form.elements.map(element =>
                             <Input event={this.change} key={element.id} type={element.type} id={element.id} name={element.name} text={element.text}/>
                         )}
                         <Examples event={this.change} elements={this.state.examples}/>
                         <div className="row text-center">
                             <div className="col">
-                                <Btn text="Add Example" id="addE" type="button" event={actions.addExample}/>
+                                <Btn text="Add Example" id="addE" type="button" event={this.addExample}/>
                             </div>
                         </div>
                         <Tests event={this.change} elements={this.state.tests}/>
                         <div className="row text-center">
                             <div className="col">
-                                <Btn text="Add Test" id="addT" type="button" event={actions.addTest}/>
+                                <Btn text="Add Test" id="addT" type="button" event={this.addTest}/>
                             </div>
                         </div>
                         <div className="row text-center">

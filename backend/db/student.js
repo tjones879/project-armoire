@@ -24,7 +24,9 @@ var StudentSchema = new mongoose.Schema({
             submissions: [{
                 _id: mongoose.Schema.Types.ObjectId,
                 contents: String,
-                tests: [{
+                time: Number,
+                output: String,
+                test_results: [{
                     id: Number,
                     output: String
                 }]

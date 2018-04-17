@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 
-import * as Actions from '../actions/actions';
+import * as Actions from '../actions';
 import store from '../stores/AssignmentSubmission.store.js';
 
 import {Btn} from '../components/Btn.component.react';
@@ -84,6 +84,11 @@ export class AssignmentSubmission extends Component{
                         <div className="row text-center">
                             <div className="col">
                                 <textarea id="contents" name="contents" cols="80" rows="10" onChange={this.change}></textarea>
+                            </div>
+                        </div>
+                        <div className="row text-center">
+                            <div className="col">
+                                <textarea id="stdin" name="stdin" cols="80" rows="10" onChange={this.change}></textarea>
                             </div>
                         </div>
                         <div className="row text-center">

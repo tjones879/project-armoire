@@ -45,7 +45,7 @@ class Store extends EventEmitter{
     }
     actionHandler(action){
         switch(action.type){
-            case "COURSE_INIT":{
+            case "EXACT_COURSE_START":{
                 this.init(action.payload);
                 break;
             }
