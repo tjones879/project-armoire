@@ -2,7 +2,6 @@ import React from 'react';
 import {Component} from 'react';
 import {Btn} from '../components/Btn.component.react';
 import {AccountInfoBox} from '../components/AccountInfoBox.component.react';
-import * as Actions from '../actions/accountInfo.actions';
 import {accountInfoStore} from '../stores/accountInfo.store';
 
 export class AccountInfo extends Component{
@@ -11,14 +10,9 @@ export class AccountInfo extends Component{
         this.state = accountInfoStore.getAll();
     }
     componentWillMount(){
-        accountInfoStore.on('change', () => {
-            this.setState(accountInfoStore.getAll());
-        });
-        accountInfoStore.on('no clearance', () => {
-            window.location = 'login';
-        });
-        Actions.checkLoginStatus();
-        Actions.getUserData();
+        accountInfoStore.on("change", () => 
+            this.setState(accountInfoStore.getAll())
+        )
     }
     render(){
         return(

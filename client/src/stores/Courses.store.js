@@ -12,19 +12,20 @@ class Store extends EventEmitter{
     getAll(){
         return this.store;
     }
-    start(user){
-        this.store.user = user;
-        fetch(`student/courses/${this.store.user.id}`).then(response => response.json()).then(payload => {
-            this.store.courses = payload;
+    start(payload){
+        let path = this.store;
+        const user = path.user = payload;
+        fetch(`student/courses/${user.id}`).then(response => response.json()).then(payload => {
+            path.courses = payload;
             this.emit("change");
-        }).catch(err => {
-            console.log(err.message);
-        });
+        }).catch(err =>
+            console.log(err.message)
+        );
     }
     actionHandler(action){
         switch(action.type){
             case "COURSES_START":{
-                this.start(action.payload.user);
+                this.start(action.payload);
                 break;
             }
             default:{

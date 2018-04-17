@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import AuthService from '../components/AuthService';
 import {Btn} from '../components/Btn.component.react';
-import * as Actions from '../actions/actions';
+import * as Actions from '../actions';
 import store from '../stores/Navbar.store';
 
 export class Navbar extends Component{

@@ -24,6 +24,7 @@ class Store extends EventEmitter{
         return this.store;
     }
     start(payload){
+        console.log(payload);
         this.store.id = payload.id;
         this.store.user = payload.user;
         try{

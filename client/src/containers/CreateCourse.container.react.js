@@ -5,15 +5,13 @@ import {PropTypes} from 'prop-types';
 import {Input} from '../components/input.component.react';
 import {Btn} from '../components/Btn.component.react';
 
-import * as actions from '../actions/CreateCourse.actions';
+import * as actions from '../actions';
 import {createCourseStore} from '../stores/CreateCourse.store';
 
 export class CreateCourseContainer extends Component {
     constructor(props){
         super(props);
         this.state = createCourseStore.getAll();
-
-        this.validate = this.validate.bind(this);
     }
 
     componentWillMount(){
@@ -23,12 +21,12 @@ export class CreateCourseContainer extends Component {
     }
 
     validate(event){
-        actions.submitCourse();
+        actions.submit("CREATE_COURSE");
         event.preventDefault();
     }
 
     change(event){
-        actions.changeInput(event.target.id, event.target.value);
+        actions.change("CREATE_COURSE", event.target.id, event.target.value);
     }
 
     render(){

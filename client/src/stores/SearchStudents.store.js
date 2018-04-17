@@ -59,9 +59,9 @@ class SearchStudentsStore extends EventEmitter{
             this.emit("change");
         });
     }
-    user(user){
-        this.store.user = user.user;
-        fetch(`course/login_id/${user.user.id}`).then(response => response.json()).then(payload => {
+    start(user){
+        this.store.user = user;
+        fetch(`course/login_id/${user.id}`).then(response => response.json()).then(payload => {
             let options = [];
             for(let i = 0; i < payload.length; i++){
                 options.push({
@@ -76,7 +76,9 @@ class SearchStudentsStore extends EventEmitter{
             console.log(err.message);
         });
     }
-    addStudentToCourse(id){
+    addStudentToCourse(payload){
+        let id = payload.id;
+        console.log(id);
         let index = this.store.selectBoxForms.findIndex( form => form.id === `courseSelect${id}`);
         if(index === -1){
             console.log("not found");
@@ -130,20 +132,20 @@ class SearchStudentsStore extends EventEmitter{
     }
     actionHandler(action){
         switch(action.type){
-            case "CHANGE_STUDENT_SEARCH":{
+            case "SEARCH_STUDENT_CHANGE":{
                 this.change(action.payload.id, action.payload.value);
                 break;
             }
-            case "SUBMIT_SEARCH_STUDENT":{
+            case "SEARCH_STUDENT_SUBMIT":{
                 this.submit();
                 break;
             }
-            case "USER_SEARCH_STUDENT":{
-                this.user(action.payload.user);
+            case "SEARCH_STUDENT_START":{
+                this.start(action.payload);
                 break;
             }
-            case "ADD_STUDENT_TO_COURSE":{
-                this.addStudentToCourse(action.payload.id);
+            case "SEARCH_STUDENT_ADD_STUDENT":{
+                this.addStudentToCourse(action.payload);
                 break;
             }
             default:{

@@ -30,20 +30,21 @@ class CreateCourseStore extends EventEmitter{
             }
         }
         this.handleActions = this.handleActions.bind(this);
-        this.inputChange = this.inputChange.bind(this);
         this.submitCourse = this.submitCourse.bind(this);
 
         this.Auth = new AuthService();
     }
 
-    inputChange(which, value){
-        switch(which){
+    change(payload){
+        const value = payload.value;
+        let path = this.data.input;
+        switch(payload.id){
             case 'cName':{
-                this.data.input.cName = value;
+                path.cName = value;
                 break;
             }
             case 'cNum':{
-                this.data.input.cNum = value;
+                path.cNum = value;
                 break;
             }
             default:{
@@ -86,11 +87,11 @@ class CreateCourseStore extends EventEmitter{
 
     handleActions(action){
         switch(action.type){
-            case "CHANGE_INPUT":{
-                this.inputChange(action.payload.which, action.payload.value);
+            case "CREATE_COURSE_CHANGE":{
+                this.change(action.payload);
                 break;
             }
-            case 'SUBMIT_COURSE':{
+            case 'CREATE_COURSE_SUBMIT':{
                 this.submitCourse();
                 break;
             }
