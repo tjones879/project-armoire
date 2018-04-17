@@ -78,20 +78,33 @@ router.get('/courses/:id', (req, res) => {
     }
 });
 
-//Get student by First and Last name
+/* This function takes in a name of any capitalization,
+   and returns a name with the first letter capitalized
+   and the rest of the name in lowercase. This is how
+   the names are stored in the database */
+function formatName(name){
+    let fixed = name.toLowerCase(); //convert all to lowercase
+    return fixed.charAt(0).toUpperCase() + fixed.slice(1); //capitalize the first letter and add the second half back
+}
+
+/* This route is used to search for students by their first
+   and last name. For return values, it returns an array of
+   every student with the matching name, or it returns an
+   empty array if no student is found with the parameters */
 router.get('/:first/:last', (req, res) => {
     try{
-        let fname = req.params.first;
-        let lname = req.params.last;
-        Student.find({fname, lname}).then(obj => {
-            res.json(obj);
-        }).catch(err => {
+        const fname = formatName(req.params.first); //format first name
+        const lname = formatName(req.params.last); //format last name
+
+        Student.find({fname, lname}).then(arr =>
+            res.json(arr) //returns array of object with length of 1+
+        ).catch(err => {
             console.log(err.message);
-            res.json([]);
+            res.json([]); //returns empty array
         });
     }catch(err){
         console.log(err.message);
-        res.json([]);
+        res.json([]); //return empty array is error occurs
     }
 });
 
