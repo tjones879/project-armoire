@@ -11,6 +11,7 @@ var Student = require('../db/student.js');
 var Professor = require('../db/professor.js');
 var crypt = require("crypto");
 const jwt = require('jsonwebtoken');
+let _ = require('lodash');
 
 
 
@@ -26,9 +27,9 @@ router.get('/:id', function(req, res, next) {
 });
 
 router.get('/email/:email', (req, res) => {
-    Authentication.find({email:req.params.email}).then(result => {
+    Authentication.findOne({email:req.params.email}).then(result => {
         if(result)
-            res.json(result);
+            res.json({email:result.email});
         else
             res.json({});
     }).catch(err => {
@@ -38,78 +39,51 @@ router.get('/email/:email', (req, res) => {
 });
 
 /* used to login to the system and recieve a JWT */
-router.post('/login', function(req, res, next){
-    if(req.body.email != "" && req.body.password != ""){
+router.post('/login', (req, res) => {
+    if(typeof req.body.email !== "undefined" && typeof req.body.password !== "undefined"){
 
-        let emailV = req.body.email.toLowerCase();
-        let passwordV = req.body.password;
+        const email = req.body.email.toLowerCase();
+        let password = req.body.password;
         let salt = "";
         
         /* check if email exists */
-        Authentication.findOne({email: emailV}, (err, obj) => {
-            if(obj != null){
-
-                /* get salt from database */
-                salt = obj.salt;
-                /* combine salt with password */
-                passwordV = `${salt}${passwordV}`;
-                /* hash the combined passwords */
-                const hash = crypt.createHash('sha256');
-                passwordV = hash.update(passwordV).digest('hex');
+        Authentication.findOne({email}).then(obj => {
+            if(!_.isEmpty(obj)){
+                salt = obj.salt; //get salt from database
+                password = `${salt}${password}`; //combine salt with password
+                const hash = crypt.createHash('sha256'); //hash the combined passwords
+                password = hash.update(password).digest('hex');
 
                 /* check if email and given hash match our records in the db */
-                Authentication.findOne({email: emailV, hash: passwordV}, (err, obj) => {
-                    if(err){
-                        console.log(`DB Failure: on email + password lookup for ${emailV}`);
-                        res.json({success:false});
-                        return;
-                    }
-
-                    if(obj != null){
-                        /* both password hash and email match */
-                        console.log(`Login Success: from ${emailV}`);
-
+                Authentication.findOne({email, hash: password}).then(obj => {
+                    if(!_.isEmpty(obj)){
                         const user = {
                             id:obj._id,
                             email:obj.email,
                             classification:obj.classification
                         };
-                        jwt.sign({user}, process.env.JWT_SECRET, {expiresIn: '1h'}, (err,token) => {
+                        jwt.sign({user}, process.env.JWT_SECRET, {expiresIn: '1h'}, (err, token) => {
                             if(err){
-                                console.log(`Token Failure: failure on sign by ${emailV}`);
                                 console.log(err.message);
-                                res.json({success: false});
+                                res.json({});
                                 return;
                             }
-                            console.log(`Token Success: success by ${emailV}`);
-                            res.json({
-                                success: true,
-                                token
-                            });
+                            res.json(token);
                         });
-                    }else{
-                        /* password hash did not match password */
-                        console.log(`Login Failed: wrong password by ${emailV}`);
-                        res.json({
-                            success: false
-                        });
-                    }
+                    }else
+                        res.json({}); //password hash did not match password
+                }).catch(err => {
+                    console.log(err.message);
+                    res.json({});
                 });
-            }else{
-                /* email was not found in mongo db */
-                console.log(`Login Failed: ${emailV} was not found in the mongo db`);
-                res.json({
-                    success: false
-                });
-            }
+            }else
+                res.json({}); //email not found in database
+        }).catch(err => {
+            console.log(err.message);
+            res.json({});
         });
-    }else{
-        res.json({
-            success:false,
-            error: 1,
-            text:"Fields are empty"
-        });
-    }
+    }else
+        res.json({});
 });
 
 function capFirst(input){

@@ -40,6 +40,15 @@ export function change(dir, id, value){
             }
             break;
         }
+        case "LOGIN":
+            payload = {
+                type:"LOGIN_CHANGE",
+                payload:{
+                    id:id,
+                    value:value
+                }
+            };
+            break;
         case "REGISTER":{
             payload = {
                 type:"REGISTER_CHANGE",
@@ -79,8 +88,15 @@ export function submit(dir){
             }
             break;
         }
+        case "LOGIN":
+            payload = {
+                type:"LOGIN_SUBMIT"
+            };
+            break;
         case "REGISTER":
-            payload = {type:"REGISTER_SUBMIT"}
+            payload = {
+                type:"REGISTER_SUBMIT"
+            }
             break;
         default:{
             break;
