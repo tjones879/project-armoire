@@ -40,16 +40,23 @@ class SearchStudentsStore extends EventEmitter{
     getAll(){
         return this.store;
     }
+
+    /* This function handles what happens to the store when the user
+       pushes the search button. */
     submit(){
-        fetch(`student/${this.store.data.fname}/${this.store.data.lname}`).then(response => response.json()).then(payload => {
-            let len = payload.length,s;
-            (len > 1 || len === 0)?s = 's':s = '';
-            this.store.feedback = `Found ${len} Result${s}`;
-            this.store.sLen = len;
-            this.store.students = payload;
+        fetch(`student/${this.store.data.fname}/${this.store.data.lname}`).then(res => res.json()).then(payload => {
+            let path = this.store; //save on typing
+            const len = path.sLen = payload.length;
+            path.feedback = `Found ${len} Result`;
+            if(len > 1){ //only assign if data is actually there
+                path.feedback += 's'; //add 's' if more than one
+                path.students = payload; //put students into the store
+            }
             this.emit("change");
         }).catch(err => {
-
+            path.feedback = "An error has occured";
+            console.log(err.message);
+            this.emit("change");
         });
     }
     start(user){
