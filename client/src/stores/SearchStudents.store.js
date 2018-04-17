@@ -48,7 +48,7 @@ class SearchStudentsStore extends EventEmitter{
             let path = this.store; //save on typing
             const len = path.sLen = payload.length;
             path.feedback = `Found ${len} Result`;
-            if(len > 1){ //only assign if data is actually there
+            if(len >= 1){ //only assign if data is actually there
                 path.feedback += 's'; //add 's' if more than one
                 path.students = payload; //put students into the store
             }
