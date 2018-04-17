@@ -92,7 +92,23 @@ def getConfig() -> dict:
         return settings
 
 
-def getMongo(host='localhost', port=27017) -> collection:
+def getMongoDomain() -> str:
+    """
+    Attempt to find the mongo domain.
+
+    Some versions of docker for mac do not properly bridge the host to
+    guest containers using localhost. These containers must interact
+    with docker.for.mac.localhost instead of localhost.
+    """
+    systems = ['mac', 'win']
+    for s in systems:
+        domain = 'docker.for.' + s + '.localhost'
+        if subprocess.call(['getent', 'hosts', domain]) == 0:
+            return domain
+    return 'localhost'
+
+
+def getMongoHandle(host, port=27017):
     client = MongoClient(host, port)
     db = client['development']
     return db
@@ -134,7 +150,7 @@ def callCompiler(db: collection, args: dict):
 
 
 if __name__ == '__main__':
-    db = getMongo()
+    db = getMongoHandle(getMongoDomain())
     config = getConfig()
     student = Student(db, ObjectId(config['student']))
     sub = callCompiler(db, config)
