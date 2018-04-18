@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 
-import {Input} from './input.component.react';
+import {TextArea} from './textarea.component.react';
 
 export class Tests extends Component{
     render(){
@@ -8,8 +8,9 @@ export class Tests extends Component{
             <div>
                 {this.props.elements.map(element =>
                     <div key={element}>
-                        <Input event={this.props.event} type="text" text={`Action ${element}`} id={`A${element}`} name={`A${element}`}/>
-                        <Input event={this.props.event} type="text" text={`Expected ${element}`} id={`E${element}`} name={`E${element}`}/>
+                        {/* <Input event={this.props.event} type="text" text={`Action ${element}`} id={`A${element}`} name={`A${element}`}/> */}
+                        {/* <Input event={this.props.event} type="text" text={`Expected ${element}`} id={`E${element}`} name={`E${element}`}/> */}
+                        <TextArea event={this.props.event} type="text" text={`Test ${element}`} id={`T${element}`} name={`T${element}`}/>
                     </div>
                 )}
             </div>

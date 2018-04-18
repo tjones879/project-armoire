@@ -12,6 +12,7 @@ let compilers = [
         src_file: 'file.py',
         run_cmd: 'python3 file.py',
         name: 'Python 3',
+        // test_file: 'fileTest.py'
     },
     {
         src_file: 'file.cpp',
@@ -24,6 +25,7 @@ let compilers = [
         src_file: 'file.py',
         run_cmd: 'python file.py',
         name: 'Python 2',
+        // test_file: 'fileTest.py'
     }
 ];
 
@@ -128,6 +130,8 @@ router.post('/', (req, res) => {
 
 
         var dockerCompiler = new Compiler(payload);
+
+        console.log(payload);
 
         dockerCompiler.run((err, data) => {
             if (err)
