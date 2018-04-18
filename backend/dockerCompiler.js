@@ -38,6 +38,9 @@ function writePayload(sandbox, language, input) {
         run: {
             command: language.run_cmd,
             stdin: input,
+        },
+        test: {
+            commands: language.test_cmds
         }
     };
 

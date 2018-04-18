@@ -17,6 +17,12 @@ let compilers = [
         src_file: 'file.cpp',
         compile_cmd: 'g++ file.cpp -o /codeDir/a.out ',
         run_cmd: './a.out',
+        test_cmds: [
+            'g++ --std=c++14 -I/test-cpp test.cpp -c',
+            'objcopy --strip-symbol=main test.o',
+            'g++ --std=c++14 test.o /test-cpp/test-main.o -o tests',
+            './tests'
+        ],
         name: 'C++',
     },
     {
