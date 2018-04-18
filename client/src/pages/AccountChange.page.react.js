@@ -1,10 +1,9 @@
 import React, {Component} from 'react';
 
 import AuthService from '../components/AuthService';
-import * as Actions from '../actions/actions';
+import * as Actions from '../actions';
 import store from '../stores/AccountChange.store';
 
-import {Navbar} from '../components/Navbar';
 import {Input} from '../components/input.component.react';
 import {Btn} from '../components/Btn.component.react';
 
@@ -31,7 +30,6 @@ export class AccountChangePage extends Component{
     render(){
         return(
             <div>
-                <Navbar />
                 <form onSubmit={this.submit}>
                     <Input text="First Name" id="fname" name="fname" value={this.state.info.fname} event={this.change} />
                     <Input text="Last Name" id="lname" name="lname" value={this.state.info.lname} event={this.change}/>

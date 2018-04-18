@@ -19,11 +19,14 @@
   },
   "homepage": "https://github.com/tjones879/project-armoire#readme",
   "dependencies": {
+    "bcrypt": "^2.0.0",
     "body-parser": "^1.18.2",
     "dotenv": "^5.0.1",
     "express": "^4.16.2",
     "jsonwebtoken": "^8.2.0",
-    "mongoose": "^5.0.6"
+    "lodash": "^4.17.5",
+    "mongoose": "^5.0.6",
+    "node-pre-gyp": "^0.9.1"
   },
   "devDependencies": {
     "chai": "^4.1.2",

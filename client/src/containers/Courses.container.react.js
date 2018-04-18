@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {CourseDisplay} from '../components/CourseDisplay.component.react';
 import store from '../stores/Courses.store';
-import * as Actions from '../actions/actions';
+import * as Actions from '../actions';
 
 export class Courses extends Component{
     constructor(props){

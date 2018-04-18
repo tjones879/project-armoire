@@ -69,7 +69,8 @@ class CreateAssignmentStore extends EventEmitter{
         this.submit = this.submit.bind(this);
     }
 
-    getInfo(user){
+    start(user){
+        console.log(user);
         fetch(`course/login_id/${user.id}`).then(payload => payload.json()).then(res => {
             this.store.courses = res;
             let delta = [];
@@ -262,23 +263,23 @@ class CreateAssignmentStore extends EventEmitter{
     }
     actionHandler(action){
         switch(action.type){
-            case "GET_INFO":{
-                this.getInfo(action.payload.user);
+            case "CREATE_ASSIGNMENT_START":{
+                this.start(action.payload);
                 break;
             }
-            case "ADD_EXAMPLE":{
+            case "CREATE_ASSIGNMENT_ADD_EXAMPLE":{
                 this.addExample();
                 break;
             }
-            case "ADD_TEST":{
+            case "CREATE_ASSIGNMENT_ADD_TEST":{
                 this.addTest();
                 break;
             }
-            case "CHANGE":{
+            case "CREATE_ASSIGNMENT_CHANGE":{
                 this.change(action.payload.id, action.payload.value);
                 break;
             }
-            case "SUBMIT_ASSIGNMENT":{
+            case "CREATE_ASSIGNMENT_SUBMIT":{
                 this.submit();
                 break;
             }
