@@ -119,8 +119,7 @@ def getContents(source):
         return f.read()
 
 
-def callCompiler(db: collection, args: dict):
-    contents = getContents('/codeDir/' + args['source'])
+def callCompiler(db: collection, args: dict, contents: str):
     if 'compile' in args and args['compile'] is not None:
         start = time.time()
         p = subprocess.Popen(args['compile']['command'], shell=True,
@@ -131,7 +130,10 @@ def callCompiler(db: collection, args: dict):
             return Submission(contents,
                               out.decode('utf-8') + err.decode('utf-8'),
                               run_time=elapsed)
+    return None
 
+
+def runCode(db: collection, args: dict, contents: str):
     with open('/codeDir/inputFile', 'r') as f:
         start = time.time()
         p = subprocess.Popen(args['run']['command'], shell=True, stdin=f,
@@ -147,6 +149,21 @@ def callCompiler(db: collection, args: dict):
         else:
             return Submission(contents, out.decode('utf-8'),
                               run_time=elapsed)
+
+
+def runTests(db: collection, args: dict):
+    print(args['test'])
+
+
+def execute(db: collection, args: dict):
+    contents = getContents('/codeDir/' + args['source'])
+    sub = callCompiler(db, args, contents)
+    if sub is not None:
+        return sub
+
+    sub = runCode(db, args, contents)
+    runTests(db, args)
+    return sub
 
 
 if __name__ == '__main__':

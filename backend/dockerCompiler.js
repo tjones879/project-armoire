@@ -39,9 +39,7 @@ function writePayload(sandbox, language, input) {
             command: language.run_cmd,
             stdin: input,
         },
-        test: {
-            commands: language.test_cmds
-        }
+        test: language.test
     };
 
     fs.writeFile(sandbox.path + sandbox.folder + "/payload", JSON.stringify(obj), (err) => {
