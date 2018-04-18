@@ -66,7 +66,6 @@ class Student():
                 }}
             )
             self.student = self.students.find_one({'_id': self.student_id})
-            print(self.student)
 
     def saveSubmission(self, cid: ObjectId, aid: ObjectId, sub: 'Submission'):
         self.addAssignment(cid, aid)
@@ -88,11 +87,26 @@ class Student():
 def getConfig() -> dict:
     with open('/codeDir/payload', 'r') as payload:
         settings = json.load(payload)
-        print(settings)
         return settings
 
 
-def getMongo(host='localhost', port=27017) -> collection:
+def getMongoDomain() -> str:
+    """
+    Attempt to find the mongo domain.
+
+    Some versions of docker for mac do not properly bridge the host to
+    guest containers using localhost. These containers must interact
+    with docker.for.mac.localhost instead of localhost.
+    """
+    systems = ['mac', 'win']
+    for s in systems:
+        domain = 'docker.for.' + s + '.localhost'
+        if subprocess.call(['getent', 'hosts', domain]) == 0:
+            return domain
+    return 'localhost'
+
+
+def getMongoHandle(host, port=27017):
     client = MongoClient(host, port)
     db = client['development']
     return db
@@ -103,19 +117,21 @@ def getContents(source):
         return f.read()
 
 
-def callCompiler(db: collection, args: dict):
-    contents = getContents('/codeDir/' + args['source'])
+def callCompiler(db: collection, args: dict, contents: str):
     if 'compile' in args and args['compile'] is not None:
         start = time.time()
         p = subprocess.Popen(args['compile']['command'], shell=True,
                              cwd='/codeDir/', stderr=subprocess.PIPE)
         out, err = p.communicate()
         elapsed = time.time() - start
-        if err != b'':
+        if err is not None and err != b'':
             return Submission(contents,
                               out.decode('utf-8') + err.decode('utf-8'),
                               run_time=elapsed)
+    return None
 
+
+def runCode(db: collection, args: dict, contents: str):
     with open('/codeDir/inputFile', 'r') as f:
         start = time.time()
         p = subprocess.Popen(args['run']['command'], shell=True, stdin=f,
@@ -124,7 +140,7 @@ def callCompiler(db: collection, args: dict):
                              stderr=subprocess.PIPE)
         out, err = p.communicate()
         elapsed = time.time() - start
-        if err != b'':
+        if err is not None and err != b'':
             return Submission(contents,
                               out.decode('utf-8') + err.decode('utf-8'),
                               run_time=elapsed)
@@ -133,11 +149,54 @@ def callCompiler(db: collection, args: dict):
                               run_time=elapsed)
 
 
+def writeTestFile(file_args: dict, tests: list):
+    with open(file_args['name'], 'w') as f:
+        f.write(file_args['header'])
+        for test in tests:
+            f.write(test['action'])
+        f.write(file_args['footer'])
+
+
+def runTests(commands: list) -> str:
+    for command in commands:
+        p = subprocess.Popen(command, shell=True, cwd='/codeDir/')
+        out, err = p.communicate()
+        if err is not None and err != b'':
+            return err.decode('utf-8')
+    if out is not None:
+        print(out.decode('utf-8'))
+        return out.decode('utf-8')
+    else:
+        return ""
+
+
+def parseResults(results: str):
+    return results
+
+
+def test(db: collection, args: dict):
+    t = args['test']
+    writeTestFile(t['language']['file'], t['tests'])
+    results = runTests(t['language']['commands'])
+    parseResults(results)
+
+
+def execute(db: collection, args: dict):
+    contents = getContents('/codeDir/' + args['source'])
+    sub = callCompiler(db, args, contents)
+    if sub is not None:
+        return sub
+
+    sub = runCode(db, args, contents)
+    test(db, args)
+    return sub
+
+
 if __name__ == '__main__':
-    db = getMongo()
+    db = getMongoHandle(getMongoDomain())
     config = getConfig()
     student = Student(db, ObjectId(config['student']))
-    sub = callCompiler(db, config)
+    sub = execute(db, config)
     student.saveSubmission(ObjectId(config['course']),
                            ObjectId(config['assignment']),
                            sub)

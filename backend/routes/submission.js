@@ -18,6 +18,19 @@ let compilers = [
         src_file: 'file.cpp',
         compile_cmd: 'g++ file.cpp -o /codeDir/a.out ',
         run_cmd: './a.out',
+        test: {
+            file: {
+                name: 'test.cpp',
+                header: '#include "catch.hpp"\n#include "file.cpp"\n',
+                footer: ''
+            },
+            commands: [
+                'g++ --std=c++14 -I/test-cpp test.cpp -c',
+                'objcopy --strip-symbol=main test.o',
+                'g++ --std=c++14 test.o /test-cpp/test-main.o -o tests',
+                './tests'
+            ],
+        },
         name: 'C++',
     },
     {
@@ -139,7 +152,8 @@ router.post('/', (req, res) => {
             stdin_data:      input,
             student:         student,
             course:          assign.course,
-            assignment:      assign._id
+            assignment:      assign._id,
+            tests:           assign.tests
         };
 
 

@@ -20,7 +20,7 @@ class AccountInfoStore extends EventEmitter{
     getUserData(payload){
         this.store.user.id = payload.id;
         this.store.user.email = payload.email;
-        fetch('http://localhost:3000/student',{
+        fetch('/student',{
             method: 'POST',
             body:JSON.stringify({
                 id: this.store.user.id,
@@ -32,7 +32,7 @@ class AccountInfoStore extends EventEmitter{
             }
         }).then(payload => payload.json()).then(obj => {
             if(obj.status === 'failure'){
-                fetch('http://localhost:3000/professor',{
+                fetch('/professor',{
                     method: 'POST',
                     body:JSON.stringify({
                         id: this.store.user.id,
