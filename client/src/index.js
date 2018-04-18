@@ -49,7 +49,7 @@ class Root extends Component{
       const user = {
         id:userInfo.id,
         email:userInfo.email,
-        classificaiton:userInfo.classificaiton,
+        classification:userInfo.classification,
         token:this.auth.getToken()
       };
       this.setState({component:<LoggedIn user={user}/>});
@@ -71,7 +71,7 @@ const LoggedIn = props =>
     <Route exact path="/" component={HomePage} />
     <Switch>
       <PropsRoute exact path="/account" component={AccountPage} user={props.user}/>
-      <Route path='/account/change' component={AccountChangePage} />
+      <PropsRoute path='/account/change' component={AccountChangePage} user={props.user}/>
     </Switch>
     <Switch>
       <Route path='/courses/:id' component={ExactCoursePage} />
