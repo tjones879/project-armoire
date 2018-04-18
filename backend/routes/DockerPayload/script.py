@@ -66,7 +66,6 @@ class Student():
                 }}
             )
             self.student = self.students.find_one({'_id': self.student_id})
-            print(self.student)
 
     def saveSubmission(self, cid: ObjectId, aid: ObjectId, sub: 'Submission'):
         self.addAssignment(cid, aid)
@@ -88,7 +87,6 @@ class Student():
 def getConfig() -> dict:
     with open('/codeDir/payload', 'r') as payload:
         settings = json.load(payload)
-        print(settings)
         return settings
 
 
@@ -170,7 +168,7 @@ if __name__ == '__main__':
     db = getMongoHandle(getMongoDomain())
     config = getConfig()
     student = Student(db, ObjectId(config['student']))
-    sub = callCompiler(db, config)
+    sub = execute(db, config)
     student.saveSubmission(ObjectId(config['course']),
                            ObjectId(config['assignment']),
                            sub)
