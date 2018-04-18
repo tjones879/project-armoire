@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 
 import {AssignmentList} from '../components/AssignmentsList.component.react';
 
-import AuthService from '../components/AuthService';
+import AuthService from '../AuthService';
 import store from '../stores/ExactCourse.store';
 import * as Actions from '../actions';
 

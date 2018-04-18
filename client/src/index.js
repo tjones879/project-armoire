@@ -4,8 +4,7 @@ import { Route, BrowserRouter as Router } from 'react-router-dom';
 import {Switch} from 'react-router';
 import registerServiceWorker from './registerServiceWorker';
 import {Navbar} from './containers/Navbar.container.react';
-import {AssignmentPage} from './components/Assignment';
-import {HomePage} from './components/Home';
+import {HomePage} from './pages/Home.page.react';
 import {LoginPage} from './pages/Login.page.react';
 import {RegisterPage} from './pages/Register.page.react';
 import {AccountPage} from './pages/Account.page.react';
@@ -27,25 +26,28 @@ const Root = () => {
         <div className="container-fluid">
         <Navbar />
           <Route exact path="/" component={HomePage} />
-          <Route path="/assignment" component={AssignmentPage} />
           <Route path="/login" component={LoginPage} />
           <Route path="/register" component={RegisterPage} />
           <Switch>
             <Route exact path="/account" component={AccountPage} />
-            <Route exact path='/account/change' component={AccountChangePage} />
+            <Route path='/account/change' component={AccountChangePage} />
           </Switch>
           <Switch>
-            <Route exact path='/courses/:id' component={ExactCoursePage} />
-            <Route path='/courses' component={CoursePage} />
+            <Route path='/courses/:id' component={ExactCoursePage} />
+            <Route exact path='/courses' component={CoursePage} />
           </Switch>
           <Switch>
               <Route path='/assignments/:id' component={ExactAssignmentPage}/>
           </Switch>
-          <Route path='/createcourse' component={CreateCoursePage} />
-          <Route path='/createassignment' component={CreateAssignmentPage} />
-          <Route path='/student' component={StudentPage} />
+          <Switch>
+            <Route path='/create/course' component={CreateCoursePage} />
+            <Route path='/create/assignment' component={CreateAssignmentPage} />
+          </Switch>
           <Route path='/gradebook' component={GradebookPage} />
-          <Route path='/search_students' component={SearchStudentsPage} />
+          <Switch>
+            <Route exact path='/student' component={StudentPage} />
+            <Route path='/student/search' component={SearchStudentsPage} />
+          </Switch>
         </div>
       </Router>
     );

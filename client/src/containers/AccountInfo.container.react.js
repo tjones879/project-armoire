@@ -2,7 +2,7 @@ import React from 'react';
 import {Component} from 'react';
 import {Btn} from '../components/Btn.component.react';
 import {AccountInfoBox} from '../components/AccountInfoBox.component.react';
-import {accountInfoStore} from '../stores/accountInfo.store';
+import {accountInfoStore} from '../stores/AccountInfo.store';
 
 export class AccountInfo extends Component{
     constructor(props){

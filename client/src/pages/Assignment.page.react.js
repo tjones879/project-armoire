@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 
 import {AssignmentSubmission} from '../containers/AssignmentSubmission.container.react';
 
-import AuthService from '../components/AuthService';
+import AuthService from '../AuthService';
 
 export class ExactAssignmentPage extends Component{
     constructor(props){

@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 
-import AuthService from '../components/AuthService';
+import AuthService from '../AuthService';
 import * as Actions from '../actions';
 import store from '../stores/AccountChange.store';
 

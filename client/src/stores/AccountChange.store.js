@@ -1,7 +1,7 @@
 import {EventEmitter} from 'events';
 import dispather from '../dispatcher';
 
-import AuthService from '../components/AuthService';
+import AuthService from '../AuthService';
 
 class Store extends EventEmitter{
     constructor(){

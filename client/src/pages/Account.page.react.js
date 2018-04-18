@@ -2,7 +2,7 @@ import React from 'react';
 import {Component} from 'react';
 import {AccountInfo} from '../containers/AccountInfo.container.react';
 import {Btn} from '../components/Btn.component.react';
-import AuthService from '../components/AuthService';
+import AuthService from '../AuthService';
 import * as actions from '../actions';
 
 export class AccountPage extends Component{
