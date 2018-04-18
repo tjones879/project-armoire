@@ -14,11 +14,14 @@ export class AccountChangePage extends Component{
         this.Auth = new AuthService();
     }
     componentWillMount(){
-        store.on("change", () => {
-            this.setState(store.getAll());
-        });
-        const user = this.Auth.getInfo().user;
-        Actions.start("ACCOUNT_CHANGE", user);
+        if(this.Auth.loggedIn()){
+            store.on("change", () => {
+                this.setState(store.getAll());
+            });
+            const user = this.Auth.getInfo().user;
+            Actions.start("ACCOUNT_CHANGE", user);
+        }else
+            window.location = "login";
     }
     submit(event){
         Actions.submit("ACCOUNT_CHANGE");
