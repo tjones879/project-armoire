@@ -19,6 +19,7 @@ let compilers = [
         run_cmd: './a.out',
         test: {
             file: {
+                name: 'test.cpp',
                 header: '#include "catch.hpp"\n#include "file.cpp"\n',
                 footer: ''
             },
@@ -150,7 +151,8 @@ router.post('/', (req, res) => {
             stdin_data:      input,
             student:         student,
             course:          assign.course,
-            assignment:      assign._id
+            assignment:      assign._id,
+            tests:           assign.tests
         };
 
 

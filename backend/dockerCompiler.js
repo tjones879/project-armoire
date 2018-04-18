@@ -10,6 +10,7 @@ var DockerSandbox = function(payload) {
     this.student         = payload.student;
     this.course          = payload.course;
     this.assignment      = payload.assignment;
+    this.tests           = payload.tests;
 };
 
 DockerSandbox.prototype.run = function(callback) {
@@ -39,7 +40,10 @@ function writePayload(sandbox, language, input) {
             command: language.run_cmd,
             stdin: input,
         },
-        test: language.test
+        test: {
+            tests: sandbox.tests,
+            language: language.test
+        }
     };
 
     fs.writeFile(sandbox.path + sandbox.folder + "/payload", JSON.stringify(obj), (err) => {

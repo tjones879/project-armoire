@@ -124,7 +124,7 @@ def callCompiler(db: collection, args: dict, contents: str):
                              cwd='/codeDir/', stderr=subprocess.PIPE)
         out, err = p.communicate()
         elapsed = time.time() - start
-        if err != b'':
+        if err is not None and err != b'':
             return Submission(contents,
                               out.decode('utf-8') + err.decode('utf-8'),
                               run_time=elapsed)
@@ -140,7 +140,7 @@ def runCode(db: collection, args: dict, contents: str):
                              stderr=subprocess.PIPE)
         out, err = p.communicate()
         elapsed = time.time() - start
-        if err != b'':
+        if err is not None and err != b'':
             return Submission(contents,
                               out.decode('utf-8') + err.decode('utf-8'),
                               run_time=elapsed)
@@ -149,8 +149,36 @@ def runCode(db: collection, args: dict, contents: str):
                               run_time=elapsed)
 
 
-def runTests(db: collection, args: dict):
-    print(args['test'])
+def writeTestFile(file_args: dict, tests: list):
+    with open(file_args['name'], 'w') as f:
+        f.write(file_args['header'])
+        for test in tests:
+            f.write(test['action'])
+        f.write(file_args['footer'])
+
+
+def runTests(commands: list) -> str:
+    for command in commands:
+        p = subprocess.Popen(command, shell=True, cwd='/codeDir/')
+        out, err = p.communicate()
+        if err is not None and err != b'':
+            return err.decode('utf-8')
+    if out is not None:
+        print(out.decode('utf-8'))
+        return out.decode('utf-8')
+    else:
+        return ""
+
+
+def parseResults(results: str):
+    return results
+
+
+def test(db: collection, args: dict):
+    t = args['test']
+    writeTestFile(t['language']['file'], t['tests'])
+    results = runTests(t['language']['commands'])
+    parseResults(results)
 
 
 def execute(db: collection, args: dict):
@@ -160,7 +188,7 @@ def execute(db: collection, args: dict):
         return sub
 
     sub = runCode(db, args, contents)
-    runTests(db, args)
+    test(db, args)
     return sub
 
 
