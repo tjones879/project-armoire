@@ -19,3 +19,6 @@ RUN mkdir /test-cpp
 COPY catch.hpp /test-cpp/catch.hpp
 COPY test-main.cpp /test-cpp/test-main.cpp
 RUN g++ --std=c++14 /test-cpp/test-main.cpp -I/test -c -o /test-cpp/test-main.o
+
+# Install xmlrunner for python test output
+RUN pip3 install unittest-xml-reporting

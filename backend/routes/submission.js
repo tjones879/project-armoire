@@ -11,8 +11,17 @@ let compilers = [
         compile_cmd: '',
         src_file: 'file.py',
         run_cmd: 'python3 file.py',
+        test: {
+            file: {
+                name: 'test.py',
+                header: 'import unittest\nimport xmlrunner\nimport file',
+                footer: "if __name__ == '__main__':\n\twith open ('result.xml', 'wb') as result:\n\tunittest.main(testRunner=xmlrunner.XMLTestRunner(output=result), failfast=False, buffer=False, catchbreak=False)"
+            },
+            commands: [
+                'python3 test.py'
+            ],
+        },
         name: 'Python 3',
-        // test_file: 'fileTest.py'
     },
     {
         src_file: 'file.cpp',
