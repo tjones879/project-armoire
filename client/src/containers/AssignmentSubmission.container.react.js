@@ -83,12 +83,14 @@ export class AssignmentSubmission extends Component{
                         {this.state.examples}
                         <div className="row text-center">
                             <div className="col">
-                                <textarea id="contents" name="contents" cols="80" rows="10" onChange={this.change}></textarea>
+                                <h3>Source Code</h3>
+                                <textarea id="contents" className="textarea" name="contents" cols="80" rows="10" onChange={this.change}></textarea>
                             </div>
                         </div>
                         <div className="row text-center">
                             <div className="col">
-                                <textarea id="stdin" name="stdin" cols="80" rows="10" onChange={this.change}></textarea>
+                                <h2>Standard Input</h2>
+                                <textarea id="stdin" className="textarea" name="stdin" cols="80" rows="10" onChange={this.change}></textarea>
                             </div>
                         </div>
                         <div className="row text-center">
@@ -98,7 +100,7 @@ export class AssignmentSubmission extends Component{
                         </div>
                         <div className="row text-center">
                             <div className="col">
-                                <Btn type="submit" id="submit" text="Submit Submission"/>
+                                <Btn type="submit" class="button" id="submit" text="Submit Submission"/>
                             </div>
                         </div>
                     </fieldset>

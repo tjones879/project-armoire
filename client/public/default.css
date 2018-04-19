@@ -1,27 +1,46 @@
 .pa-navbar{
-    background-color: maroon;
-    color: gold;
+    background-color:#21263A;
+    color: #FBFAFA;
 }
 .pa-navbar a:active{
-    color: gold;
+    color: #FBFAFA;
 }
 .pa-navbar a:hover{
-    color: white;
+    color: #FBFAFA;
 }
 .pa-navbar a{
-    color: gold;
+    color: #FBFAFA;
 }
 .pa-tb-row:hover{
-    background-color: maroon;
-    color: gold;
+    background-color: #21263A;
+    color: #FBFAFA;
 }
 .pa-thead-row{
-    background-color: gold;
-    color:maroon;
+    background-color: #FBFAFA;
+    color:#21263A;
     font-size: 130%;
 }
+.button{
+    background-color: #33CC89;
+    color: #FBFAFA;
+    border: none;
+    font-size: 125%;
+    text-align: center;
+    padding: 15px;
+    margin: 10px;
+}
+.textarea{
+    background-color: #FBFAFA;
+    border: none;
+    box-shadow: #21263A 0px 0px 5px;
+    width: 80%;
+}
+.button:hover{
+    background-color: #30AF78;
+    cursor: pointer;
+}
 body{
-    background-color: cornsilk !important;
+    background-color: #FBFAFA !important;
     margin: 0 !important;
     padding: 0 !important;
     font-family: sans-serif !important;
