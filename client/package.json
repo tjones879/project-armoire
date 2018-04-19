@@ -26,7 +26,7 @@
     },
     "setupTestFrameworkScriptFile": "./config/enzyme.config.js"
   },
-  "proxy": "http://localhost:3001",
+  "proxy": "https://localhost",
   "devDependencies": {
     "babel-core": "^6.26.0",
     "babel-jest": "^22.4.3",

@@ -19,16 +19,14 @@ var options = {
     cert: fs.readFileSync('./client-cert.pem')
 };
 
-/*
- */
-
 var app = express();
 
-app.use(express.static(path.join(__dirname, 'build')));
+app.use(express.static(path.join(__dirname, '../client/build')));
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({extended:true}));
 
-app.get('/*', function (req, res) {
+app.get('/', function (req, res) {
+    console.log(path.join(__dirname, '../client/build', 'index.html'))
     res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
 });
 app.use('/authentication', authentication);
