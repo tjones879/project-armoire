@@ -1,9 +1,11 @@
 require('dotenv').config();
 var mongo = require('./db/mongo');
 var express = require('express');
+var fs = require('fs');
 var path = require('path');
+var https = require('https');
+var http = require('http');
 var bodyParser = require('body-parser');
-var index = require('./routes/index');
 var assignment = require('./routes/assignment');
 var submission = require('./routes/submission');
 var professor = require('./routes/professor');
@@ -12,12 +14,23 @@ var student = require('./routes/student');
 var authentication = require('./routes/authentication');
 const jwt = require('jsonwebtoken');
 
+var options = {
+    key: fs.readFileSync('./key.pem'),
+    cert: fs.readFileSync('./client-cert.pem')
+};
+
+/*
+ */
+
 var app = express();
 
+app.use(express.static(path.join(__dirname, 'build')));
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({extended:true}));
 
-app.use('/', index);
+app.get('/*', function (req, res) {
+    res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
+});
 app.use('/authentication', authentication);
 
 //This needs to go before '.use'
@@ -62,10 +75,7 @@ app.use(function(err, req, res, next) {
     res.send(err);
 });
 
-app.set('port', (process.env.PORT || 3001));
-
-app.listen(app.get('port'), function() {
-    console.log("Node app is running on localhost:", app.get('port'))
-});
+http.createServer(app).listen(80);
+https.createServer(options, app).listen(443);
 
 module.exports = app;
