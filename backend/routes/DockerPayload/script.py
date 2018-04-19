@@ -4,6 +4,7 @@ import json
 from pymongo import MongoClient, collection
 import subprocess
 import time
+import xunitparser
 
 
 class Submission():
@@ -66,7 +67,6 @@ class Student():
                 }}
             )
             self.student = self.students.find_one({'_id': self.student_id})
-            print(self.student)
 
     def saveSubmission(self, cid: ObjectId, aid: ObjectId, sub: 'Submission'):
         self.addAssignment(cid, aid)
@@ -88,7 +88,6 @@ class Student():
 def getConfig() -> dict:
     with open('/codeDir/payload', 'r') as payload:
         settings = json.load(payload)
-        print(settings)
         return settings
 
 
@@ -119,19 +118,21 @@ def getContents(source):
         return f.read()
 
 
-def callCompiler(db: collection, args: dict):
-    contents = getContents('/codeDir/' + args['source'])
+def callCompiler(db: collection, args: dict, contents: str):
     if 'compile' in args and args['compile'] is not None:
         start = time.time()
         p = subprocess.Popen(args['compile']['command'], shell=True,
                              cwd='/codeDir/', stderr=subprocess.PIPE)
         out, err = p.communicate()
         elapsed = time.time() - start
-        if err != b'':
+        if err is not None and err != b'':
             return Submission(contents,
                               out.decode('utf-8') + err.decode('utf-8'),
                               run_time=elapsed)
+    return None
 
+
+def runCode(db: collection, args: dict, contents: str):
     with open('/codeDir/inputFile', 'r') as f:
         start = time.time()
         p = subprocess.Popen(args['run']['command'], shell=True, stdin=f,
@@ -140,7 +141,7 @@ def callCompiler(db: collection, args: dict):
                              stderr=subprocess.PIPE)
         out, err = p.communicate()
         elapsed = time.time() - start
-        if err != b'':
+        if err is not None and err != b'':
             return Submission(contents,
                               out.decode('utf-8') + err.decode('utf-8'),
                               run_time=elapsed)
@@ -149,11 +150,70 @@ def callCompiler(db: collection, args: dict):
                               run_time=elapsed)
 
 
+def writeTestFile(file_args: dict, tests: list):
+    with open(file_args['name'], 'w') as f:
+        f.write(file_args['header'])
+        for test in tests:
+            f.write(test['action'])
+        f.write(file_args['footer'])
+
+
+def runTests(commands: list) -> str:
+    for command in commands:
+        p = subprocess.Popen(command, shell=True, cwd='/codeDir/')
+        out, err = p.communicate()
+        if err is not None and err != b'':
+            return err.decode('utf-8')
+    if out is not None:
+        print(out.decode('utf-8'))
+        return out.decode('utf-8')
+    else:
+        return None
+
+
+def parseResults(results: str) -> list:
+    failures = []
+    if results is not None:
+        tc, tr = xunitparser.parse(results)
+        for t in tr.failures:
+            label = t[0]
+            failures.append(int(label[:label.find('.')]))
+    return failures
+
+
+def test(db: collection, args: dict):
+    test_data = []
+    t = args['test']
+
+    writeTestFile(t['language']['file'], t['tests'])
+    results = runTests(t['language']['commands'])
+    failures = parseResults(results)
+
+    for x in range(len(t['tests'])):
+        if x + 1 in failures:
+            test_data.append({'id': x + 1, 'state': 'fail'})
+        else:
+            test_data.append({'id': x + 1, 'state': 'pass'})
+    return test_data
+
+
+def execute(db: collection, args: dict):
+    contents = getContents('/codeDir/' + args['source'])
+    sub = callCompiler(db, args, contents)
+    if sub is not None:
+        return sub
+
+    sub = runCode(db, args, contents)
+    test_results = test(db, args)
+    sub.test_results = test_results
+    return sub
+
+
 if __name__ == '__main__':
     db = getMongoHandle(getMongoDomain())
     config = getConfig()
     student = Student(db, ObjectId(config['student']))
-    sub = callCompiler(db, config)
+    sub = execute(db, config)
     student.saveSubmission(ObjectId(config['course']),
                            ObjectId(config['assignment']),
                            sub)

@@ -29,17 +29,18 @@ router.get('/:id', (req, res) => {
 router.post('/', (req, res) => {
     let body = req.body;
     let id = Mongoose.Types.ObjectId();
+    console.log(body);
     let newAssignment = new Assignment({
-        _id: id,
-        course: body.course,
-        language: body.language,
-        title:body.title,
-        open_date:body.open_date,
-        close_date:body.close_date,
-        description:body.description,
-        requirements:body.requirements,
-        examples:body.examples,
-        tests:body.examples
+        _id:          id,
+        course:       body.course,
+        language:     body.language,
+        title:        body.title,
+        open_date:    body.open_date,
+        close_date:   body.close_date,
+        description:  body.description,
+        requirements: body.requirements,
+        examples:     body.examples,
+        tests:        body.tests
     });
     newAssignment.save((err, a) => {
         if (err) {
