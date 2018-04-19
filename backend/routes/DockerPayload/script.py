@@ -4,6 +4,7 @@ import json
 from pymongo import MongoClient, collection
 import subprocess
 import time
+import xunitparser
 
 
 class Submission():
@@ -167,18 +168,33 @@ def runTests(commands: list) -> str:
         print(out.decode('utf-8'))
         return out.decode('utf-8')
     else:
-        return ""
+        return None
 
 
-def parseResults(results: str):
-    return results
+def parseResults(results: str) -> list:
+    failures = []
+    if results is not None:
+        tc, tr = xunitparser.parse(results)
+        for t in tr.failures:
+            label = t[0]
+            failures.append(int(label[:label.find('.')]))
+    return failures
 
 
 def test(db: collection, args: dict):
+    test_data = []
     t = args['test']
+
     writeTestFile(t['language']['file'], t['tests'])
     results = runTests(t['language']['commands'])
-    parseResults(results)
+    failures = parseResults(results)
+
+    for x in range(len(t['tests'])):
+        if x + 1 in failures:
+            test_data.append({'id': x + 1, 'state': 'fail'})
+        else:
+            test_data.append({'id': x + 1, 'state': 'pass'})
+    return test_data
 
 
 def execute(db: collection, args: dict):
@@ -188,7 +204,8 @@ def execute(db: collection, args: dict):
         return sub
 
     sub = runCode(db, args, contents)
-    test(db, args)
+    test_results = test(db, args)
+    sub.test_results = test_results
     return sub
 
 
