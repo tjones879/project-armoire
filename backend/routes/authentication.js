@@ -13,6 +13,7 @@ var crypt = require("crypto");
 const jwt = require('jsonwebtoken');
 var bcrypt = require('bcrypt');
 let _ = require('lodash');
+let login = require('../login.js');
 
 
 
@@ -39,47 +40,22 @@ router.get('/email/:email', (req, res) => {
     });
 });
 
+
+
 /* used to login to the system and recieve a JWT */
 router.post('/login', (req, res) => {
     if(typeof req.body.email !== "undefined" && typeof req.body.password !== "undefined"){
         const email = req.body.email.toLowerCase();
-        let password = req.body.password;
-        
-        /* check if email exists */
-        Authentication.findOne({email}).then(obj => {
-            if(!_.isEmpty(obj)){
-                bcrypt.compare(password, obj.hash, function(err, response) {
-                    if(err){
-                        console.log(err);
-                        res.json({});
-                        return;
-                    }
-                    if(response){
-                        const user = {
-                            id:obj._id,
-                            email:obj.email,
-                            classification:obj.classification
-                        };
-                        jwt.sign({user}, process.env.JWT_SECRET, {expiresIn: '1h'}, (err, token) => {
-                            if(err){
-                                console.log(err.message);
-                                res.json({});
-                                return;
-                            }
-                                res.json(token);
-                        });
-                    }else
-                        res.json({});
-                });
-            }else
-                res.json({}); //email not found
-        }).catch(err => {
-            console.log(err.message);
-            res.json({});
-        });
+        const password = req.body.password;
+        login(email, password).then(token => {
+            console.log(token);
+            res.json(token);
+        }).catch(err => {});  
     }else
         res.json({});
 });
+
+
 
 function capFirst(input){
     return input.charAt(0).toUpperCase() + input.slice(1);

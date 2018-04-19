@@ -1,6 +1,6 @@
 import React,{Component} from 'react';
 import store from '../stores/Login.store';
-import AuthService from '../components/AuthService';
+import AuthService from '../AuthService';
 import {LoginForm} from '../containers/Login.container.react';
 
 export class LoginPage extends Component{
