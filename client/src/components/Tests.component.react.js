@@ -10,7 +10,7 @@ export class Tests extends Component{
                     <div key={element}>
                         {/* <Input event={this.props.event} type="text" text={`Action ${element}`} id={`A${element}`} name={`A${element}`}/> */}
                         {/* <Input event={this.props.event} type="text" text={`Expected ${element}`} id={`E${element}`} name={`E${element}`}/> */}
-                        <TextArea event={this.props.event} type="text" text={`Test ${element}`} id={`T${element}`} name={`T${element}`}/>
+                        <TextArea event={this.props.event} type="text" text={`Test ${element}`} id={`A${element}`} name={`A${element}`}/>
                     </div>
                 )}
             </div>
