@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 
 import {Btn} from '../components/Btn.component.react';
 
-import AuthService from '../components/AuthService';
+import AuthService from '../AuthService';
 
 export class StudentPage extends Component{
     constructor(){
@@ -17,7 +17,7 @@ export class StudentPage extends Component{
     render(){
         return(
             <div>
-                <Btn text="Search Students" event={()=>{window.location = "search_students"}}/>
+                <Btn text="Search Students" event={()=>{window.location = "student/search"}}/>
             </div>
         );
     }

@@ -71,7 +71,7 @@ class CreateAssignmentStore extends EventEmitter{
 
     start(user){
         console.log(user);
-        fetch(`course/login_id/${user.id}`).then(payload => payload.json()).then(res => {
+        fetch(`../course/login_id/${user.id}`).then(payload => payload.json()).then(res => {
             this.store.courses = res;
             let delta = [];
             for(let i = 0; i < this.store.courses.length; i++){
@@ -227,7 +227,7 @@ class CreateAssignmentStore extends EventEmitter{
     }
 
     submit(){
-        fetch('assignment', {
+        fetch('../assignment', {
             method: 'POST',
             body:JSON.stringify({
                 course:this.store.data.course,
@@ -244,7 +244,7 @@ class CreateAssignmentStore extends EventEmitter{
                 'content-type':'application/json'
             }
         }).then(payload => payload.json()).then(obj => {
-            fetch(`course/add/assignment/${obj._id}/${obj.course}`, {
+            fetch(`../course/add/assignment/${obj._id}/${obj.course}`, {
                 method: 'POST'
             }).then(payload => payload.json()).then(obj => {
                 if(obj != null){

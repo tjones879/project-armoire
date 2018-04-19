@@ -11,6 +11,7 @@ var Mongoose = require('mongoose');
 var Authentication = require('../db/authentication.js');
 var crypt = require("crypto");
 const jwt = require('jsonwebtoken');
+let login = require('../login.js');
 
 /* GET student listing. */
 router.get('/', function(req, res, next) {
@@ -109,6 +110,7 @@ router.get('/:first/:last', (req, res) => {
 });
 
 router.post('/update', (req, res) => {
+    console.log(req.body);
     if(typeof req.body.id !== "undefined" && typeof req.body.lname !== "undefined" && typeof req.body.fname !== "undefined" && typeof req.body.email !== "undefined" && typeof req.body.login_id !== "undefined" && typeof req.body.password !== "undefined"){
         let rObj = {
             fname:null,
@@ -126,61 +128,9 @@ router.post('/update', (req, res) => {
                     let passwordV = req.body.password;
                     let salt = "";
                     
-                    /* check if email exists */
-                    Authentication.findOne({email: emailV}, (err, obj) => {
-                        if(obj != null){
-
-                            /* get salt from database */
-                            salt = obj.salt;
-                            /* combine salt with password */
-                            passwordV = `${salt}${passwordV}`;
-                            /* hash the combined passwords */
-                            const hash = crypt.createHash('sha256');
-                            passwordV = hash.update(passwordV).digest('hex');
-
-                            /* check if email and given hash match our records in the db */
-                            Authentication.findOne({email: emailV, hash: passwordV}, (err, obj) => {
-                                if(err){
-                                    console.log(`DB Failure: on email + password lookup for ${emailV}`);
-                                    res.json({success:false});
-                                    return;
-                                }
-
-                                if(obj != null){
-                                    /* both password hash and email match */
-                                    console.log(`Login Success: from ${emailV}`);
-
-                                    const user = {
-                                        id:obj._id,
-                                        email:obj.email,
-                                        classification:obj.classification
-                                    };
-                                    jwt.sign({user}, process.env.JWT_SECRET, {expiresIn: '1h'}, (err,token) => {
-                                        if(err){
-                                            console.log(`Token Failure: failure on sign by ${emailV}`);
-                                            res.json({success: false});
-                                            return;
-                                        }
-                                        console.log(`Token Success: success by ${emailV}`);
-                                        rObj.token = token;
-                                        res.json(rObj);
-                                    });
-                                }else{
-                                    /* password hash did not match password */
-                                    console.log(`Login Failed: wrong password by ${emailV}`);
-                                    res.json({
-                                        success: false
-                                    });
-                                }
-                            });
-                        }else{
-                            /* email was not found in mongo db */
-                            console.log(`Login Failed: ${emailV} was not found in the mongo db`);
-                            res.json({
-                                success: false
-                            });
-                        }
-                    });
+                    login(emailV, passwordV).then(token => {
+                        res.json(token);
+                    }).catch(err => {res.json({})});
                 }).catch(err => {
                     console.log(err.message);
                     res.json({});

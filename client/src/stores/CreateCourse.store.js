@@ -1,7 +1,7 @@
 import {EventEmitter} from 'events';
 import dispatcher from '../dispatcher';
 
-import AuthService from '../components/AuthService';
+import AuthService from '../AuthService';
 
 class CreateCourseStore extends EventEmitter{
     constructor(){
@@ -56,7 +56,7 @@ class CreateCourseStore extends EventEmitter{
 
     submitCourse(){
         if(this.Auth.loggedIn()){
-            fetch('/course',{
+            fetch('../course',{
                 method: 'POST',
                 body:JSON.stringify({
                     cName: this.data.input.cName,

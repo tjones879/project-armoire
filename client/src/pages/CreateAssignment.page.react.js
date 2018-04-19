@@ -3,7 +3,7 @@ import {Component} from 'react';
 
 import {CreateAssignment} from '../containers/CreateAssignment.container.react';
 
-import AuthService from '../components/AuthService';
+import AuthService from '../AuthService';
 
 export class CreateAssignmentPage extends Component{
     constructor(){
@@ -22,7 +22,7 @@ export class CreateAssignmentPage extends Component{
             const user = this.Auth.getInfo().user;
             this.setState({user});
         }else{
-            window.location = 'login';
+            window.location = '../login';
         }
     }
     render(){

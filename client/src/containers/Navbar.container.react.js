@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import AuthService from '../components/AuthService';
+import AuthService from '../AuthService';
 import {Btn} from '../components/Btn.component.react';
 import * as Actions from '../actions';
 import store from '../stores/Navbar.store';
