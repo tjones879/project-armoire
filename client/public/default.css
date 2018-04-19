@@ -20,6 +20,14 @@
     color:#21263A;
     font-size: 130%;
 }
+.initDiv{
+    margin: 0px;
+}
+.mainLogo{
+    width: 50px;
+    height: 50px;
+    margin: -20px -20px -20px -20px;
+}
 .button{
     background-color: #33CC89;
     color: #FBFAFA;

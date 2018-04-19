@@ -66,7 +66,7 @@ class Root extends Component{
 }
 
 const LoggedIn = props => 
-  <div className="container-fluid">
+  <div className="container-fluid initDiv">
   <Navbar />
     <Route exact path="/" component={HomePage} />
     <Switch>
