@@ -27,7 +27,7 @@ let compilers = [
                 'g++ --std=c++14 -I/test-cpp test.cpp -c',
                 'objcopy --strip-symbol=main test.o',
                 'g++ --std=c++14 test.o /test-cpp/test-main.o -o tests',
-                './tests'
+                './tests -r junit'
             ],
         },
         name: 'C++',
