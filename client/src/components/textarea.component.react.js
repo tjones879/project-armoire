@@ -1,5 +1,6 @@
 import React from 'react';
 import {Component} from 'react';
+import Textarea from 'react-textarea-autosize';
 
 import {PropTypes} from 'prop-types';
 
@@ -11,7 +12,7 @@ export class TextArea extends Component{
                     <label htmlFor={this.props.id}>{this.props.text}:</label>
                 </div>
                 <div className='col text-left'>
-                    <textarea id={this.props.id} type={this.props.type} disabled={this.props.disabled} name={this.props.name} onChange={this.props.event} value={this.props.value}/>
+                    <Textarea id={this.props.id} type={this.props.type} disabled={this.props.disabled} name={this.props.name} onChange={this.props.event} value={this.props.value}/>
                 </div>
             </div>
         );
