@@ -1,4 +1,9 @@
 import React, {Component} from 'react';
+import AceEditor from 'react-ace';
+import brace from 'brace';
+
+import 'brace/mode/c_cpp';
+import 'brace/theme/github';
 
 import * as Actions from '../actions';
 import store from '../stores/AssignmentSubmission.store.js';
@@ -18,6 +23,9 @@ export class AssignmentSubmission extends Component{
     }
     change(event){
         Actions.change("ASSIGNMENT_SUBMISSION", event.target.id, event.target.value);
+    }
+    codeChange(value, event) {
+        Actions.change("ASSIGNMENT_SUBMISSION", "contents", value);
     }
     submit(event){
         Actions.submit("ASSIGNMENT_SUBMISSION");
@@ -84,7 +92,8 @@ export class AssignmentSubmission extends Component{
                         <div className="row text-center">
                             <div className="col">
                                 <h3>Source Code</h3>
-                                <textarea id="contents" className="textarea" name="contents" cols="80" rows="10" onChange={this.change}></textarea>
+                                <AceEditor id="contents" className="textarea" name="contents" enableBasicAutocompletion={true}
+                                           enableLiveAutocompletion={true} width="80%" mode="c_cpp" onChange={this.codeChange}/>
                             </div>
                         </div>
                         <div className="row text-center">
