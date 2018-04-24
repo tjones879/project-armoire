@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import store from '../stores/Register.store';
-import AuthService from '../components/AuthService';
+import AuthService from '../AuthService';
 import * as actions from '../actions';
 import {Btn} from '../components/Btn.component.react';
 import Input from '../components/RegisterInput.component.react';

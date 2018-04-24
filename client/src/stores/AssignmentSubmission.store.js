@@ -1,6 +1,6 @@
 import {EventEmitter} from 'events';
 import React from 'react';
-import AuthService from '../components/AuthService';
+import AuthService from '../AuthService';
 
 import dispatcher from '../dispatcher';
 
