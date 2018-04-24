@@ -50,7 +50,7 @@ router.post('/login', (req, res) => {
         login(email, password).then(token => {
             console.log(token);
             res.json(token);
-        }).catch(err => {});  
+        }).catch(err => { console.log(err.message); res.json({})});  
     }else
         res.json({});
 });

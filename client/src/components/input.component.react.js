@@ -7,11 +7,8 @@ export class Input extends Component{
     render(){
         return(
             <div className='row'>
-                <div className='col text-right'>
-                    <label htmlFor={this.props.id}>{this.props.text}:</label>
-                </div>
-                <div className='col text-left'>
-                    <input id={this.props.id} type={this.props.type} disabled={this.props.disabled} name={this.props.name} onChange={this.props.event} value={this.props.value} required={this.props.required}/>
+                <div className='col text-center'>
+                    <input className="default-input" placeholder={this.props.text} id={this.props.id} type={this.props.type} disabled={this.props.disabled} name={this.props.name} onChange={this.props.event} value={this.props.value} required={this.props.required}/>
                 </div>
             </div>
         );
