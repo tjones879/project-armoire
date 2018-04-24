@@ -27,7 +27,7 @@ export class CreateAssignmentPage extends Component{
     }
     render(){
         return(
-            <div>
+            <div className="content-area">
                 <CreateAssignment user={this.state.user} title="Create Assignment"/>
             </div>
         );

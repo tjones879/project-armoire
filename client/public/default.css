@@ -88,6 +88,30 @@
 .link:hover{
     color: #33CC89;
 }
+.arrow{
+    margin: 30px 25px 0 0;
+}
+.txt-box{
+    margin-left: 100px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    outline: none;
+    border: none;
+    border: solid white 2px;
+}
+.txt-box:hover{
+    border: dashed #33CC89 2px;
+}
+.date-box, .examples, .tests{
+    background-color: #FBFAFA;
+    border: solid #33CC89 2px;
+    margin: 25px 0;
+}
+.sub-date, .sub-examples{
+    background-color: lightgrey;
+    margin: 15px 30px;
+    padding: 10px;
+}
 .under-note{
     background-color: lightgrey;
     margin: 0px -20px -20px -20px;
@@ -121,6 +145,22 @@
 input[type=radio]{
     display:none;
     background-color: black;
+}
+select{
+    outline: none;
+    background-color: white;
+    border: dashed #33CC89 2px;
+    width: 80%;
+    text-align: center;
+    appearance: none;
+    -webkit-appearance: none;
+    padding: 15px;
+    font-weight: bolder;
+}
+select:hover{
+    background-color: #33CC89;
+    color: white;
+    cursor: pointer;
 }
 body{
     background-color: #FBFAFA !important;
