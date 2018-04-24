@@ -36,6 +36,13 @@
     text-align: center;
     padding: 15px;
     margin: 10px;
+    border-radius: 5px;
+}
+.content-area{
+    background-color: white;
+    padding: 20px;
+    margin: 20px 20%;
+    box-shadow: 0px 0px 5px lightgray;
 }
 .textarea{
     background-color: #FBFAFA;
@@ -47,9 +54,53 @@
     background-color: #30AF78;
     cursor: pointer;
 }
+.default-input{
+    margin: 10px 0;
+    padding: 5px;
+    text-align: center;
+    color: #33CC89;
+    width: 80%;
+    outline: none;
+}
+.default-input:hover{
+    background-color: #FBFAFA;
+}
+.link{
+    color: #30AF78;
+}
+.link:hover{
+    color: #33CC89;
+}
+.under-note{
+    background-color: lightgrey;
+    margin: 0px -20px -20px -20px;
+    padding: 10px 0px;
+}
+.default-input:focus{
+    background-color: #FBFAFA;
+    border-color: #30AF78;
+    box-shadow: #30AF78;
+}
+.heading{
+    padding-top: 20px !important;
+    font-weight: bolder;
+}
+.loading{
+    width: 50px;
+    height: 50px;
+}
+.feedback{
+    color: #30AF78;
+    margin-bottom: 10px;
+    padding: 5px;
+    font-weight: bold;
+}
+.feedback:hover{
+    color: gold;
+}
 body{
     background-color: #FBFAFA !important;
     margin: 0 !important;
     padding: 0 !important;
-    font-family: sans-serif !important;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif !important;
 }
