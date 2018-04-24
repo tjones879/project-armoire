@@ -46,6 +46,10 @@ class Store extends EventEmitter{
             },
             classification:{
                 value:"",
+                selected: {
+                    professor: false,
+                    student: false,
+                },
                 lock:false
             }
         }
@@ -89,7 +93,16 @@ class Store extends EventEmitter{
                 break;
             case "email":
                 path.email.value = value.toLowerCase();
-                this.checkEmails();
+
+                if (this.emailReg.test(path.email.value)) {
+                    path.email.feed = null;
+                    path.email.style = {display: "none"};
+                    this.checkEmails();
+                } else {
+                    path.email.feed = "Email is invalid";
+                    path.email.style = {color: "red"};
+                }
+
                 break;
             case "cEmail":
                 path.cEmail.value = path.cEmail.feed = value;
@@ -101,10 +114,12 @@ class Store extends EventEmitter{
                 path.first.value = fixed;
                 path.first.feed = this.checkName(fixed, "First");
 
-                if(path.first.feed === fixed)
-                    path.first.style = {color:"green"};
-                else
+                if(path.first.feed === fixed) {
+                    path.last.feed = null;
+                    path.first.style = {display: "none"};
+                } else {
                     path.first.style = {color:"red"};
+                }
 
                 break;
             case "lname":
@@ -112,18 +127,20 @@ class Store extends EventEmitter{
                 path.last.value = fixed;
                 path.last.feed = this.checkName(fixed, "Last");
 
-                if(path.last.feed === fixed)
-                    path.last.style = {color:"green"};
-                else
+                if(path.last.feed === fixed) {
+                    path.last.feed = null;
+                    path.last.style = {display: "none"};
+                } else {
                     path.last.style = {color:"red"};
+                }
 
                 break;
             case "password":
                 path.pass.value = path.pass.feed = value;
 
                 if(this.passReg.test(value)){
-                    path.pass.style = {color:"green"};
-                    path.pass.feed = value.length.toString();
+                    path.pass.style = {display: "none"};
+                    path.pass.feed = null;
                 }else{
                     path.pass.style = {color:"red"};
                     path.pass.feed = "Password must be 8 to 30 characters long and include uppercase, lowercase, special char and number";
@@ -134,9 +151,13 @@ class Store extends EventEmitter{
                 break;
             case "professor":
                 path.classification.value = value;
+                path.classification.selected.professor = true;
+                path.classification.selected.student = false;
                 break;
             case "student":
                 path.classification.value = value;
+                path.classification.selected.student = true;
+                path.classification.selected.professor = false;
                 break;
             default:
                 break;
