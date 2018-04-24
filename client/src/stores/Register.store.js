@@ -93,7 +93,16 @@ class Store extends EventEmitter{
                 break;
             case "email":
                 path.email.value = value.toLowerCase();
-                this.checkEmails();
+
+                if (this.emailReg.test(path.email.value)) {
+                    path.email.feed = null;
+                    path.email.style = {display: "none"};
+                    this.checkEmails();
+                } else {
+                    path.email.feed = "Email is invalid";
+                    path.email.style = {color: "red"};
+                }
+
                 break;
             case "cEmail":
                 path.cEmail.value = path.cEmail.feed = value;
@@ -172,8 +181,6 @@ class Store extends EventEmitter{
 
     checkEmails() {
         let path = this.store;
-        path.email.feed = null;
-        path.email.style = {display: "none"};
 
         if (path.email.value === path.cEmail.value) {
             path.cEmail.feed = "Emails Match";
