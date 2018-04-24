@@ -6,6 +6,7 @@ import {Input} from '../components/input.component.react';
 import {Btn} from '../components/Btn.component.react';
 import {Examples} from '../components/Examples.component.react';
 import {Tests} from '../components/Tests.component.react';
+import {TextArea} from '../components/textarea.component.react';
 
 import * as actions from '../actions';
 import store from '../stores/CreateAssignment.store';
@@ -53,9 +54,19 @@ export class CreateAssignment extends Component{
                                 <SelectBox event={this.change} options={[{text:"C++",value:"c++"},{text:"Java",value:"java"},{text:"Python 3",value:"python3"},{text:"Python 2",value:"python2"}]} title="Language" id="LanguageSelectBox"/>
                             </div>
                         </div>
-                        <div className="row text-center">
+                        <div className="row">
                             <div className="col">
-                                <input onChange={this.change} className="default-input" type="text" id="aTitle" name="aTitle" placeholder="Assignment Title" autoFocus style={{marginTop:"30px"}}/>
+                                <div className=" text-center">
+                                    <input onChange={this.change} className="default-input" type="text" id="aTitle" name="aTitle" placeholder="Assignment Title" autoFocus style={{marginTop:"30px"}}/>
+                                </div>      
+                                <div className="text-box">
+                                    <div className="heading text-center">Description</div>
+                                    <div className="txt-cen"><TextArea onChange={this.change} type="text" id="aDescript" name="aDescript" /></div>
+                                </div>
+                                <div className="text-box">
+                                    <div className="heading  text-center">Requirements</div>
+                                        <div className="txt-cen"><TextArea onChange={this.change} type="text" id="aReq" name="aReq"/></div> 
+                               </div>
                             </div>
                         </div>
                         <div className="date-box text-center">

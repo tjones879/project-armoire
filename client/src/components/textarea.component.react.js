@@ -8,7 +8,7 @@ export class TextArea extends Component{
         return(
             <div className='row'>
                 <div className='col text-center'>
-                    <textarea className="txt-box" cols="80" rows="10" id={this.props.id} type={this.props.type} disabled={this.props.disabled} name={this.props.name} onChange={this.props.event} value={this.props.value}/>
+                    <textarea className="txt-box" id={this.props.id} type={this.props.type} disabled={this.props.disabled} name={this.props.name} onChange={this.props.event} value={this.props.value}/>
                 </div>
             </div>
         );
