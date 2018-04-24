@@ -5,6 +5,8 @@ import store from '../stores/AssignmentSubmission.store.js';
 
 import {Btn} from '../components/Btn.component.react';
 
+import {CodeArea} from '../components/codearea.component.react';
+
 export class AssignmentSubmission extends Component{
     constructor(props){
         super(props);
@@ -83,7 +85,8 @@ export class AssignmentSubmission extends Component{
                         {this.state.examples}
                         <div className="row text-center">
                             <div className="col">
-                                <textarea id="contents" name="contents" cols="80" rows="10" onChange={this.change}></textarea>
+                                {/* <textarea id="contents" name="contents" cols="80" rows="10" onChange={this.change}></textarea> */}
+                                <CodeArea id="contents" name="contents" cols="80" rows="10" onChange={this.change}></CodeArea>
                             </div>
                         </div>
                         <div className="row text-center">

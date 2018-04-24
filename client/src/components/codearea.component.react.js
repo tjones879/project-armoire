@@ -1,14 +1,13 @@
 import React from 'react';
 import {Component} from 'react';
-import Textarea from 'react-textarea-autosize';
+// import brace from 'brace';
+import AceEditor from 'react-ace';
 
 import {PropTypes} from 'prop-types';
+import 'brace/mode/python';
+import 'brace/theme/twilight';
 
 export class CodeArea extends Component{
-
-    handleKeyPress(event) {
-        event.prevent
-    }
 
     render(){
         return(
@@ -17,7 +16,8 @@ export class CodeArea extends Component{
                     <label htmlFor={this.props.id}>{this.props.text}:</label>
                 </div>
                 <div className='col text-left'>
-                    <Textarea id={this.props.id} type={this.props.type} disabled={this.props.disabled} name={this.props.name} onChange={this.props.event} value={this.props.value} onKeyDown={this.handleKeyPress}/>
+                    <AceEditor id={this.props.id} name={this.props.name} value={this.props.value} theme="twilight" mode="python" disabled={this.props.disabled}/>
+                    {/* <Textarea id={this.props.id} type={this.props.type} disabled={this.props.disabled} name={this.props.name} onChange={this.props.event} value={this.props.value}/> */}
                 </div>
             </div>
         );
