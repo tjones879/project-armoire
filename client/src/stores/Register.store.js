@@ -235,7 +235,6 @@ class Store extends EventEmitter{
                     last: path.last.value,
                     email: path.email.value,
                     password: path.pass.value,
-                    cPassword: path.cPassword.value,
                     classification: path.classification.value
                 }),
                 headers: {
