@@ -90,21 +90,25 @@
 .arrow{
     margin: 30px 25px 0 0;
 }
+.txt-cen{
+   padding: 0px 20px 0px 20px;
+}
 .txt-box{
-    margin-left: 100px;
     margin-top: 20px;
     margin-bottom: 20px;
     outline: none;
     border: none;
     border: solid white 2px;
+    width: 100%;
+    height: 250px;
 }
 .txt-box:hover{
     border: dashed #33CC89 2px;
 }
-.date-box, .examples, .tests{
+.date-box, .examples, .tests, .text-box{
     background-color: #FBFAFA;
     border: solid #33CC89 2px;
-    margin: 25px 0;
+    margin-top: 25px;
 }
 .sub-date, .sub-examples{
     background-color: lightgrey;
