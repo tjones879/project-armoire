@@ -15,7 +15,6 @@ import {CoursePage} from './pages/Courses.page.react';
 import {CreateCoursePage} from './pages/CreateCourse.page.react';
 import {CreateAssignmentPage} from './pages/CreateAssignment.page.react';
 import {StudentPage} from './pages/Student.page.react';
-import {GradebookPage} from './pages/Gradebook.page.react';
 import {AccountChangePage} from './pages/AccountChange.page.react';
 import {SearchStudentsPage} from './pages/SearchStudents.page.react';
 import {ExactCoursePage} from './pages/ExactCourse.page.react';
@@ -84,7 +83,6 @@ const LoggedIn = props =>
       <Route path='/create/course' component={CreateCoursePage} />
       <Route path='/create/assignment' component={CreateAssignmentPage} />
     </Switch>
-    <Route path='/gradebook' component={GradebookPage} />
     <Switch>
       <Route exact path='/student' component={StudentPage} />
       <Route path='/student/search' component={SearchStudentsPage} />

@@ -34,16 +34,7 @@ class Store extends EventEmitter{
                 title:'Courses',
                 link:`${window.location.href.split("/")[0]}//${window.location.hostname}:${window.location.port}/courses`
             });
-            if(payload.classification === "student"){
-                this.store.links.push({
-                    title:'Grades',
-                    link:`${window.location.href.split("/")[0]}//${window.location.hostname}:${window.location.port}/grade`
-                });
-            }else{
-                this.store.links.push({
-                    title:'Gradebook',
-                    link:`${window.location.href.split("/")[0]}//${window.location.hostname}:${window.location.port}/gradebook`
-                });
+            if(payload.classification === "professor"){
                 this.store.links.push({
                     title:'Students',
                     link:`${window.location.href.split("/")[0]}//${window.location.hostname}:${window.location.port}/student`
