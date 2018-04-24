@@ -105,7 +105,7 @@ class Store extends EventEmitter{
 
                 break;
             case "cEmail":
-                path.cEmail.value = path.cEmail.feed = value;
+                path.cEmail.value = path.cEmail.feed = value.toLowerCase();
                 this.checkEmails();
 
                 break;
