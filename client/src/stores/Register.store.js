@@ -199,6 +199,7 @@ class Store extends EventEmitter{
             this.emailReg.test(path.email.value) &&
             this.passReg.test(path.pass.value) &&
             path.pass.value === path.cPassword.value &&
+            path.email.value === path.cEmail.value &&
             path.classification.value
         ){
             path.lock = false;
