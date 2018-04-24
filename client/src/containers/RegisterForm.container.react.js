@@ -39,15 +39,12 @@ export class RegisterForm extends Component{
                     <span className="col heading">Classification (pick one)</span>
                 </div>
                 <div className="row text-center">
-                    <label htmlFor="student" className="col text-center label-div">
+                    <label htmlFor="student" className="col text-center label-div" id={this.state.classification.selected.student ? "label-div-selected" : ""}>
                         <div className="label-chk">Student</div><input type="radio" name="classification" value="student" id="student" onClick={this.change} disabled={this.state.classification.lock}/>
                     </label>
-                    <label htmlFor="professor" className="col text-center label-div">
+                    <label htmlFor="professor" className="col text-center label-div" id={this.state.classification.selected.professor ? "label-div-selected" : ""}>
                         <div className="label-chk">Professor</div><input type="radio" name="classification" value="professor" id="professor" onClick={this.change} disabled={this.state.classification.lock} />
                     </label>
-                </div>
-                <div className="row text-center">
-                    <span id="classificationFeedback" className="col text-center feedback">{this.state.classification.value}</span>
                 </div>
                 <div className="row text-center">
                     <div className="col">

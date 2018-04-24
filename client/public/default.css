@@ -71,6 +71,14 @@
     cursor: pointer;
     color: white;
 }
+#label-div-selected {
+    margin: 0px 20px !important;
+    font-weight: bolder;
+    background-color: #33CC89;
+    border: dashed #30AF78 5px;
+    cursor: pointer;
+    color: white;
+}
 .default-input{
     margin: 10px 0;
     padding: 5px;
@@ -131,7 +139,7 @@
 }
 .feedback{
     color: #30AF78;
-    margin-bottom: 10px;
+    margin-bottom: 0px;
     padding: 5px;
 }
 .label{
