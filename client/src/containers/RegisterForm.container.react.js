@@ -32,8 +32,9 @@ export class RegisterForm extends Component{
                 <Input text="First Name" element={this.state.first} id="fname" event={this.change} type="text"/>
                 <Input text="Last Name" element={this.state.last} id="lname" event={this.change} type="text"/>
                 <Input text="Email" element={this.state.email} id="email" event={this.change} type="text"/>
+                <Input text="Confirm Email" element={this.state.cEmail} id="cEmail" event={this.change} type="text" />
                 <Input text="Password" element={this.state.pass} id="password" event={this.change} type="password"/>
-                <Input text="Confirm Password" element={this.state.confirm} id="cPassword" event={this.change} type="password"/>
+                <Input text="Confirm Password" element={this.state.cPassword} id="cPassword" event={this.change} type="password"/>
                 <div className="row text-center">
                     <span className="col heading">Classification (pick one)</span>
                 </div>
