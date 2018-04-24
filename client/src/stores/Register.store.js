@@ -1,4 +1,5 @@
 import {EventEmitter} from "events";
+import React from "react";
 import dispatcher from "../dispatcher";
 import _ from "lodash";
 
@@ -8,6 +9,7 @@ class Store extends EventEmitter{
         this.store = {
             feedback: "",
             lock:true,
+            loading: null,
             first: {
                 feed:null,
                 value:"",
@@ -178,6 +180,8 @@ class Store extends EventEmitter{
 
     submit(){
         let path = this.store;
+        path.loading = <img src="images/loading.gif" alt="loading gif" className="loading"/>;
+        this.emit("change");
         if(this.checkFields()){
             path.feedback = null;
             fetch("authentication/registration",{
@@ -194,6 +198,7 @@ class Store extends EventEmitter{
                     'content-type':'application/json'
                 }
             }).then(x => x.json()).then(payload => {
+                path.loading = null;
                 if(!_.isEmpty(payload)){
                     path.feedback = `Successfully registered ${payload.fname} ${payload.lname} under the email ${path.email.value} as a ${path.classification.value}. You will be redirected in 5 seconds...`;
                     this.lockdown()
@@ -214,6 +219,7 @@ class Store extends EventEmitter{
                     });
                 }
             }).catch(err => {
+                path.loading = null;
                 console.log(err.message);
                 path.feedback = this.genError;
                 this.emit("change");

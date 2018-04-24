@@ -54,6 +54,23 @@
     background-color: #30AF78;
     cursor: pointer;
 }
+.button:disabled{
+    background-color: lightgray;
+}
+.label-chk{
+    padding: 5px 15px;
+}
+.label-div{
+    border: dashed lightGray 5px;
+    margin: 0px 20px !important;
+    font-weight: bolder;
+}
+.label-div:hover{
+    background-color: #33CC89;
+    border: dashed #30AF78 5px;
+    cursor: pointer;
+    color: white;
+}
 .default-input{
     margin: 10px 0;
     padding: 5px;
@@ -97,6 +114,13 @@
 }
 .feedback:hover{
     color: gold;
+}
+.label{
+    padding: 15px 5px;
+}
+input[type=radio]{
+    display:none;
+    background-color: black;
 }
 body{
     background-color: #FBFAFA !important;

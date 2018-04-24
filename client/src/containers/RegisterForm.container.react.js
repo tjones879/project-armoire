@@ -28,29 +28,43 @@ export class RegisterForm extends Component{
     render(){
         return(
             <form onSubmit={this.submit}>
-                <h1 className="text-center">Registration</h1>
-                <Input text="First" element={this.state.first} id="fname" event={this.change} type="text"/>
-                <Input text="Last" element={this.state.last} id="lname" event={this.change} type="text"/>
+                <h1 className="text-center heading">Register for Project Armoire</h1>
+                <Input text="First Name" element={this.state.first} id="fname" event={this.change} type="text"/>
+                <Input text="Last Name" element={this.state.last} id="lname" event={this.change} type="text"/>
                 <Input text="Email" element={this.state.email} id="email" event={this.change} type="text"/>
                 <Input text="Password" element={this.state.pass} id="password" event={this.change} type="password"/>
                 <Input text="Confirm Password" element={this.state.confirm} id="cPassword" event={this.change} type="password"/>
                 <div className="row text-center">
-                    <span className="col text-right">Classification</span>
-                    <div className="col text-center">
-                        <input type="radio" name="classification" value="student" id="student" onClick={this.change} disabled={this.state.classification.lock}/>Student<br />
-                        <input type="radio" name="classification" value="professor" id="professor" onClick={this.change} disabled={this.state.classification.lock} />Professor<br />
-                    </div>
-                    <span id="classificationFeedback" className="col text-left">{this.state.classification.value}</span>
+                    <span className="col heading">Classification (pick one)</span>
+                </div>
+                <div className="row text-center">
+                    <label htmlFor="student" className="col text-center label-div">
+                        <div className="label-chk">Student</div><input type="radio" name="classification" value="student" id="student" onClick={this.change} disabled={this.state.classification.lock}/>
+                    </label>
+                    <label htmlFor="professor" className="col text-center label-div">
+                        <div className="label-chk">Professor</div><input type="radio" name="classification" value="professor" id="professor" onClick={this.change} disabled={this.state.classification.lock} />
+                    </label>
+                </div>
+                <div className="row text-center">
+                    <span id="classificationFeedback" className="col text-center feedback">{this.state.classification.value}</span>
                 </div>
                 <div className="row text-center">
                     <div className="col">
-                        <Btn text="Register" id="registerBtn" class="btn btn-success" type="submit" disabled={this.state.lock}/>
+                        <span id="loading">{this.state.loading}</span>
                     </div>
                 </div>
                 <div className="row text-center">
+                    <div className="col">
+                        <Btn text="Register" id="registerBtn" class="button" type="submit" disabled={this.state.lock}/>
+                    </div>
+                </div>
+                <div className="row text-center feedback">
                     <div id="userFeedback" className="col">
                         {this.state.feedback}
                     </div>
+                </div>
+                <div className="under-note text-center">
+                    Already registered? &nbsp; <a className="link" href="login">Log in here</a>
                 </div>
             </form>
         );
