@@ -7,37 +7,20 @@ import PropTypes from 'prop-types';
 export class AccountInfoBox extends Component{
     render(){
         return(
-            <div className="text-center">
+            <div className="content">
                 <div id="fnameRow" className="row">
-                    <div id="fnameLabel" className="col text-right">
-                        First Name:
-                    </div>
-                    <div id="fname" className="col text-left">
-                        {this.props.user.fname}
-                    </div>
-                </div>
-                <div id="lnameRow" className="row">
-                    <div id="lnameLabel" className="col text-right">
-                        Last Name:
-                    </div>
-                    <div id="lname" className="col text-left">
-                        {this.props.user.lname}
+                    <div id="fname" className="col">
+                        <h2>{this.props.user.fname} {this.props.user.lname}</h2>
                     </div>
                 </div>
                 <div id="emailRow" className="row">
-                    <div id="emailLabel" className="col text-right">
-                        Email:
-                    </div>
-                    <div id="email" className="col text-left">
-                        {this.props.user.email}
+                    <div id="email" className="col">
+                        <b>{this.props.user.email}</b>
                     </div>
                 </div>
                 <div id="classificationRow" className="row">
-                    <div id="classificationLabel" className="col text-right">
-                        Classification:
-                    </div>
-                    <div id="classification" className="col text-left">
-                        {this.props.user.classification}
+                    <div id="classification" className="col">
+                        <div className="cap">{this.props.user.classification}</div>
                     </div>
                 </div>
             </div>

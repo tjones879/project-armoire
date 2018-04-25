@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
 import {SelectBox} from '../components/SelectBox.component.react';
-import {Input} from '../components/input.component.react';
 import {Btn} from '../components/Btn.component.react';
 import {Examples} from '../components/Examples.component.react';
 import {Tests} from '../components/Tests.component.react';
