@@ -105,7 +105,7 @@ class Store extends EventEmitter{
 
                 break;
             case "cEmail":
-                path.cEmail.value = path.cEmail.feed = value;
+                path.cEmail.value = path.cEmail.feed = value.toLowerCase();
                 this.checkEmails();
 
                 break;
@@ -199,6 +199,7 @@ class Store extends EventEmitter{
             this.emailReg.test(path.email.value) &&
             this.passReg.test(path.pass.value) &&
             path.pass.value === path.cPassword.value &&
+            path.email.value === path.cEmail.value &&
             path.classification.value
         ){
             path.lock = false;
@@ -235,7 +236,6 @@ class Store extends EventEmitter{
                     last: path.last.value,
                     email: path.email.value,
                     password: path.pass.value,
-                    cPassword: path.cPassword.value,
                     classification: path.classification.value
                 }),
                 headers: {
