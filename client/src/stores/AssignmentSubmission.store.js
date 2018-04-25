@@ -29,13 +29,17 @@ class Store extends EventEmitter{
         this.store.user = payload.user;
         try{
             fetch(`../assignment/${this.store.id}`).then(response => response.json()).then(payload => {
+                payload.open_date = new Date(payload.open_date);
+                payload.open_date = payload.open_date.toDateString();
+                payload.close_date = new Date(payload.close_date);
+                payload.close_date = payload.close_date.toDateString();
                 this.store.assignment = payload;
                 this.store.examples = payload.examples.map((example, index) =>
                     <div className="row" key={index}>
-                        <div className="col text-center">
+                        <div className="col text-center outlined-sunk-wht">
                             {example.input}
                         </div>
-                        <div className="col text-center">
+                        <div className="col text-center outlined-sunk-wht">
                             {example.output}
                         </div>
                     </div>
