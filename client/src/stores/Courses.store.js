@@ -5,8 +5,8 @@ class Store extends EventEmitter{
     constructor(){
         super();
         this.store = {
-            user:{},
-            courses: []
+            coursesList: [],
+            coursesInfo: []
         }
     }
     getAll(){
@@ -14,13 +14,14 @@ class Store extends EventEmitter{
     }
     start(payload){
         let path = this.store;
-        const user = path.user = payload;
-        fetch(`student/courses/${user.id}`).then(response => response.json()).then(payload => {
-            path.courses = payload;
-            this.emit("change");
-        }).catch(err =>
-            console.log(err.message)
-        );
+        payload.map((courseId) => {
+            fetch(`/course/${courseId}`).then(resp => resp.json()).then(obj => {
+                path.coursesInfo.push(obj);
+                this.emit('change');
+            });
+            this.emit('change');
+        });
+        this.emit('change');
     }
     actionHandler(action){
         switch(action.type){

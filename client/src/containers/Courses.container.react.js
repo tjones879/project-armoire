@@ -12,12 +12,15 @@ export class Courses extends Component{
         store.on("change", ()=>{
             this.setState(store.getAll());
         });
-        Actions.start("COURSES", this.props.user);
+        Actions.start("COURSES", this.props.courses);
+    }
+    componentWillReceiveProps(props) {
+        Actions.start("COURSES", props.courses);
     }
     render(){
         return(
             <div>
-                <CourseDisplay courses={this.state.courses}/>
+                <CourseDisplay courses={this.state.coursesInfo}/>
             </div>
         );
     }

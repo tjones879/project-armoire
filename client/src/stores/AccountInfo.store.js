@@ -11,16 +11,8 @@ class ProfessorAccountInfoStore extends EventEmitter{
                 fname: '',
                 lname: '',
                 email: '',
-                courseList: []
             },
-            courses: [
-                {
-                    name: '',
-                    number: '',
-                    numberAssigns: 0,
-                    nextDue: Date()
-                }
-            ],
+            courses: [],
             assignments: {
                 past: [{
                     name: '',
@@ -76,25 +68,33 @@ class ProfessorAccountInfoStore extends EventEmitter{
         this.getAll = this.getAll.bind(this);
     }
 
-    getCourseList() {
-
+    getCourseInfo(courseId) {
+        fetch(`/course/${courseId}`, {
+            method: 'GET'
+        }).then(resp => resp.json()).then(obj => {
+            this.store.courses.push({
+                title: obj.title,
+                crn: obj.crn,
+                numberAssigns: obj.assignments.length,
+                assignments: obj.assignments,
+                nextDue: Date()
+            });
+        });
     }
 
     getUserData(payload){
         this.store.user.id = payload.id;
-        console.log("PAYLOAD ID:", payload.id);
         this.store.user.email = payload.email;
         fetch(`/professor/login_id/${payload.id}`, {
             method: 'GET',
         }).then(resp => resp.json()).then(obj => {
-            if(obj.status === 'failure'){
+            if (obj.status === 'failure') {
                 console.log("FAILURE: ", obj);
             } else {
-                console.log("SUCCESS: ", obj);
                 this.store.user.fname = obj.fname;
                 this.store.user.lname = obj.lname;
-                this.store.user.courseList = obj.courseList;
                 this.store.user.id = obj.id;
+                this.store.courses = obj.courses;
                 this.emit('change');
             }
         }).catch({

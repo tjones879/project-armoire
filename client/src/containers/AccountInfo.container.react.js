@@ -36,7 +36,7 @@ export class AccountInfo extends Component{
                     <div className="col">
                         <div className="content-area half">
                             Courses
-                            <Courses user={this.state.user}/>
+                            <Courses courses={this.state.courses}/>
                         </div> 
                     </div>
                     <div className="col">
