@@ -56,6 +56,7 @@ export class ExactCoursePage extends Component{
         return(
             <div className="content-area text-center">
                 <h1 className="heading">{this.state.course} - {this.state.crn}</h1>
+                {console.log(this.state.assignments)}
                 <AssignmentList assignments={this.state.assignments}/>
             </div>
         );
