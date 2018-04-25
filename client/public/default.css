@@ -248,3 +248,9 @@ body{
     box-shadow: inset 0 0 2px;
     margin: 10px 10%;
 }
+
+@media only screen and (max-width: 768px) {
+    .content-area{
+        margin: 0;
+    }
+}
