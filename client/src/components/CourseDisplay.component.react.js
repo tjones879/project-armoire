@@ -3,8 +3,8 @@ import React, {Component} from 'react';
 export class CourseDisplay extends Component{
     render(){
         return(
-            <div>
-                <div className="row">
+            <div className="tbl-container">
+                <div className="row tbl-header">
                         <div className="col">
                             Course Title
                         </div>
@@ -16,7 +16,7 @@ export class CourseDisplay extends Component{
                         </div>
                     </div>
                 {this.props.courses.map(course => 
-                    <a className="row" key={course.crn} href={`courses/${course._id}`}>
+                    <a className="row tbl-row" key={course.crn} href={`courses/${course._id}`}>
                         <div className="col">
                             {course.title}
                         </div>

@@ -21,7 +21,7 @@ export class ExactAssignmentPage extends Component{
     }
     render(){
         return(
-            <div>
+            <div className="content-area no-sd-pad">
                 <AssignmentSubmission user={this.Auth.getInfo().user} id={this.state.id}/>
             </div>
         );

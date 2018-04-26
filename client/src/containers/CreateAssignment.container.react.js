@@ -61,11 +61,11 @@ export class CreateAssignment extends Component{
                                 </div>      
                                 <div className="text-box">
                                     <div className="heading text-center">Description</div>
-                                    <div className="txt-cen"><TextArea onChange={this.change} type="text" id="aDescript" name="aDescript" /></div>
+                                    <div className="txt-cen"><TextArea event={this.change} type="text" id="aDescript" name="aDescript" /></div>
                                 </div>
                                 <div className="text-box">
                                     <div className="heading  text-center">Requirements</div>
-                                        <div className="txt-cen"><TextArea onChange={this.change} type="text" id="aReq" name="aReq"/></div> 
+                                        <div className="txt-cen"><TextArea event={this.change} type="text" id="aReq" name="aReq"/></div> 
                                </div>
                             </div>
                         </div>

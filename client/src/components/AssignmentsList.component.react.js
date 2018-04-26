@@ -4,8 +4,8 @@ import {PropTypes} from 'prop-types';
 export class AssignmentList extends Component{
     render(){
         return(
-            <div>
-                <div className="row">
+            <div className="tbl-container">
+                <div className="row tbl-header">
                     <div className="col">
                         Title
                     </div>
@@ -20,7 +20,7 @@ export class AssignmentList extends Component{
                     </div>
                 </div>
                 {this.props.assignments.map(assignment => 
-                    <a key={assignment._id} className="row" href={`../assignments/${assignment._id}`}>
+                    <a key={assignment._id} className="row tbl-row" href={`../assignments/${assignment._id}`}>
                         <div className="col">
                             {assignment.title}
                         </div>
