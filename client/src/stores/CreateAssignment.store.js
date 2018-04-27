@@ -212,7 +212,7 @@ class CreateAssignmentStore extends EventEmitter{
 
     submit(){
         let path = this.store;
-        path.loading = <img src="images/loading.gif" alt="loading gif" className="loading"/>;
+        path.loading = <img src="/images/loading.gif" alt="loading gif" className="loading"/>;
         this.emit("change");
         fetch('../assignment', {
             method: 'POST',
@@ -236,7 +236,7 @@ class CreateAssignmentStore extends EventEmitter{
             }).then(payload => payload.json()).then(obj => {
                 path.loading = null;
                 if(obj != null){
-                    this.store.feedback = `Successfully created the course '${this.store.data.aTitle}' under the course '${obj.title}'`;
+                    this.store.feedback = `Successfully created the assignment '${this.store.data.aTitle}' under the course '${obj.title}'`;
                     this.emit("change");
                 }else{
                     this.store.feedback = 'Error';
