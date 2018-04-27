@@ -91,6 +91,17 @@ export class AssignmentSubmission extends Component{
                                 </div>
                             </div>
                         </div>
+                        {(this.state.tests.length > 0) ?
+                            <div className="row text-center">
+                                <div className="col">
+                                    <div className="outlined-sunk">
+                                    <strong>Visible Tests</strong>
+                                    {this.state.tests}
+                                    </div>
+                                </div>
+                            </div>
+                        : false // React treats false as an empty component
+                        }
                         <div className="row text-center">
                             <div className="col">
                                 <h3>Source Code</h3>
