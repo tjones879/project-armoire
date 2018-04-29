@@ -62,7 +62,7 @@ export class RegisterForm extends Component{
                     </div>
                 </div>
                 <div className="under-note text-center">
-                    Already registered? &nbsp; <a className="link" href="login">Log in here</a>
+                    Already registered? &nbsp; <a className="link" href="/login">Log in here</a>
                 </div>
             </form>
         );
