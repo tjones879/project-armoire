@@ -229,7 +229,7 @@ class Store extends EventEmitter{
         this.emit("change");
         if(this.checkFields()){
             path.feedback = null;
-            fetch("/authentication/registration",{
+            fetch("/api/v1/authentication/registration",{
                 method: "POST",
                 body:JSON.stringify({
                     first: path.first.value,
@@ -250,7 +250,7 @@ class Store extends EventEmitter{
                         window.location = 'login';
                     }, '5000');
                 }else{
-                    fetch(`/authentication/email/${path.email.value}`).then(x => x.json()).then(payload => {
+                    fetch(`/api/v1/authentication/email/${path.email.value}`).then(x => x.json()).then(payload => {
                         if(_.isEmpty(payload))
                             path.feedback = this.genError;
                         else

@@ -56,7 +56,7 @@ class CreateCourseStore extends EventEmitter{
 
     submitCourse(){
         if(this.Auth.loggedIn()){
-            fetch('/course',{
+            fetch('/api/v1/course',{
                 method: 'POST',
                 body:JSON.stringify({
                     cName: this.data.input.cName,

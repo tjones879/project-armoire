@@ -44,7 +44,7 @@ class SearchStudentsStore extends EventEmitter{
     /* This function handles what happens to the store when the user
        pushes the search button. */
     submit(){
-        fetch(`/student/${this.store.data.fname}/${this.store.data.lname}`).then(res => res.json()).then(payload => {
+        fetch(`/api/v1/student/${this.store.data.fname}/${this.store.data.lname}`).then(res => res.json()).then(payload => {
             let path = this.store; //save on typing
             const len = path.sLen = payload.length;
             path.feedback = `Found ${len} Result`;
@@ -61,7 +61,7 @@ class SearchStudentsStore extends EventEmitter{
     }
     start(user){
         this.store.user = user;
-        fetch(`/course/login_id/${user.id}`).then(response => response.json()).then(payload => {
+        fetch(`/api/v1/course/login_id/${user.id}`).then(response => response.json()).then(payload => {
             let options = [];
             for(let i = 0; i < payload.length; i++){
                 options.push({
@@ -83,7 +83,7 @@ class SearchStudentsStore extends EventEmitter{
         if(index === -1){
             console.log("not found");
         }else{
-            fetch('/student/add/course', {
+            fetch('/api/v1/student/add/course', {
                 method:'POST',
                 body: JSON.stringify({
                     cid: this.store.selectBoxForms[index].value,

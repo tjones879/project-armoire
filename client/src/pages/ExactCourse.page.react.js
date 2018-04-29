@@ -21,13 +21,13 @@ export class ExactCoursePage extends Component{
         try{
             if(this.Auth.loggedIn()){
                 this.setState({user:this.Auth.getInfo().user}, ()=> {
-                    fetch(`/student/login_id/${this.state.user.id}`).then(x => x.json()).then(payload => {
+                    fetch(`/api/v1/student/login_id/${this.state.user.id}`).then(x => x.json()).then(payload => {
                         let courses = payload.courses;
                         let found = false;
                         for(let i = 0; i < courses.length; i++){
                             if(courses[i].id === this.state.id){
                                 found = true;
-                                fetch(`/course/${courses[i].id}`).then(x => x.json()).then(payload => {
+                                fetch(`/api/v1/course/${courses[i].id}`).then(x => x.json()).then(payload => {
                                     this.setState({course: payload.title, crn: payload.crn});
                                 }).catch(err => {});
                             }

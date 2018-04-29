@@ -44,7 +44,7 @@ class Store extends EventEmitter{
         path.loading = <img src="images/loading.gif" alt="loading gif" className="loading"/>;
         this.e();
         path.lock = true; //prevent double requests
-        fetch('/authentication/login',{
+        fetch('/api/v1/authentication/login',{
             method: 'POST',
             body:JSON.stringify({
                 email: path.email,
