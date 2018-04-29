@@ -1,4 +1,5 @@
 import {EventEmitter} from "events";
+import React from "react";
 import dispatcher from "../dispatcher";
 import _ from "lodash";
 
@@ -8,6 +9,7 @@ class Store extends EventEmitter{
         this.store = {
             feedback: "",
             lock:true,
+            loading: null,
             first: {
                 feed:null,
                 value:"",
@@ -25,13 +27,18 @@ class Store extends EventEmitter{
                 feed:null,
                 lock:null,
             },
+            cEmail: {
+                value: "",
+                feed: null,
+                lock: null,
+            },
             pass:{
                 feed:null,
                 value:"",
                 style:null,
                 lock:false
             },
-            confirm:{
+            cPassword:{
                 feed:null,
                 value:"",
                 style:null,
@@ -39,6 +46,10 @@ class Store extends EventEmitter{
             },
             classification:{
                 value:"",
+                selected: {
+                    professor: false,
+                    student: false,
+                },
                 lock:false
             }
         }
@@ -76,23 +87,39 @@ class Store extends EventEmitter{
 
         switch(payload.id){
             case "cPassword":
-                path.confirm.value = path.confirm.feed = value;
+                path.cPassword.value = path.cPassword.feed = value;
                 this.checkPasses();
 
                 break;
             case "email":
                 path.email.value = value.toLowerCase();
-                path.email.feed = value.toLowerCase();
+
+                if (this.emailReg.test(path.email.value)) {
+                    path.email.feed = null;
+                    path.email.style = {display: "none"};
+                    this.checkEmails();
+                } else {
+                    path.email.feed = "Email is invalid";
+                    path.email.style = {color: "red"};
+                }
+
+                break;
+            case "cEmail":
+                path.cEmail.value = path.cEmail.feed = value.toLowerCase();
+                this.checkEmails();
+
                 break;
             case "fname":
                 fixed = this.capFirst(value);
                 path.first.value = fixed;
                 path.first.feed = this.checkName(fixed, "First");
 
-                if(path.first.feed === fixed)
-                    path.first.style = {color:"green"};
-                else
+                if(path.first.feed === fixed) {
+                    path.last.feed = null;
+                    path.first.style = {display: "none"};
+                } else {
                     path.first.style = {color:"red"};
+                }
 
                 break;
             case "lname":
@@ -100,18 +127,20 @@ class Store extends EventEmitter{
                 path.last.value = fixed;
                 path.last.feed = this.checkName(fixed, "Last");
 
-                if(path.last.feed === fixed)
-                    path.last.style = {color:"green"};
-                else
+                if(path.last.feed === fixed) {
+                    path.last.feed = null;
+                    path.last.style = {display: "none"};
+                } else {
                     path.last.style = {color:"red"};
+                }
 
                 break;
             case "password":
                 path.pass.value = path.pass.feed = value;
 
                 if(this.passReg.test(value)){
-                    path.pass.style = {color:"green"};
-                    path.pass.feed = value.length.toString();
+                    path.pass.style = {display: "none"};
+                    path.pass.feed = null;
                 }else{
                     path.pass.style = {color:"red"};
                     path.pass.feed = "Password must be 8 to 30 characters long and include uppercase, lowercase, special char and number";
@@ -122,9 +151,13 @@ class Store extends EventEmitter{
                 break;
             case "professor":
                 path.classification.value = value;
+                path.classification.selected.professor = true;
+                path.classification.selected.student = false;
                 break;
             case "student":
                 path.classification.value = value;
+                path.classification.selected.student = true;
+                path.classification.selected.professor = false;
                 break;
             default:
                 break;
@@ -137,14 +170,26 @@ class Store extends EventEmitter{
     checkPasses(){
         let path = this.store;
 
-        if(path.pass.value === path.confirm.value){
-            path.confirm.feed = "Passwords Match!";
-            path.confirm.style = {color:"green"};
+        if(path.pass.value === path.cPassword.value){
+            path.cPassword.feed = "Passwords Match!";
+            path.cPassword.style = {color:"green"};
         }else{
-            path.confirm.feed = "Passwords do not match";
-            path.confirm.style = {color:"red"};
+            path.cPassword.feed = "Passwords do not match";
+            path.cPassword.style = {color:"red"};
         }
     };
+
+    checkEmails() {
+        let path = this.store;
+
+        if (path.email.value === path.cEmail.value) {
+            path.cEmail.feed = "Emails Match";
+            path.cEmail.style = {color: "green"};
+        } else {
+            path.cEmail.feed = "Emails do not match";
+            path.cEmail.style = {color: "red"};
+        }
+    }
 
     checkFields(){
         let path = this.store;
@@ -153,7 +198,8 @@ class Store extends EventEmitter{
             this.namReg.test(path.last.value) &&
             this.emailReg.test(path.email.value) &&
             this.passReg.test(path.pass.value) &&
-            path.pass.value === path.confirm.value &&
+            path.pass.value === path.cPassword.value &&
+            path.email.value === path.cEmail.value &&
             path.classification.value
         ){
             path.lock = false;
@@ -170,14 +216,17 @@ class Store extends EventEmitter{
         path.first.lock = true;
         path.last.lock = true;
         path.email.lock = true;
+        path.cEmail.lock = true;
         path.pass.lock = true;
-        path.confirm.lock = true;
+        path.cPassword.lock = true;
         path.classification.lock = true;
         this.emit("change");
     }
 
     submit(){
         let path = this.store;
+        path.loading = <img src="images/loading.gif" alt="loading gif" className="loading"/>;
+        this.emit("change");
         if(this.checkFields()){
             path.feedback = null;
             fetch("authentication/registration",{
@@ -187,13 +236,13 @@ class Store extends EventEmitter{
                     last: path.last.value,
                     email: path.email.value,
                     password: path.pass.value,
-                    confirm: path.confirm.value,
                     classification: path.classification.value
                 }),
                 headers: {
                     'content-type':'application/json'
                 }
             }).then(x => x.json()).then(payload => {
+                path.loading = null;
                 if(!_.isEmpty(payload)){
                     path.feedback = `Successfully registered ${payload.fname} ${payload.lname} under the email ${path.email.value} as a ${path.classification.value}. You will be redirected in 5 seconds...`;
                     this.lockdown()
@@ -214,6 +263,7 @@ class Store extends EventEmitter{
                     });
                 }
             }).catch(err => {
+                path.loading = null;
                 console.log(err.message);
                 path.feedback = this.genError;
                 this.emit("change");

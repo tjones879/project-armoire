@@ -26,69 +26,81 @@ export class AssignmentSubmission extends Component{
     render(){
         return(
             <div>
+                <div className="title-block text-center"><h1 className="heading">{this.state.assignment.title}</h1></div>
                 <form onSubmit={this.submit}>
                     <fieldset>
                         <div className="row text-center">
-                            <legend className="col text-center">{this.state.assignment.title}</legend>
-                        </div>
-                        <div className="row text-center">
                             <div className="col">
-                                Open Date
+                                <div className="section">
+                                    <div>
+                                        Open Date
+                                    </div>
+                                    <div>
+                                        {this.state.assignment.open_date}
+                                    </div>
+                                </div>
                             </div>
                             <div className="col">
-                                Close Date
-                            </div>
-                        </div>
-                        <div className="row text-center">
-                            <div className="col">
-                                {this.state.assignment.open_date}
-                            </div>
-                            <div className="col">
-                                {this.state.assignment.close_date}
-                            </div>
-                        </div>
-                        <div className="row text-center">
-                            <div className="col">
-                                <strong>Description</strong>
-                            </div>
-                        </div>
-                        <div className="row text-center">
-                            <div className="col">
-                                {this.state.assignment.description}
+                                <div className="section">
+                                    <div>
+                                        Close Date
+                                    </div>
+                                    <div>
+                                        {this.state.assignment.close_date}
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div className="row text-center">
                             <div className="col">
-                                <strong>Requirements</strong>
+                                <div className="outlined-sunk">
+                                    <div>
+                                        <strong>Description</strong>
+                                    </div>
+                                    <div>
+                                        {this.state.assignment.description}
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div className="row text-center">
                             <div className="col">
-                                {this.state.assignment.requirements}
+                                <div className="outlined-sunk">
+                                    <div>
+                                        <strong>Requirements</strong>
+                                    </div>
+                                    <div>
+                                        {this.state.assignment.requirements}
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div className="row text-center">
                             <div className="col">
-                                <strong>Examples</strong>
-                            </div>
-                        </div>
-                        <div className="row text-center">
-                            <div className="col text-center">
-                                <strong>Input</strong>
-                            </div>
-                            <div className="col text-center">
-                                <strong>Output</strong>
-                            </div>
-                        </div>
-                        {this.state.examples}
-                        <div className="row text-center">
-                            <div className="col">
-                                <textarea id="contents" name="contents" cols="80" rows="10" onChange={this.change}></textarea>
+                                <div className="outlined-sunk">
+                                    <strong>Examples</strong>
+                                    <div className="row text-center">
+                                        <div className="col text-center outlined-sunk-grn">
+                                            <strong>Input</strong>
+                                        </div>
+                                        <div className="col text-center outlined-sunk-grn">
+                                            <strong>Output</strong>
+                                        </div>
+                                    </div>
+                                    {this.state.examples}
+                                </div>
                             </div>
                         </div>
                         <div className="row text-center">
                             <div className="col">
-                                <textarea id="stdin" name="stdin" cols="80" rows="10" onChange={this.change}></textarea>
+                                <h3>Source Code</h3>
+                                <textarea id="contents" className="textarea" name="contents" cols="80" rows="10" onChange={this.change}></textarea>
+                            </div>
+                        </div>
+                        <div className="row text-center">
+                            <div className="col">
+                                <h2>Standard Input</h2>
+                                <textarea id="stdin" className="textarea" name="stdin" cols="80" rows="10" onChange={this.change}></textarea>
                             </div>
                         </div>
                         <div className="row text-center">
@@ -98,7 +110,7 @@ export class AssignmentSubmission extends Component{
                         </div>
                         <div className="row text-center">
                             <div className="col">
-                                <Btn type="submit" id="submit" text="Submit Submission"/>
+                                <Btn type="submit" class="button" id="submit" text="Submit Submission"/>
                             </div>
                         </div>
                     </fieldset>

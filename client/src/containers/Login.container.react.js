@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import * as actions from '../actions';
 import {Btn} from '../components/Btn.component.react';
-import {Input} from '../components/input.component.react';
 import PropTypes from "prop-types";
 
 export class LoginForm extends Component{
@@ -15,16 +14,28 @@ export class LoginForm extends Component{
     render(){
         return(
             <form onSubmit={this.submit}>
-                {this.props.elements.map(element => 
-                    <Input key={element.id} text={element.text} type={element.type} id={element.id} name={element.name} required={true} event={this.change}/>
-                )}
                 <div className="row text-center">
                     <div className="col">
-                        <Btn type="submit" id="loginBtn" class="btn btn-success btn-sm" disabled={this.props.lock} text="Login"/>
+                        <input className="default-input" placeholder="Email" type="email" id="email" name="email" required autoFocus autoComplete="on" onChange={this.change}/>
                     </div>
                 </div>
                 <div className="row text-center">
                     <div className="col">
+                        <input className="default-input" placeholder="Password" type="password" id="password" name="password" required autoComplete="on" onChange={this.change}/>
+                    </div>
+                </div>
+                <div className="row text-center">
+                    <div className="col">
+                        <span id="loading">{this.props.loading}</span>
+                    </div>
+                </div>
+                <div className="row text-center">
+                    <div className="col">
+                        <Btn type="submit" id="loginBtn" class="button" disabled={this.props.lock} text="Log in"/>
+                    </div>
+                </div>
+                <div className="row text-center">
+                    <div className="col feedback">
                         <span id="feedback">{this.props.feedback}</span>
                     </div>
                 </div>

@@ -6,6 +6,7 @@ import {Input} from '../components/input.component.react';
 import {Btn} from '../components/Btn.component.react';
 import {Examples} from '../components/Examples.component.react';
 import {Tests} from '../components/Tests.component.react';
+import {TextArea} from '../components/textarea.component.react';
 
 import * as actions from '../actions';
 import store from '../stores/CreateAssignment.store';
@@ -42,14 +43,45 @@ export class CreateAssignment extends Component{
                     <fieldset>
                         <div className="row">
                             <div className="col">
-                                <legend className="text-center">{this.props.title}</legend>
+                                <legend className="text-center heading">{this.props.title}</legend>
                             </div>
                         </div>
-                        <SelectBox event={this.change} options={this.state.options} title="Course" id="CourseSelectBox"/>
-                        <SelectBox event={this.change} options={[{text:"C++",value:"c++"},{text:"Java",value:"java"},{text:"Python 3",value:"python3"},{text:"Python 2",value:"python2"}]} title="Language" id="LanguageSelectBox"/>
-                        {this.state.form.elements.map(element =>
-                            <Input event={this.change} key={element.id} type={element.type} id={element.id} name={element.name} text={element.text}/>
-                        )}
+                        <div className="row">
+                            <div className="col text-center">
+                                <SelectBox event={this.change} options={this.state.options} title="Course" id="CourseSelectBox"/>
+                            </div>
+                            <div className="col text-center">
+                                <SelectBox event={this.change} options={[{text:"C++",value:"c++"},{text:"Java",value:"java"},{text:"Python 3",value:"python3"},{text:"Python 2",value:"python2"}]} title="Language" id="LanguageSelectBox"/>
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="col">
+                                <div className=" text-center">
+                                    <input onChange={this.change} className="default-input" type="text" id="aTitle" name="aTitle" placeholder="Assignment Title" autoFocus style={{marginTop:"30px"}}/>
+                                </div>      
+                                <div className="text-box">
+                                    <div className="heading text-center">Description</div>
+                                    <div className="txt-cen"><TextArea event={this.change} type="text" id="aDescript" name="aDescript" /></div>
+                                </div>
+                                <div className="text-box">
+                                    <div className="heading  text-center">Requirements</div>
+                                        <div className="txt-cen"><TextArea event={this.change} type="text" id="aReq" name="aReq"/></div> 
+                               </div>
+                            </div>
+                        </div>
+                        <div className="date-box text-center">
+                            <span className="heading">Dates</span>
+                            <div className="row text-center">
+                                <div className="col sub-date">
+                                    <div>Open</div>
+                                    <input onChange={this.change} className="default-input" type="date" id="aOpen" name="aOpen" placeholder="Open Date"/>
+                                </div>
+                                <div className="col sub-date">
+                                    <div>Close</div>
+                                    <input onChange={this.change} className="default-input" type="date" id="aClose" name="aClose" placeholder="Close Date"/>
+                                </div>
+                            </div>
+                        </div>
                         <Examples event={this.change} elements={this.state.examples}/>
                         <div className="row text-center">
                             <div className="col">
@@ -64,13 +96,18 @@ export class CreateAssignment extends Component{
                         </div>
                         <div className="row text-center">
                             <div className="col">
+                                <span id="loading">{this.state.loading}</span>
+                            </div>
+                        </div>
+                        <div className="row text-center">
+                            <div className="col">
                                 <Btn text="Submit" id="submit" type="submit"/>
                             </div>
                         </div>
                     </fieldset>
                 </form>
                 <div className="row text-center">
-                    <div className="col">
+                    <div className="col feedback">
                         {this.state.feedback}
                     </div>
                 </div>

@@ -1,4 +1,5 @@
 import {EventEmitter} from 'events';
+import React from "react";
 
 import dispatcher from '../dispatcher';
 
@@ -7,6 +8,7 @@ class CreateAssignmentStore extends EventEmitter{
         super();
         this.store = {
             feedback: "",
+            loading: null,
             user: {},
             courses: [],
             options: [],
@@ -227,6 +229,9 @@ class CreateAssignmentStore extends EventEmitter{
     }
 
     submit(){
+        let path = this.store;
+        path.loading = <img src="images/loading.gif" alt="loading gif" className="loading"/>;
+        this.emit("change");
         fetch('../assignment', {
             method: 'POST',
             body:JSON.stringify({
@@ -247,6 +252,7 @@ class CreateAssignmentStore extends EventEmitter{
             fetch(`../course/add/assignment/${obj._id}/${obj.course}`, {
                 method: 'POST'
             }).then(payload => payload.json()).then(obj => {
+                path.loading = null;
                 if(obj != null){
                     this.store.feedback = `Successfully created the course '${this.store.data.aTitle}' under the course '${obj.title}'`;
                     this.emit("change");
@@ -254,8 +260,14 @@ class CreateAssignmentStore extends EventEmitter{
                     this.store.feedback = 'Error';
                     this.emit("change");
                 }
-            }).catch();
-        }).catch();
+            }).catch(err => {
+                path.loading = null;
+                this.emit("change");
+            });
+        }).catch(err => {
+            path.loading = null;
+            this.emit("change");
+        });
     }
 
     getAll(){

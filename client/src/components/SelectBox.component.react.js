@@ -4,19 +4,12 @@ import {PropTypes} from 'prop-types';
 export class SelectBox extends Component{
     render(){
         return(
-            <div className="row">  
-                <label htmlFor={this.props.id} className="col text-right">
-                    {this.props.title}:
-                </label>
-                <div className="col text-left">
-                    <select id={this.props.id} onChange={this.props.event}>
-                        <option disabled selected value> -- select an option -- </option>
-                        {this.props.options.map(obj =>
-                            <option key={obj.value} id={obj.value} value={obj.value}>{obj.text}</option>
-                        )}
-                    </select>
-                </div>
-            </div>
+            <select id={this.props.id} onChange={this.props.event}>
+                <option disabled selected value>{this.props.title} (select one)</option>
+                {this.props.options.map(obj =>
+                    <option key={obj.value} id={obj.value} value={obj.value}>{obj.text}</option>
+                )}
+            </select>
         );
     }
 }
