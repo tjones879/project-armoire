@@ -18,17 +18,17 @@ app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({extended:true}));
 
 app.use('/', index);
-app.use('/authentication', authentication);
+app.use('/api/v1/authentication', authentication);
 
 //This needs to go before '.use'
-app.post('/course', verifyToken, course);
+app.post('/api/v1/course', verifyToken, course);
 
-app.use('/assignment', assignment);
+app.use('/api/v1/assignment', assignment);
 //app.post('/submission', verifyToken, submission);
-app.use('/submission', submission);
-app.use('/professor', professor);
-app.use('/course', course);
-app.use('/student', student);
+app.use('/api/v1/submission', submission);
+app.use('/api/v1/professor', professor);
+app.use('/api/v1/course', course);
+app.use('/api/v1/student', student);
 
 function verifyToken(req, res, next){
     const bearerHeader = req.headers['authorization'];

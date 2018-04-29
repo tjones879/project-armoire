@@ -14,7 +14,7 @@ describe('Assignments', () => {
     describe('/GET Assignment', () => {
         it('should return all assignments', () => {
             return chai.request(server)
-                .get('/assignment')
+                .get('/api/v1/assignment')
                 .then((res) => {
                     expect(res.status).to.equal(200);
                     expect(res.body).to.be.a('array');
@@ -34,7 +34,7 @@ describe('Assignments', () => {
 
             return assignment.save((err, assignment) => {
                 chai.request(server)
-                    .get('/assignment/' + assignment._id)
+                    .get('/api/v1/assignment/' + assignment._id)
                     .then((res) => {
                         expect(res.status).to.equal(200);
                         expect(res.body._id).to.be.equal(assignment._id.toString());
@@ -54,7 +54,7 @@ describe('Assignments', () => {
             };
 
             return chai.request(server)
-                .post('/assignment')
+                .post('/api/v1/assignment')
                 .send(assignment)
                 .then((res) => {
                     expect(res.status).to.equal(200);
