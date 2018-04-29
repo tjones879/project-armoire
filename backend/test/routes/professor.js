@@ -9,7 +9,7 @@ describe('Professors', () => {
     describe('/GET Professor', () => {
         it('should return status 200', () => {
             return chai.request(server)
-                .get('/professor')
+                .get('/api/v1/professor')
                 .then((res) => {
                     expect(res.status).to.equal(200);
                 });
@@ -17,7 +17,7 @@ describe('Professors', () => {
 
         it('should return all professors', () => {
             return chai.request(server)
-                .get('/professor')
+                .get('/api/v1/professor')
                 .then((res) => {
                     expect(res.body).to.be.a('array');
                 });

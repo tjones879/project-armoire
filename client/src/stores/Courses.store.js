@@ -15,7 +15,7 @@ class Store extends EventEmitter{
     start(payload){
         let path = this.store;
         const user = path.user = payload;
-        fetch(`student/courses/${user.id}`).then(response => response.json()).then(payload => {
+        fetch(`/api/v1/student/courses/${user.id}`).then(response => response.json()).then(payload => {
             path.courses = payload;
             this.emit("change");
         }).catch(err =>
