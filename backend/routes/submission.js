@@ -18,7 +18,8 @@ let compilers = [
                 footer: "if __name__ == '__main__':\n\twith open ('result.xml', 'wb') as result:\n\tunittest.main(testRunner=xmlrunner.XMLTestRunner(output=result), failfast=False, buffer=False, catchbreak=False)"
             },
             commands: [
-                'python3 test.py'
+                'python3 test.py',
+                'cat result.xml'
             ],
         },
         name: 'Python 3',
@@ -46,6 +47,17 @@ let compilers = [
         compile_cmd: '',
         src_file: 'file.py',
         run_cmd: 'python file.py',
+        test: {
+            file: {
+                name: 'test.py',
+                header: 'import unittest\nimport xmlrunner\nimport file',
+                footer: "if __name__ == '__main__':\n\twith open ('result.xml', 'wb') as result:\n\tunittest.main(testRunner=xmlrunner.XMLTestRunner(output=result), failfast=False, buffer=False, catchbreak=False)"
+            },
+            commands: [
+                'python test.py',
+                'cat result.xml'
+            ],
+        },
         name: 'Python 2',
     },
     {

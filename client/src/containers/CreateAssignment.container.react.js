@@ -33,6 +33,7 @@ export class CreateAssignment extends Component{
     }
     change(event){
         actions.change("CREATE_ASSIGNMENT",event.target.id, event.target.value);
+        console.log('change', event)
     }
 
     render(){
