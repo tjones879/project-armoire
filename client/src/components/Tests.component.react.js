@@ -9,9 +9,13 @@ export class Tests extends Component{
                 {this.props.elements.map(element =>
                     <div key={element} className="text-center tests">
                         <div className="heading">Test {element}</div>
-                            {/* <Input event={this.props.event} type="text" text={`Action ${element}`} id={`A${element}`} name={`A${element}`}/> */}
-                            {/* <Input event={this.props.event} type="text" text={`Expected ${element}`} id={`E${element}`} name={`E${element}`}/> */}
-                            <div className="txt-cen"><TextArea event={this.props.event} type="text" id={`A${element}`} name={`A${element}`}/></div>
+                        <input className="default-input" type="text" placeholder="Test Label"
+                               id={`L${element}`} name={`L${element}`} onChange={this.props.event}/>
+                        <input style={{margin: 5}} type="checkbox" id={`Vis${element}`} name={`Vis${element}`} onChange={this.props.event} />
+                        <label htmlFor={`Vis${element}`}>Visible to students</label>
+                        <div className="txt-cen">
+                            <TextArea event={this.props.event} type="text" id={`A${element}`} name={`A${element}`}/>
+                        </div>
                     </div>
                 )}
             </div>
