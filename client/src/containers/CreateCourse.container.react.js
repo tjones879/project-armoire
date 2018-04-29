@@ -31,10 +31,10 @@ export class CreateCourseContainer extends Component {
 
     render(){
         return(
-            <div>
+            <div className="content-area">
                 <form onSubmit={this.validate}>
                     <fieldset>
-                        <legend>{this.props.title}</legend>
+                        <legend className="heading">{this.props.title}</legend>
                         {this.state.form.elements.map(element =>
                             <Input key={element.id} type={element.type} id={element.id} name={element.name} text={element.text} event={this.change}/>
                         )}

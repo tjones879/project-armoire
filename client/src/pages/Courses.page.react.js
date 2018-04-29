@@ -32,7 +32,8 @@ export class CoursePage extends Component{
     }
     render(){
         return(
-            <div>
+            <div className="content-area text-center">
+                <h1 className="heading">Courses</h1>
                 {this.state.components.map((component, index) =>
                     <div key={index}>
                         {component}

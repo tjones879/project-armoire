@@ -19,7 +19,7 @@ export class SearchStudentsPage extends Component{
     }
     render(){
         return(
-            <div>
+            <div className="content-area text-center">
                 <SearchStudentsContainer title="Search Students"/>
             </div>
         );

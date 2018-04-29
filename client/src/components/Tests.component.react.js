@@ -8,16 +8,18 @@ export class Tests extends Component{
         return(
             <div>
                 {this.props.elements.map(element =>
-                    <div key={element}>
-                        {/* <Input event={this.props.event} type="text" text={`Action ${element}`} id={`A${element}`} name={`A${element}`}/> */}
-                        {/* <Input event={this.props.event} type="text" text={`Expected ${element}`} id={`E${element}`} name={`E${element}`}/> */}
-                        {/* <CodeArea event={this.props.event} text={`Test ${element}`} id={`A${element}`} name={`A${element}`}/> */}
+                    <div key={element} className="text-center tests">
                         <AceEditor onChange={this.props.event} text={`Test ${element}`} id={`A${element}`} name={`A${element}`} mode="python" theme="monokai" editorProps={{
-                        $blockScrolling: true
-                    }}
-                    setOptions={{
-                        enableLiveAutocompletion: true
-                    }}/>
+                                $blockScrolling: true
+                            }}
+                            setOptions={{
+                                enableLiveAutocompletion: true
+                            }}
+                        />
+                        <div className="heading">Test {element}</div>
+                        <div className="txt-cen">
+                            <TextArea event={this.props.event} type="text" id={`A${element}`} name={`A${element}`}/>
+                        </div>
                     </div>
                 )}
             </div>

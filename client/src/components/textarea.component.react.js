@@ -8,11 +8,8 @@ export class TextArea extends Component{
     render(){
         return(
             <div className='row'>
-                <div className='col text-right'>
-                    <label htmlFor={this.props.id}>{this.props.text}:</label>
-                </div>
-                <div className='col text-left'>
-                    <Textarea id={this.props.id} type={this.props.type} disabled={this.props.disabled} name={this.props.name} onChange={this.props.event} value={this.props.value}/>
+                <div className='col text-center'>
+                    <textarea className="txt-box" id={this.props.id} type={this.props.type} disabled={this.props.disabled} name={this.props.name} onChange={this.props.event} value={this.props.value}/>
                 </div>
             </div>
         );
@@ -21,8 +18,7 @@ export class TextArea extends Component{
 
 TextArea.defaultProps = {
     type: 'text',
-    disabled: false,
-    text: 'text prop needed'
+    disabled: false
 }
 
 TextArea.propTypes = {
@@ -31,6 +27,6 @@ TextArea.propTypes = {
     placeholder: PropTypes.string,
     name: PropTypes.string.isRequired,
     id: PropTypes.string.isRequired,
-    text: PropTypes.string.isRequired,
+    text: PropTypes.string,
     event: PropTypes.func
 }

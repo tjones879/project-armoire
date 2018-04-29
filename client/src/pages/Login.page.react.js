@@ -19,9 +19,12 @@ export class LoginPage extends Component{
 
     render(){
         return(
-            <div>
-                <h1 className="text-center">Login Page</h1>
-                <LoginForm elements={this.state.elements} feedback={this.state.feedback} lock={this.state.lock}/>
+            <div className="content-area">
+                <h1 className="text-center heading">Log In to Project Armoire</h1>
+                <LoginForm loading={this.state.loading} feedback={this.state.feedback} lock={this.state.lock}/>
+                <div className="under-note text-center">
+                    Hello stranger! Never been here before? &nbsp; <a className="link" href="register">Sign up now</a>
+                </div>
             </div>
         );
     }

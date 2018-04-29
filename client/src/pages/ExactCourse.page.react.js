@@ -11,7 +11,9 @@ export class ExactCoursePage extends Component{
         super(props);
         this.state = {
             id: this.props.match.params.id,
-            user: {}
+            user: {},
+            course: "",
+            crn: ""
         }
         this.Auth = new AuthService();
     }
@@ -25,6 +27,9 @@ export class ExactCoursePage extends Component{
                         for(let i = 0; i < courses.length; i++){
                             if(courses[i].id === this.state.id){
                                 found = true;
+                                fetch(`../course/${courses[i].id}`).then(x => x.json()).then(payload => {
+                                    this.setState({course: payload.title, crn: payload.crn});
+                                }).catch(err => {});
                             }
                         }
                         if(!found){
@@ -49,7 +54,8 @@ export class ExactCoursePage extends Component{
     }
     render(){
         return(
-            <div>
+            <div className="content-area text-center">
+                <h1 className="heading">{this.state.course} - {this.state.crn}</h1>
                 {console.log(this.state.assignments)}
                 <AssignmentList assignments={this.state.assignments}/>
             </div>

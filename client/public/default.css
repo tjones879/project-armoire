@@ -36,20 +36,221 @@
     text-align: center;
     padding: 15px;
     margin: 10px;
+    border-radius: 5px;
+}
+.content-area{
+    background-color: white;
+    padding: 20px;
+    margin: 20px 20%;
+    box-shadow: 0px 0px 5px lightgray;
 }
 .textarea{
     background-color: #FBFAFA;
     border: none;
-    box-shadow: #21263A 0px 0px 5px;
+    box-shadow: inset #21263A 0px 0px 5px;
     width: 80%;
+}
+.textarea:focus{
+    outline-color: #33CC89;
+    outline-width: 5px;
 }
 .button:hover{
     background-color: #30AF78;
+    cursor: pointer;
+}
+.button:disabled{
+    background-color: lightgray;
+}
+.label-chk{
+    padding: 5px 15px;
+}
+.label-div{
+    border: dashed lightGray 5px;
+    margin: 0px 20px !important;
+    font-weight: bolder;
+}
+.label-div:hover{
+    background-color: #33CC89;
+    border: dashed #30AF78 5px;
+    cursor: pointer;
+    color: white;
+}
+#label-div-selected {
+    margin: 0px 20px !important;
+    font-weight: bolder;
+    background-color: #33CC89;
+    border: dashed #30AF78 5px;
+    cursor: pointer;
+    color: white;
+}
+.default-input{
+    margin: 10px 0;
+    padding: 5px;
+    text-align: center;
+    width: 80%;
+    outline: none;
+}
+.default-input:hover{
+    background-color: #FBFAFA;
+}
+.link{
+    color: #30AF78;
+}
+.link:hover{
+    color: #33CC89;
+}
+.arrow{
+    margin: 30px 25px 0 0;
+}
+.txt-cen{
+   padding: 0px 20px 0px 20px;
+}
+.txt-box{
+    margin-top: 20px;
+    margin-bottom: 20px;
+    outline: none;
+    border: none;
+    border: solid white 2px;
+    width: 100%;
+    height: 250px;
+}
+.txt-box:hover{
+    border: dashed #33CC89 2px;
+}
+.date-box, .examples, .tests, .text-box{
+    background-color: #FBFAFA;
+    border: solid #33CC89 2px;
+    margin-top: 25px;
+}
+.sub-date, .sub-examples{
+    background-color: lightgrey;
+    margin: 15px 30px;
+    padding: 10px;
+}
+.under-note{
+    background-color: lightgrey;
+    margin: 0px -20px -20px -20px;
+    padding: 10px 0px;
+}
+.default-input:focus{
+    background-color: #FBFAFA;
+    border-color: #30AF78;
+    box-shadow: #30AF78;
+}
+.heading{
+    padding-top: 20px !important;
+    font-weight: bolder;
+}
+.loading{
+    width: 50px;
+    height: 50px;
+}
+.feedback{
+    color: #30AF78;
+    margin-bottom: 0px;
+    padding: 5px;
+}
+.label{
+    padding: 15px 5px;
+}
+input[type=radio]{
+    display:none;
+    background-color: black;
+}
+select{
+    outline: none;
+    background-color: white;
+    border: dashed #33CC89 2px;
+    width: 80%;
+    text-align: center;
+    appearance: none;
+    -webkit-appearance: none;
+    padding: 15px;
+    font-weight: bolder;
+}
+select:hover{
+    background-color: #33CC89;
+    color: white;
     cursor: pointer;
 }
 body{
     background-color: #FBFAFA !important;
     margin: 0 !important;
     padding: 0 !important;
-    font-family: sans-serif !important;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif !important;
+}
+.tbl-container{
+    box-shadow: black 0 0 1px;
+    padding: 0 15px;
+}
+.tbl-header{
+    background-color: #33CC89;
+    color: white;
+    text-shadow: 0 1px black;
+}
+.tbl-row{
+    background: #FBFAFA;
+    border: solid #FBFAFA 2px;
+    color: black;
+    text-decoration: none !important;
+}
+.tbl-row:nth-child(odd){
+    background-color: white;
+}
+.tbl-row:hover{
+    cursor: pointer !important;
+    background-color: #30AF78;
+    color: white;
+    border: dotted white 2px;
+}
+.tbl-row-non-link{
+    background: #FBFAFA;
+    border: solid #FBFAFA 2px;
+    color: black;
+}
+.tbl-row-non-link:nth-child(odd){
+    background-color: white;
+}
+.tbl-row-non-link:hover{
+    background-color: rgba(48, 175, 120, 0.452);
+    border: dotted white 2px;
+}
+.title-block{
+    background-color: #33CC89;
+    color: white;
+    margin: -20px 0 0 0;
+    padding: 0px !important;
+    box-shadow: 0 0 1px;
+}
+.section{
+    background-color: #FBFAFA;
+    padding: 5px;
+    border: solid grey 2px;
+    margin: 0 20%;
+}
+.no-sd-pad{
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+.outlined-sunk{
+    background-color: #FBFAFA;
+    box-shadow: inset 0 0 2px;
+    margin: 10px 10%;
+}
+.outlined-sunk-wht{
+    background-color: white;
+    box-shadow: inset 0 0 2px;
+    margin: 10px 10%;
+}
+.outlined-sunk-grn{
+    background-color: #33CC89;
+    color: white;
+    box-shadow: inset 0 0 2px;
+    margin: 10px 10%;
+}
+
+@media only screen and (max-width: 768px) {
+    .content-area{
+        margin: 0;
+    }
 }

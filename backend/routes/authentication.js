@@ -50,7 +50,7 @@ router.post('/login', (req, res) => {
         login(email, password).then(token => {
             console.log(token);
             res.json(token);
-        }).catch(err => {});  
+        }).catch(err => { console.log(err.message); res.json({})});  
     }else
         res.json({});
 });
@@ -67,8 +67,6 @@ router.post('/registration', (req, res) => {
         typeof req.body.last !== "undefined" &&
         typeof req.body.email !== "undefined" && 
         typeof req.body.password !== "undefined" &&
-        typeof req.body.confirm !== "undefined" && 
-        req.body.password === req.body.confirm && 
         typeof req.body.classification !== "undefined" &&
         /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,30}$/.test(req.body.password)
     ){

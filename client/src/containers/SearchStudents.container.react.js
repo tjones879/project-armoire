@@ -33,7 +33,7 @@ export class SearchStudentsContainer extends Component{
             <div>
                 <form onSubmit={this.submit}>
                     <fieldset>
-                        <legend>{this.props.title}</legend>
+                        <legend className="heading">{this.props.title}</legend>
                         {this.state.elements.input.map(x => <Input type={x.type} text={x.text} id={x.id} key={x.id} name={x.name} event={this.change}/>)}
                         <div className="row text-center">
                             <div className="col">
@@ -41,7 +41,7 @@ export class SearchStudentsContainer extends Component{
                             </div>
                         </div>
                         <div className="row text-center">
-                            <div className="col">
+                            <div className="col feedback">
                                 {this.state.feedback}
                             </div>
                         </div>
@@ -56,13 +56,13 @@ export class SearchStudentsContainer extends Component{
 class StudentResults extends Component{
     render(){
         return(
-            <div>
-                <div className="row">
-                    <div className="col">
-                        First Name
+            <div className="tbl-container">
+                <div className="row tbl-header">
+                    <div className="col-1">
+                        First
                     </div>
-                    <div className="col">
-                        Last Name
+                    <div className="col-1">
+                        Last
                     </div>
                     <div className="col">
                         ID
@@ -72,11 +72,11 @@ class StudentResults extends Component{
                     </div>
                 </div>
                 {this.props.students.map(student => 
-                    <div className="row" key={student._id}>
-                        <div className="col">
+                    <div className="row tbl-row-non-link" key={student._id}>
+                        <div className="col-1">
                             {student.fname}
                         </div>
-                        <div className="col">
+                        <div className="col-1">
                             {student.lname}
                         </div>
                         <div className="col">

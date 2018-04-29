@@ -1,4 +1,5 @@
 import {EventEmitter} from "events";
+import React from "react";
 import dispatcher from "../dispatcher";
 import * as actions from '../actions';
 import navStore from './Navbar.store';
@@ -13,20 +14,7 @@ class Store extends EventEmitter{
             email: "",
             password: "",
             lock: false,
-            elements:[
-                {
-                    text:"Email",
-                    id:"email",
-                    name:"email",
-                    type:"text"
-                },
-                {
-                    text:"Password",
-                    id:"password",
-                    name:"password",
-                    type:"password"
-                }
-            ]
+            loading: null
         }
         this.Auth = new AuthService();
     }
@@ -53,6 +41,8 @@ class Store extends EventEmitter{
 
     login(){
         let path = this.store;
+        path.loading = <img src="images/loading.gif" alt="loading gif" className="loading"/>;
+        this.e();
         path.lock = true; //prevent double requests
         fetch('authentication/login',{
             method: 'POST',
@@ -64,6 +54,7 @@ class Store extends EventEmitter{
                 'content-type':'application/json'
             }
         }).then(res => res.json()).then(token => {
+            path.loading = null;
             if(!_.isEmpty(token)){
                 localStorage.setItem('token', token);
                 path.feedback = "Successful Login!";
@@ -80,6 +71,7 @@ class Store extends EventEmitter{
             }
             this.e();
         }).catch(err => {
+            path.loading = null;
             path.feedback = "An error has occurred";
             path.lock = false;
             console.log(err.message);
