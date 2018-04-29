@@ -21,12 +21,18 @@ var options = {
 
 var app = express();
 
+app.all('*', (req, res, next) => {
+    if (req.secure)
+        return next();
+
+    res.redirect('https://' + req.hostname + req.url);
+});
+
 app.use(express.static(path.join(__dirname, '../client/build')));
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({extended:true}));
 
 app.get('/', function (req, res) {
-    console.log(path.join(__dirname, '../client/build', 'index.html'))
     res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
 });
 app.use('/authentication', authentication);
