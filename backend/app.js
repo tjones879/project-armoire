@@ -32,9 +32,6 @@ app.use(express.static(path.join(__dirname, '../client/build')));
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({extended:true}));
 
-app.get('/', function (req, res) {
-    res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
-});
 app.use('/authentication', authentication);
 
 //This needs to go before '.use'
@@ -46,6 +43,9 @@ app.use('/submission', submission);
 app.use('/professor', professor);
 app.use('/course', course);
 app.use('/student', student);
+app.get('/*', function (req, res) {
+    res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
+});
 
 function verifyToken(req, res, next){
     const bearerHeader = req.headers['authorization'];
