@@ -174,10 +174,8 @@ router.post('/', (req, res, next) => {
     if(req.body.email !== undefined && req.body.id !== undefined) {
         Student.findOne({login_id: new Mongoose.Types.ObjectId(req.body.id)}, (err, obj) => {
             if (obj !== null) {
-                console.log('found student');
                 res.json(obj);
             } else {
-                console.log('student not found');
                 res.json({status: 'failure'});
             }
         });
