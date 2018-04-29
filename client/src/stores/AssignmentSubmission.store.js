@@ -28,7 +28,7 @@ class Store extends EventEmitter{
         this.store.id = payload.id;
         this.store.user = payload.user;
         try{
-            fetch(`../assignment/${this.store.id}`).then(response => response.json()).then(payload => {
+            fetch(`/assignment/${this.store.id}`).then(response => response.json()).then(payload => {
                 payload.open_date = new Date(payload.open_date);
                 payload.open_date = payload.open_date.toDateString();
                 payload.close_date = new Date(payload.close_date);
@@ -72,7 +72,7 @@ class Store extends EventEmitter{
     }
     submit(){
         try{
-            fetch('../submission', {
+            fetch('/submission', {
                 method:"POST",
                 body:JSON.stringify({
                     course: this.store.assignment.course,

@@ -57,7 +57,7 @@ class Store extends EventEmitter{
         path.email = path2[2].value = payload.email;
         path.classification = payload.classification;
         path.token = payload.token;
-        fetch(`../${path.classification}/login_id/${path.login_id}`).then(res => res.json()).then(payload => {
+        fetch(`/${path.classification}/login_id/${path.login_id}`).then(res => res.json()).then(payload => {
             path.id = payload._id;
             path.fname = path2[0].value = payload.fname;
             path.lname = path2[1].value = payload.lname;
@@ -67,7 +67,7 @@ class Store extends EventEmitter{
     submit(){
         const path = this.store.user;
         const path2 = this.store.elements;
-        fetch(`../${path.classification}/update`, {
+        fetch(`/${path.classification}/update`, {
             method:"POST",
             body:JSON.stringify({
                 id:path.id,

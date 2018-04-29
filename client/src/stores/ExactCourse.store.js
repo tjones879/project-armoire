@@ -18,13 +18,13 @@ class Store extends EventEmitter{
         this.store.id = payload.id;
         this.store.user = payload.user;
         try{
-            fetch(`../course/${this.store.id}`).then(x => x.json()).then(payload => {
+            fetch(`/course/${this.store.id}`).then(x => x.json()).then(payload => {
                 let assignmentIds = payload.assignments;
                 let proms = [];
                 let betterAssignments = [];
                 for(let i = 0; i < assignmentIds.length; i++){
                     proms.push(
-                      fetch(`../assignment/${assignmentIds[i]}`).then(x => x.json()).then(payload => {
+                      fetch(`/assignment/${assignmentIds[i]}`).then(x => x.json()).then(payload => {
                         payload.open_date = new Date(payload.open_date);
                         payload.open_date = payload.open_date.toDateString();
                         payload.close_date = new Date(payload.close_date);
