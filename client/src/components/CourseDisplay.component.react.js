@@ -6,27 +6,29 @@ export class CourseDisplay extends Component{
             <div>
                 <div className="row">
                         <div className="col">
-                            Course Title
+                            <b>Course Title</b>
                         </div>
                         <div className="col">
-                            Course Number
+                            <p align="center"><b>Course Number</b></p>
                         </div>
                         <div className="col">
-                            Number of Assignments
+                            <p align="right"><b>Number of Assignments</b></p>
                         </div>
                     </div>
                 {this.props.courses.map(course => 
+                <div className="listbox">
                     <a className="row" key={course.crn} href={`courses/${course._id}`}>
                         <div className="col">
                             {course.title}
                         </div>
                         <div className="col">
-                            {course.crn}
+                        <p align="center">{course.crn}</p>
                         </div>
                         <div className="col">
-                            {course.assignments.length}
+                            <p align="right">{course.assignments.length}</p>
                         </div>
                     </a>
+                    </div>
                 )}
             </div>
         );

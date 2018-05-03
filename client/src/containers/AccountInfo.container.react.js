@@ -35,20 +35,20 @@ export class AccountInfo extends Component{
                 <div className='row'>
                     <div className="col">
                         <div className="content-area half">
-                            Courses
+                        <h3>Courses</h3>
                             <Courses courses={this.state.courses}/>
                         </div> 
                     </div>
                     <div className="col">
                         <div className="content-area half">
-                            Assignments
+                            <h3>Assignments</h3>
                         </div> 
                     </div>
                 </div>
                 <div className='row'>
                     <div className="col">
                         <div className="content-area half">
-                            Assignment View
+                            <h3>Assignment View</h3>
                         </div> 
                     </div>
                 </div>

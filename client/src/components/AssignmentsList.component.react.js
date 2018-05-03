@@ -4,7 +4,7 @@ import {PropTypes} from 'prop-types';
 export class AssignmentList extends Component{
     render(){
         return(
-            <div>
+            <div id="textarea">
                 <div className="row">
                     <div className="col">
                         Title
