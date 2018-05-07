@@ -24,7 +24,7 @@ class Store extends EventEmitter{
         let path = this.store;
         switch(payload.id){
             case "email":
-                path.email = value;
+                path.email = value.toLowerCase();
                 break;
             case "password":
                 path.password = value;
