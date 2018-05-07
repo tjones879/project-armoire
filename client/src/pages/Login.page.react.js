@@ -23,7 +23,7 @@ export class LoginPage extends Component{
                 <h1 className="text-center heading">Log In to Project Armoire</h1>
                 <LoginForm loading={this.state.loading} feedback={this.state.feedback} lock={this.state.lock}/>
                 <div className="under-note text-center">
-                    Hello stranger! Never been here before? &nbsp; <a className="link" href="register">Sign up now</a>
+                    Hello stranger! Never been here before? &nbsp; <a className="link" href="/register">Sign up now</a>
                 </div>
             </div>
         );

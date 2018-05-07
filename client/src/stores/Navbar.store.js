@@ -8,11 +8,11 @@ class Store extends EventEmitter{
         this.store = {
             links: [{
                 title:"Login",
-                link:`${window.location.href.split("/")[0]}//${window.location.hostname}:${window.location.port}/login`
+                link:"/login"
             },
             {
                 title:"Register",
-                link:`${window.location.href.split("/")[0]}//${window.location.hostname}:${window.location.port}/register`
+                link:"/register"
             }],
             logoutBtn: {
                 style: {
@@ -28,16 +28,16 @@ class Store extends EventEmitter{
             this.store.links.pop({title:'Login'});
             this.store.links.push({
                 title:'Account',
-                link:`${window.location.href.split("/")[0]}//${window.location.hostname}:${window.location.port}/account`
+                link:"/account"
             });
             this.store.links.push({
                 title:'Courses',
-                link:`${window.location.href.split("/")[0]}//${window.location.hostname}:${window.location.port}/courses`
+                link:"/courses"
             });
             if(payload.classification === "professor"){
                 this.store.links.push({
                     title:'Students',
-                    link:`${window.location.href.split("/")[0]}//${window.location.hostname}:${window.location.port}/student`
+                    link:"/student"
                 });
             }
         }

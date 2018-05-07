@@ -9,7 +9,7 @@ describe('Courses', () => {
     describe('/GET Course', () => {
         it('should return status 200', () => {
             return chai.request(server)
-                .get('/course')
+                .get('/api/v1/course')
                 .then((res) => {
                     expect(res.status).to.equal(200);
                 });
@@ -17,7 +17,7 @@ describe('Courses', () => {
 
         it('should return one course', () => {
             return chai.request(server)
-                .get('/course')
+                .get('/api/v1/course')
                 .then((res) => {
                     expect(res.body).to.be.a('object');
                 });
