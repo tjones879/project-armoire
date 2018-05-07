@@ -15,7 +15,8 @@ class Store extends EventEmitter{
             examples:null,
             submissionBox:null,
             stdinBox:null,
-            feedback:""
+            feedback:"",
+            tests: []
         };
 
         this.Auth = new AuthService();
@@ -24,7 +25,6 @@ class Store extends EventEmitter{
         return this.store;
     }
     start(payload){
-        console.log(payload);
         this.store.id = payload.id;
         this.store.user = payload.user;
         try{
@@ -34,6 +34,18 @@ class Store extends EventEmitter{
                 payload.close_date = new Date(payload.close_date);
                 payload.close_date = payload.close_date.toDateString();
                 this.store.assignment = payload;
+                this.store.tests = payload.tests.map((test, index) => 
+                    (test.visible) ? 
+                    <div className="row" key={index}>
+                        <div className="col">
+                            <strong>{test.label}</strong>
+                            <div className="outlined-sunk-wht">
+                                <pre style={{textAlign: 'left', margin: 5}}>{test.action}</pre>
+                            </div>
+                        </div>
+                    </div>
+                    : null
+                ).filter((test) => {if (test !== null) return test});
                 this.store.examples = payload.examples.map((example, index) =>
                     <div className="row" key={index}>
                         <div className="col text-center outlined-sunk-wht">

@@ -17,7 +17,7 @@ var AssignmentSchema = new mongoose.Schema({
         {input: String, output: String}
     ],
     tests: [
-        {id: Number, action: String, expected: String}
+        {id: Number, label: String, action: String, visible: Boolean}
     ]
 });
 

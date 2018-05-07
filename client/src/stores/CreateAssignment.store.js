@@ -22,10 +22,8 @@ class CreateAssignmentStore extends EventEmitter{
                 aClose: "",
                 aDescript: "",
                 aReq: "",
-                examples: [
-                ],
-                tests: [
-                ]
+                examples: [],
+                tests: []
             },
             form:{
                 elements:[
@@ -69,6 +67,7 @@ class CreateAssignmentStore extends EventEmitter{
         this.addTest = this.addTest.bind(this);
         this.change = this.change.bind(this);
         this.submit = this.submit.bind(this);
+        this.lengthenTests = this.lengthenTests.bind(this);
     }
 
     start(user){
@@ -176,61 +175,44 @@ class CreateAssignmentStore extends EventEmitter{
                     }else{
                         this.store.data.examples[pos - 1].output = value;
                     }
-                }else if(/^A/.test(id)){
+                } else if (/^A/.test(id)) {
                     let pos = id.slice(1,id.length);
-                    if(pos > this.store.data.tests.length){
-                        let offset = pos - this.store.data.tests.length;
-                        for(let i = 0; i < offset; i++){
-                            if(i === offset - 1){
-                                this.store.data.tests.push({
-                                    id: pos,
-                                    action:value,
-                                    expected:""
-                                });
-                            }else{
-                                this.store.data.tests.push({
-                                    id: pos,
-                                    action:"",
-                                    expected:""
-                                });
-                            }
-                        }
-                        
-                    }else{
-                        this.store.data.tests[pos - 1].action = value;
-                    }
-                }else if(/^E/.test(id)){
+                    this.lengthenTests(pos);
+                    this.store.data.tests[pos - 1].action = value;
+                } else if (/^L/.test(id)) {
                     let pos = id.slice(1,id.length);
-                    if(pos > this.store.data.tests.length){
-                        let offset = pos - this.store.data.tests.length;
-                        for(let i = 0; i < offset; i++){
-                            if(i === offset - 1){
-                                this.store.data.tests.push({
-                                    id:pos,
-                                    action:"",
-                                    expected:value
-                                });
-                            }else{
-                                this.store.data.tests.push({
-                                    id:pos,
-                                    action:"",
-                                    expected:""
-                                });
-                            }
-                        }
-                        
-                    }else{
-                        this.store.data.tests[pos - 1].expected = value;
-                    }
+                    this.lengthenTests(pos);
+                    this.store.data.tests[pos - 1].label = value;
+                } else if (/^Vis/.test(id)) {
+                    let pos = id.slice(3,id.length);
+                    this.lengthenTests(pos);
+                    let curr = this.store.data.tests[pos - 1].visibility;
+                    this.store.data.tests[pos - 1].visibility = !curr;
                 }
                 break;
             }
         }
     }
 
+    /**
+     * Lengthen the test array if necessary to accomodate for the given
+     * test position. No effect if `pos < tests.length`.
+     * @param {integer} pos The position value of the input test
+     */
+    lengthenTests(pos) {
+        for (let i = this.store.data.tests.length; i < pos; i++) {
+            this.store.data.tests.push({
+                id: pos,
+                action: "",
+                label: "",
+                visible: false
+            });
+        }
+    }
+
     submit(){
         let path = this.store;
-        path.loading = <img src="images/loading.gif" alt="loading gif" className="loading"/>;
+        path.loading = <img src="/images/loading.gif" alt="loading gif" className="loading"/>;
         this.emit("change");
         fetch('/api/v1/assignment', {
             method: 'POST',
@@ -254,7 +236,7 @@ class CreateAssignmentStore extends EventEmitter{
             }).then(payload => payload.json()).then(obj => {
                 path.loading = null;
                 if(obj != null){
-                    this.store.feedback = `Successfully created the course '${this.store.data.aTitle}' under the course '${obj.title}'`;
+                    this.store.feedback = `Successfully created the assignment '${this.store.data.aTitle}' under the course '${obj.title}'`;
                     this.emit("change");
                 }else{
                     this.store.feedback = 'Error';
