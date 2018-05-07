@@ -31,7 +31,7 @@ export class Navbar extends Component{
                         {this.state.links.map((obj)=>
                             <NavUnit linkProp={obj.link} titleProp={obj.title} key={obj.title}/>
                         )}
-                        <Btn class='btn btn-light btn-sm' style={this.state.logoutBtn.style} text='Logout' event={() => {this.Auth.logout();window.location = 'login'}}/>
+                        <Btn class='btn btn-light btn-sm' style={this.state.logoutBtn.style} text='Logout' event={() => {this.Auth.logout();window.location = '/login'}}/>
                     </ul>
                 </div>
             </nav>
